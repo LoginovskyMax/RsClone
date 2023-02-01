@@ -31,6 +31,7 @@ http
  });
 
 app.get("/",(req,res)=>{
+    console.log('Hi');
     res.send({resp:"Hi"})
 })
 

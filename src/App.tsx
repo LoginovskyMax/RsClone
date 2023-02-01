@@ -8,7 +8,7 @@ function App () {
   const [count, setCount] = useState(0)
   const navigate = useNavigate()
   const getData = () => {
-    fetch('http://localhost:8888')
+    fetch('https://localhost:8000')
       .then(async response => await response.json())
       .then(data => {
         console.log(data)
