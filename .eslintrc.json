@@ -20,7 +20,12 @@
     "ignorePatterns": ["tsconfig.json","vite.config.ts","build"],
     "rules": {
         "@typescript-eslint/explicit-function-return-type": 0,
-        "@typescript-eslint/triple-slash-reference":0
+        "@typescript-eslint/triple-slash-reference":0,
+        "no-return-assign":"off",
+        "@typescript-eslint/no-floating-promises":0,
+        "no-console": 1,
+        "no-shadow": 0,
+        "@typescript-eslint/no-explicit-any":"warn"
     },
     "settings": {
 		"import/parsers": {
