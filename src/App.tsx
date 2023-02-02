@@ -3,9 +3,9 @@ import React, { Routes, Route, useNavigate } from 'react-router-dom'
 import './App.scss'
 import LoginPage from './Pages/LoginPage'
 import MainPage from './Pages/MainPage'
+import MemoryGame from './Pages/MemoryGame'
 
 function App () {
-  const [count, setCount] = useState(0)
   const navigate = useNavigate()
   const getData = () => {
     fetch('https://localhost:8000')
@@ -23,6 +23,7 @@ function App () {
       <Routes>
         <Route path='/' element={<LoginPage/>} />
         <Route path='/main' element={<MainPage/>}/>
+        <Route path='/memorygame' element={<MemoryGame/>}/>
       </Routes>
     </div>
   )
