@@ -1,22 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { type IProps } from './Interfaces'
+import styles from './Memorygame.module.scss'
 
-interface props {
-  card: {
-    id: number
-    name: string
-    hasPair: boolean
-  }
-  onPress: (id: number) => void
-  countTry: number
-  pairs: number
-  clickCount: React.Dispatch<React.SetStateAction<number>>
-  startGame: boolean
-  inGame: boolean
-}
-
-export default function CardComponent ({ card, onPress, countTry, pairs, clickCount, startGame, inGame }: props) {
+export default function CardComponent ({ card, onPress, countTry, pairs, clickCount, startGame, inGame }: IProps) {
   const [isOpen, setIsOpen] = useState(false)
   const canClick = useRef(false)
+
   const handler = () => {
     if (inGame) {
       if (canClick.current && pairs < 2) {
@@ -26,6 +15,7 @@ export default function CardComponent ({ card, onPress, countTry, pairs, clickCo
       }
     }
   }
+
   useEffect(() => {
     if (!card.hasPair && countTry !== 0) {
       setTimeout(() => {
@@ -47,10 +37,16 @@ export default function CardComponent ({ card, onPress, countTry, pairs, clickCo
     }
   }, [startGame])
 
+  // useEffect(()=>{
+
+  // },[level])
+  
+  
+
   return (
-    <div className={isOpen ? 'card card-open' : 'card'} onClick={handler} >
-        <div className={isOpen ? 'card-open__shirt' : 'card__shirt'}></div>
-        <div className={isOpen ? 'card-open__face' : 'card__face'}>{card.name} {card.hasPair.toString()}</div>
+    <div className={isOpen ? `${styles.card} ${styles.card_open}`: styles.card} onClick={handler}>
+        <div className={isOpen ? styles.card_open__shirt : styles.card__shirt}></div>
+        <div className={isOpen ? styles.card_open__face : styles.card__face} style={{ backgroundImage: `url(${card.img})` }}></div>
     </div>
   )
 }

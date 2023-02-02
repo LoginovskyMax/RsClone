@@ -1,32 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-
 import { useNavigate } from 'react-router-dom'
 import CardComponent from '../Components/MemoryGame/CardComponent'
+import { type ICard } from '../Components/MemoryGame/Interfaces'
+import { cardsArr } from '../Components/MemoryGame/Data'
+import styles from '../Components/MemoryGame/Memorygame.module.scss'
 
-interface ICard {
-  id: number
-  name: string
-  hasPair: boolean
-}
-
-const cardsArr = [
-  { id: 1, name: 'Circle', hasPair: false },
-  { id: 2, name: 'Circle', hasPair: false },
-  { id: 3, name: 'Square', hasPair: false },
-  { id: 4, name: 'Square', hasPair: false },
-  { id: 5, name: 'Star', hasPair: false },
-  { id: 6, name: 'Star', hasPair: false },
-  { id: 7, name: 'Triangle', hasPair: false },
-  { id: 8, name: 'Triangle', hasPair: false },
-  { id: 9, name: '5', hasPair: false },
-  { id: 10, name: '5', hasPair: false },
-  { id: 11, name: '6', hasPair: false },
-  { id: 12, name: '6', hasPair: false },
-  { id: 13, name: '10', hasPair: false },
-  { id: 14, name: '10', hasPair: false },
-  { id: 15, name: '11', hasPair: false },
-  { id: 16, name: '11', hasPair: false }
-]
 const randomArr = [...cardsArr].sort(() => Math.random() - 0.5)
 
 export default function MemoryGame () {
@@ -37,6 +15,7 @@ export default function MemoryGame () {
   let [countTry, setCountTry] = useState(0)
   let [openCards, setOpenCards] = useState(0)
   const [showModal, setShowModal] = useState(false)
+  const [width, setWidth] = useState(650)
   const [level, setLevel] = useState(8)
   const pairs = useRef<ICard[]>([])
   const openPairs = useRef(0)
@@ -105,6 +84,17 @@ export default function MemoryGame () {
     setCards(arr.sort(() => Math.random() - 0.5))
     restartGame()
     setInGame(false)
+    switch (level) {
+      case 8:
+        setWidth(650)
+        break
+      case 12:
+        setWidth(950)
+        break
+      case 18:
+        setWidth(950)
+        break
+    }
   }, [level])
 
   return (
@@ -117,12 +107,12 @@ export default function MemoryGame () {
         <select onChange={(e) => { setLevel(+(e.target.value)) }}>
             <option value="8">Легкий</option>
             <option value="12">Средний</option>
-            <option value="16">Тяжелый</option>
+            <option value="18">Сложный</option>
         </select>
         </div>
 
         <p>Количество попыток: {countTry}</p>
-        <div className='cards-conteiner'>
+        <div className={styles.cards_conteiner} style={{ width: `${width}px` }}>
         {cards.map(item => <CardComponent key={item.id} card = {item}
                                                     onPress={onPress}
                                                     countTry={countTry}
