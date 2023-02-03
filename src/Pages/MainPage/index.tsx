@@ -1,4 +1,4 @@
-import Button from "../../components/common/Button";
+import Button from "../../Components/common/Button";
 import "./style.scss";
 
 const MainPage = () => (

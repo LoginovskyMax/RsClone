@@ -9,6 +9,12 @@
   ],
   "plugins": ["react-hooks"],
   "rules": {
+    "@typescript-eslint/triple-slash-reference": 0,
+    "no-return-assign": "off",
+    "@typescript-eslint/no-floating-promises": 0,
+    "no-console": 1,
+    "no-shadow": 0,
+    "@typescript-eslint/no-explicit-any": "warn",
     "react/button-has-type": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
@@ -46,7 +52,9 @@
     ],
     "import/extensions": "off",
     "import/prefer-default-export": "off",
-    "import/no-anonymous-default-export": [2, { "allowObject": true }],
+    "import/no-anonymous-default-export": [2, {
+      "allowObject": true
+    }],
     "import/no-extraneous-dependencies": "error",
     "import/order": [
       "error",
@@ -101,20 +109,21 @@
     ],
     "arrow-body-style": ["error", "as-needed"],
     "no-unused-vars": "off",
-    "no-use-before-define": "off",
-    "no-shadow": "off"
+    "no-use-before-define": "off"
   },
   "settings": {
     "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
+      "@typescript-eslint/parser": [".js", ".jsx", ".ts", ".tsx"]
     },
+    "ignorePatterns": ["tsconfig.json", "vite.config.ts", "build"],
+    "rules": {},
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"],
         "moduleDirectory": ["node_modules", "src/"]
-        }
-        }
-      },
+      }
+    }
+  },
   "parserOptions": {
     "ecmaVersion": 2019,
     "sourceType": "module"

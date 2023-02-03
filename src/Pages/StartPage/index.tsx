@@ -8,6 +8,7 @@ const StartPage = () => {
       <h1>Vite + React </h1>
       <button onClick={() => navigate("/")}> Login </button>
       <button onClick={() => navigate("/main")}> Main</button>
+      <button onClick={() => navigate("/memorygame")}> Memory game</button>
     </>
   );
 };
