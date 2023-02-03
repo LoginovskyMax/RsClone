@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import CardComponent from "../Components/MemoryGame/CardComponent";
@@ -13,8 +13,8 @@ const MemoryGame = () => {
   const [cards, setCards] = useState(randomArr);
   const [inGame, setInGame] = useState(false);
   const [startGame, setStartGame] = useState(false);
-  let [countTry, setCountTry] = useState(0);
-  let [openCards, setOpenCards] = useState(0);
+  const [countTry, setCountTry] = useState(0);
+  const [openCards, setOpenCards] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [width, setWidth] = useState(650);
   const [level, setLevel] = useState(8);
@@ -22,7 +22,7 @@ const MemoryGame = () => {
   const openPairs = useRef(0);
 
   const onPress = (id: number) => {
-    setOpenCards((openCards += 1));
+    setOpenCards(openCards + 1);
     const obj = cardsArr.find((item) => item.id === id);
 
     if (obj != null) {
@@ -41,7 +41,7 @@ const MemoryGame = () => {
       }
 
       pairs.current = [];
-      setCountTry((countTry += 1));
+      setCountTry(countTry + 1);
     }
   };
 
@@ -56,8 +56,12 @@ const MemoryGame = () => {
   const restartGame = () => {
     setStartGame(true);
     const arr = [...cardsArr.slice(0, level).sort(() => Math.random() - 0.5)];
-    arr.forEach((item) => (item.hasPair = false));
-    setCards(arr);
+    setCards(
+      arr.map((item) => ({
+        ...item,
+        hasPair: false,
+      }))
+    );
     setCountTry(0);
     pairs.current = [];
     openPairs.current = 0;
@@ -65,18 +69,6 @@ const MemoryGame = () => {
     setTimeout(() => {
       setStartGame(false);
     }, 3000);
-  };
-
-  const sendData = () => {
-    const message = {
-      id: "UserID",
-      game: "MemoryGame",
-      result: countTry,
-    };
-    fetch("https://localhost:8000/saveProgress", {
-      method: "POST",
-      body: JSON.stringify(message),
-    });
   };
 
   useEffect(() => {
@@ -100,6 +92,10 @@ const MemoryGame = () => {
         break;
       case 18:
         setWidth(950);
+        break;
+
+      default:
+        setWidth(650);
         break;
     }
   }, [level]);

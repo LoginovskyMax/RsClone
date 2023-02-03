@@ -111,12 +111,11 @@
     "no-unused-vars": "off",
     "no-use-before-define": "off"
   },
+  "ignorePatterns": ["tsconfig.json", "vite.config.ts", "build"],
   "settings": {
     "import/parsers": {
       "@typescript-eslint/parser": [".js", ".jsx", ".ts", ".tsx"]
     },
-    "ignorePatterns": ["tsconfig.json", "vite.config.ts", "build"],
-    "rules": {},
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"],

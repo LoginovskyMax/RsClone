@@ -1,52 +1,71 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { type IProps } from './Interfaces'
-import styles from './Memorygame.module.scss'
+import { useEffect, useRef, useState } from "react";
 
-export default function CardComponent ({ card, onPress, countTry, pairs, clickCount, startGame, inGame }: IProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const canClick = useRef(false)
+import { type IProps } from "./Interfaces";
+import styles from "./Memorygame.module.scss";
+
+const CardComponent = ({
+  card,
+  onPress,
+  countTry,
+  pairs,
+  clickCount,
+  startGame,
+  inGame,
+}: IProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const canClick = useRef(false);
 
   const handler = () => {
     if (inGame) {
       if (canClick.current && pairs < 2) {
-        setIsOpen(true)
-        onPress(card.id)
-        canClick.current = false
+        setIsOpen(true);
+        onPress(card.id);
+        canClick.current = false;
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (!card.hasPair && countTry !== 0) {
       setTimeout(() => {
-        setIsOpen(false)
-        canClick.current = true
-        clickCount(0)
-      }, 1000)
+        setIsOpen(false);
+        canClick.current = true;
+        clickCount(0);
+      }, 1000);
     }
-  }, [countTry])
+  }, [countTry]);
 
   useEffect(() => {
     if (startGame) {
-      setIsOpen(true)
-      canClick.current = false
+      setIsOpen(true);
+      canClick.current = false;
     }
+
     if (!startGame) {
-      setIsOpen(false)
-      canClick.current = true
+      setIsOpen(false);
+      canClick.current = true;
     }
-  }, [startGame])
+  }, [startGame]);
 
   // useEffect(()=>{
 
   // },[level])
-  
-  
 
   return (
-    <div className={isOpen ? `${styles.card} ${styles.card_open}`: styles.card} onClick={handler}>
-        <div className={isOpen ? styles.card_open__shirt : styles.card__shirt}></div>
-        <div className={isOpen ? styles.card_open__face : styles.card__face} style={{ backgroundImage: `url(${card.img})` }}></div>
+    <div
+      className={isOpen ? `${styles.card} ${styles.card_open}` : styles.card}
+      onClick={handler}
+      role="button"
+      tabIndex={0}
+      onKeyDown={handler}
+    >
+      <div className={isOpen ? styles.card_open__shirt : styles.card__shirt} />
+      <div
+        className={isOpen ? styles.card_open__face : styles.card__face}
+        style={{ backgroundImage: `url(${card.img})` }}
+      />
     </div>
-  )
-}
+  );
+};
+
+export default CardComponent;
