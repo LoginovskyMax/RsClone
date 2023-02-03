@@ -1,0 +1,32 @@
+.main-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__photo {
+    width: 40%;
+  }
+
+  &__main-text {
+    font-size: 84px;
+    margin-top: 20px;
+    font-family: 'Ceviche One', cursive;
+    font-weight: 600;
+    color: #4f4c6b;
+  }
+
+  &__secondary-text {
+    text-align: center;
+    margin-top: 60px;
+    max-width: 50%;
+    font-size: 20px;
+    font-weight: 400;
+    color: #4f4c6b;
+    opacity: 0.7;
+  }
+
+  &__button {
+    margin: 40px 0;
+    min-width: 200px;
+  }
+}
