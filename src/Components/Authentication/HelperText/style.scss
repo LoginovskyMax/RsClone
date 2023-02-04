@@ -1,0 +1,22 @@
+.helper-text {
+  font-size: 16px;
+  line-height: 18px;
+  text-align: center;
+
+  &__link {
+    color: #764ba2;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 16px;
+    background: transparent;
+    border: none;
+    padding-left: 4px;
+
+    &:hover,
+    &:focus {
+      color: #462a62;
+      border: none;
+      outline: unset;
+    }
+  }
+}
