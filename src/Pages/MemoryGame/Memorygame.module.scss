@@ -1,0 +1,52 @@
+.memory_main{
+    width: 100%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__level{
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      padding: 20px 0 0;
+    }
+    &__input{
+      padding: 5px 20px;
+      border-radius: 5px;
+      color: #fff;
+      background-image: linear-gradient(to right, #667eea, #764ba2);
+      option{
+        color: black;
+      }
+    }
+  }
+  .cards_conteiner{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+  .modal_window{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 128, 128, 0.295);
+    &__main{
+      padding: 20px;
+      background-color: teal;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+  .btns_conteiner{
+    padding: 20px 0;
+    display: flex;
+    gap: 20px;
+  }

@@ -4,6 +4,37 @@ let usersArr = [
     {id:2,userName:'Max',password:123,status:'moderator',date:'12.10.2000'},
     {id:3,userName:'God',password:123,status:'admin',date:'12.10.2000'},
   ]
+const gamesData = [{
+    name:'Memorygame',
+    comments : [
+      {id:1,
+       userName:'Vasya',
+       text:'Клевая игра',
+       data:'04.02.2023'}
+    ],
+    descriptionRu: 'Игра на память, хорошо развивает зрительную память и реакцию',
+    descriptionEn: 'Игра на память, хорошо развивает зрительную память и реакцию',
+    rulesRu: `После нажатия на кнопку старт карточки открываются, и у Вас есть 3 секунды чтобы запомнить их расположение,
+    после чего, вы должны попарно открыть их за наименьшее количество попыток.`,
+    rulesEn:'After press start ..',
+    rating:5
+  },
+  {
+    name:'othergames',
+    comments : [
+      {id:1,
+       userName:'Vasya',
+       text:'Клевая игра',
+       data:'04.02.2023'}
+    ],
+    descriptionRu: 'Игра на память, хорошо развивает зрительную память и реакцию',
+    descriptionEn: 'Игра на память, хорошо развивает зрительную память и реакцию',
+    rulesRu: `После нажатия на кнопку старт карточки открываются, и у Вас есть 3 секунды чтобы запомнить их расположение,
+    после чего, вы должны попарно открыть их за наименьшее количество попыток.`,
+    rulesEn:'After press start ..',
+    rating:5
+  }
+]
 
 const express = require("express"),
 https = require('https'),
@@ -35,6 +66,11 @@ app.get("/",(req,res)=>{
     res.send({resp:"Hi"})
 })
 
+app.get("/gameData/:name",(req,res)=>{
+ const name = req.params['name']
+ let game = gamesData.find(item=>item.name === name)
+ res.send(game)
+})
 app.post("/authUser",(req,res)=>{
     // { userName: 'Vasya', password: '123' } То что приходит 
     let user = usersArr.find(item=>item.userName == req.body.userName)
@@ -70,6 +106,7 @@ app.post("/registUser",(req,res)=>{
         // Если такой пользователь уже существует то я отправляю Choose other name
     }
 })
+
 
 
 

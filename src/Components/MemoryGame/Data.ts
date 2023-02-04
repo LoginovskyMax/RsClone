@@ -26,5 +26,5 @@ export const cardsArr = [
   { id: 15, name: "11", hasPair: false, img: audi },
   { id: 16, name: "11", hasPair: false, img: audi },
   { id: 17, name: "12", hasPair: false, img: zhiga },
-  { id: 18, name: "13", hasPair: false, img: zhiga },
+  { id: 18, name: "12", hasPair: false, img: zhiga },
 ];
