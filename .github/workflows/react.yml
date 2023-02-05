@@ -32,5 +32,6 @@ jobs:
     - run: rm vite.config.ts
     - run: mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
     - run: npm run build
-    - run: cp -rf /home/worker/_build/RsClone/RsClone/dist/* /var/www/html/*
+    - run: rm -rf /var/www/html/*
+    - run: cp -rf /home/worker/_build/RsClone/RsClone/dist/* /var/www/html/
     # - run: sudo systemctl start rsback -f
