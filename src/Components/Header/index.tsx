@@ -5,6 +5,7 @@ import AuthenticationModal from "../Authentication";
 import Button from "../common/Button";
 
 import Logo from "./Logo";
+import User from "./User";
 
 import "./style.scss";
 
@@ -21,7 +22,9 @@ const Header: FC = () => {
           alt="theme"
           className="header__theme"
         />
-        {!user && (
+        {user ? (
+          <User username={user} />
+        ) : (
           <Button onClick={() => setModalClosed(false)}>Sign in</Button>
         )}
       </div>
