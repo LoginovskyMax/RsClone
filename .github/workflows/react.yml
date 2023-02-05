@@ -26,7 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: sudo systemctl stop rsback
+    - run: systemctl stop rsback
     - run: npm i
   lint:
     runs-on: self-hosted
@@ -44,4 +44,4 @@ jobs:
     - run: rm vite.config.ts
     - run: mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
     - run: npm run build
-    - run: sudo systemctl start rsback
+    - run: systemctl start rsback
