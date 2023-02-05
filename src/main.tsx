@@ -1,13 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import { HashRouter as Router } from 'react-router-dom'
-import './index.scss'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { HashRouter as Router } from "react-router-dom";
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+import App from "./App";
+import Footer from "./Components/Footer";
+import Header from "./Components/Header";
+import "./index.scss";
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-      <Router>
-         <App />
-      </Router>
+    <Router>
+      <Header />
+      <App />
+      <Footer />
+    </Router>
   </React.StrictMode>
-)
+);

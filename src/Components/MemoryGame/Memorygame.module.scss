@@ -1,0 +1,78 @@
+.cards_conteiner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+$card-width:150px;
+$card-height:220px;
+
+.card {
+  border: 1px stolid teal;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: $card-width;
+  height: $card-height;
+  position: relative;
+  transition: 0.6s;
+
+  &__face {
+    transform: rotateY(180deg);
+    position: absolute;
+    z-index: -1;
+    width: $card-width;
+    height: $card-height;
+    border-radius: 15px;
+    background-size: cover;
+  }
+
+  &__shirt {
+    border-radius: 15px;
+    position: absolute;
+    width: $card-width;
+    height: $card-height;
+    background-image: url('../../assets/cars/shirt.jfif');
+    background-size: cover;
+  }
+}
+
+.card_open {
+  transform: rotateY(180deg);
+
+  &__face {
+    z-index: 2;
+    transform: rotateY(180deg);
+    width: $card-width;
+    height: $card-height;
+    border-radius: 15px;
+    background-size: cover;
+  }
+
+  &__shirt {
+    background-image: none;
+  }
+}
+
+.modal_window {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 128, 128, 0.295);
+
+  &__main {
+    padding: 20px;
+    background-color: teal;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}

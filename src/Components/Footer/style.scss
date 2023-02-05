@@ -1,0 +1,33 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  height: 80px;
+  padding: 10px 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px -5px 5px -5px #f6e7ea;
+  background-color: white;
+
+  &__logo {
+    width: 80px;
+  }
+
+  &__year {
+    color: #4f4c6b;
+    font-weight: 600;
+  }
+
+  &__content {
+    display: flex;
+    gap: 10px;
+    color: #7e6dd1;
+    font-weight: 700;
+    font-size: 16px;
+
+    a {
+      cursor: pointer;
+    }
+  }
+}

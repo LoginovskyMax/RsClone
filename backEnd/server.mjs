@@ -9,10 +9,28 @@ const port = Number(process.env.PORT) || 8888
 const ports = Number(process.env.PORTS) || 8000
 
 const usersArr = [
-  { id: 1, userName: 'Vasya', password: 123, status: 'user', date: '12.10.2000' },
-  { id: 2, userName: 'Max', password: 123, status: 'moderator', date: '12.10.2000' },
-  { id: 3, userName: 'God', password: 123, status: 'admin', date: '12.10.2000' }
-]
+  {
+    id: 1,
+    userName: "Vasya",
+    password: 123,
+    status: "user",
+    date: "12.10.2000",
+  },
+  {
+    id: 2,
+    userName: "Max",
+    password: 123,
+    status: "moderator",
+    date: "12.10.2000",
+  },
+  {
+    id: 3,
+    userName: "God",
+    password: 123,
+    status: "admin",
+    date: "12.10.2000",
+  },
+];
 
 const app = express()
 app.use(express.urlencoded({ extended: true }))
