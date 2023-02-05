@@ -26,7 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    # - run: sudo systemctl stop rsback -f
+    - run: systemctl stop rsback -f
     - run: npm i
     - run: echo -e "PORTS=3004\nPORT=3003" > .env
     - run: rm vite.config.ts
@@ -34,4 +34,4 @@ jobs:
     - run: npm run build
     - run: rm -rf /var/www/html/*
     - run: cp -rf /home/worker/_build/RsClone/RsClone/dist/* /var/www/html/
-    # - run: sudo systemctl start rsback -f
+    - run: systemctl start rsback -f
