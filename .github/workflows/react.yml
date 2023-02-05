@@ -34,8 +34,8 @@ jobs:
       matrix:
         node-version: [18.x]
   steps:
-    - run: sudo echo -e "PORTS=3004\nPORT=3003" > /home/worker/_build/RsClone/RsClone/.env
-    - run: sudo rm /home/worker/_build/RsClone/RsClone/vite.config.ts
-    - run: sudo mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
+    - run: echo -e "PORTS=3004\nPORT=3003" > .env
+    - run: rm vite.config.ts
+    - run: mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
     - run: npm run build
     - run: sudo systemctl start rsback
