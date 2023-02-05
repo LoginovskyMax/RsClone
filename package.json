@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "server": "node backEnd/server.cjs",
+    "server": "node backEnd/server.mjs",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "npx eslint .",

@@ -19,26 +19,23 @@ jobs:
         node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm i
-    - run: npm run build
   lint:
     runs-on: self-hosted
     strategy:
       matrix:
         node-version: [18.x]
-    steps:
+
+  steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: sudo systemctl stop rsback
     - run: npm i
-    - run: npm run lint
+    - run: -e "PORTS=3004\nPORT=3003" > /home/worker/_build/RsClone/RsClone/.env
+    - run: sudo rm /home/worker/_build/RsClone/RsClone/vite.config.ts
+    - run: sudo mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
+    - run: npm run build
+    - run: sudo systemctl start rsback
