@@ -33,8 +33,3 @@ jobs:
     - run: mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
     - run: npm run build
     - run: sudo systemctl start rsback -f
-  lint:
-    runs-on: self-hosted
-    strategy:
-      matrix:
-        node-version: [18.x]
