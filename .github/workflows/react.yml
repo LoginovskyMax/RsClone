@@ -5,9 +5,9 @@ name: gamescicd
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "ci-cd-dev" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "ci-cd-dev" ]
 
 jobs:
   build:
