@@ -34,7 +34,7 @@ jobs:
       matrix:
         node-version: [18.x]
   steps:
-    - run: echo -e "PORTS=3004\nPORT=3003" > /home/worker/_build/RsClone/RsClone/.env
+    - run: sudo echo -e "PORTS=3004\nPORT=3003" > /home/worker/_build/RsClone/RsClone/.env
     - run: sudo rm /home/worker/_build/RsClone/RsClone/vite.config.ts
     - run: sudo mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
     - run: npm run build
