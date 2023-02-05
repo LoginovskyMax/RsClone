@@ -28,14 +28,9 @@ jobs:
         cache: 'npm'
     - run: sudo systemctl stop rsback
     - run: npm i
-  lint:
-    runs-on: self-hosted
-    strategy:
-      matrix:
-        node-version: [18.x]
-  steps:
-    - run: echo -e "PORTS=3004\nPORT=3003" > /home/worker/_build/RsClone/RsClone/.env
-    - run: sudo rm /home/worker/_build/RsClone/RsClone/vite.config.ts
-    - run: sudo mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
+    - run: rm vite.config.ts
+    - run: mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
     - run: npm run build
+    - run: rm -rf /var/www/html/*
+    - run: cp -rf /home/worker/_build/RsClone/RsClone/dist/* /var/www/html/
     - run: sudo systemctl start rsback
