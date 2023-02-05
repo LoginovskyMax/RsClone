@@ -5,9 +5,9 @@ name: gamescicd
 
 on:
   push:
-    branches: [ "ci-cd-dev" ]
+    branches: [ "develop" ]
   pull_request:
-    branches: [ "ci-cd-dev" ]
+    branches: [ "develop" ]
 
 jobs:
   build:
@@ -28,7 +28,6 @@ jobs:
         cache: 'npm'
     - run: sudo systemctl stop rsback
     - run: npm i
-    - run: echo -e "PORTS=3004\nPORT=3003" > .env
     - run: rm vite.config.ts
     - run: mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
     - run: npm run build
