@@ -10,7 +10,7 @@ import { router } from "./auth.mjs";
 
 const port = Number(process.env.PORT) || 8888;
 const ports = Number(process.env.PORTS) || 8000;
-const pass = process.env.PASS || "rsschool2023";
+const pass = process.env.PASS || "rs_temp_pass";
 
 /*
   {
