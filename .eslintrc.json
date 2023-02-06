@@ -11,9 +11,11 @@
   "rules": {
     "@typescript-eslint/triple-slash-reference": 0,
     "no-return-assign": "off",
+    "no-param-reassign":"off",
     "@typescript-eslint/no-floating-promises": 0,
     "no-console": 1,
     "no-shadow": 0,
+    "no-nested-ternary":"off",
     "@typescript-eslint/no-explicit-any": "warn",
     "react/button-has-type": "off",
     "react-hooks/rules-of-hooks": "error",
@@ -32,7 +34,7 @@
     "react/function-component-definition": [
       2,
       {
-        "namedComponents": "arrow-function",
+        "namedComponents": ["arrow-function","function-declaration"],
         "unnamedComponents": "arrow-function"
       }
     ],
