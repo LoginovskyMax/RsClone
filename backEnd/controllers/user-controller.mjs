@@ -28,10 +28,14 @@ export async function resetpass(req, res) {
       res.status(404).json({ message: "User not found" });
     }
 
+    const newResetToken = uuidv4();
+    searchUser.resetToken = newResetToken;
+    searchUser.save();
+
     mailService.sendResetPassEMail(
       searchUser.email,
       searchUser.userName,
-      `https://${process.env.HOST}/resetpass?resetToken=${searchUser.resetToken}`
+      `https://${process.env.HOST}/resetpass?resetToken=${newResetToken}`
     );
 
     res.json({
@@ -55,6 +59,8 @@ export async function setNewPass(req, res) {
 
     const hashPass = bcrypt.hashSync(password, 7);
     searchUser.password = hashPass;
+    const newResetToken = uuidv4();
+    searchUser.resetToken = newResetToken;
     searchUser.save();
     mailService.sendPassChangedEmail(
       searchUser.email,
@@ -155,12 +161,11 @@ export async function deleteUser(req, res) {
 
     if (!user) {
       res.status(404).json({ message: "User not found" });
+    } else {
+      await user.remove();
+      res.status(204).json({ message: `User ${userName} has been deleted` });
     }
-
-    await user.remove();
-    res.status(204).json({ message: `User ${userName} has been deleted` });
   } catch (err) {
-    console.log(err);
     res.status(400).json({ message: "Failed to delete user" });
   }
 }
