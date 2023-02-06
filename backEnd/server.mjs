@@ -12,6 +12,38 @@ const port = Number(process.env.PORT) || 8888;
 const ports = Number(process.env.PORTS) || 8000;
 const pass = process.env.PASS || "rs_temp_pass";
 
+const gamesData = [{
+  name:'Memorygame',
+  comments : [
+    {id:1,
+     userName:'Vasya',
+     text:'Клевая игра',
+     data:'04.02.2023'}
+  ],
+  descriptionRu: 'Игра на память, хорошо развивает зрительную память и реакцию',
+  descriptionEn: 'Игра на память, хорошо развивает зрительную память и реакцию',
+  rulesRu: `После нажатия на кнопку старт карточки открываются, и у Вас есть 3 секунды чтобы запомнить их расположение,
+  после чего, вы должны попарно открыть их за наименьшее количество попыток.`,
+  rulesEn:'After press start ..',
+  rating:5
+},
+{
+  name:'othergames',
+  comments : [
+    {id:1,
+     userName:'Vasya',
+     text:'Клевая игра',
+     data:'04.02.2023'}
+  ],
+  descriptionRu: 'Игра на память, хорошо развивает зрительную память и реакцию',
+  descriptionEn: 'Игра на память, хорошо развивает зрительную память и реакцию',
+  rulesRu: `После нажатия на кнопку старт карточки открываются, и у Вас есть 3 секунды чтобы запомнить их расположение,
+  после чего, вы должны попарно открыть их за наименьшее количество попыток.`,
+  rulesEn:'After press start ..',
+  rating:5
+}
+]
+
 /*
   {
     _id: [Object],
@@ -48,3 +80,9 @@ app.get("/", (_req, res) => {
   console.log("Server is online");
   res.send({ resp: "Server is online" });
 });
+
+app.get("/gameData/:name",(req,res)=>{
+  const name = req.params['name']
+  let game = gamesData.find(item=>item.name === name)
+  res.send(game)
+ })
