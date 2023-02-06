@@ -6,9 +6,8 @@ const StartPage = () => {
   return (
     <>
       <h1>Vite + React </h1>
-      <button onClick={() => navigate("/")}> Login </button>
+      <button onClick={() => navigate(`/preview/Memorygame`)}> Login </button>
       <button onClick={() => navigate("/main")}> Main</button>
-      <button onClick={() => navigate("/memorygame")}> Memory game</button>
     </>
   );
 };

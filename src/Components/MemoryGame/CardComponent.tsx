@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
+import styles from "./CardComponent.module.scss";
 import { type IProps } from "./Interfaces";
-import styles from "./Memorygame.module.scss";
 
 const CardComponent = ({
   card,
@@ -47,13 +47,15 @@ const CardComponent = ({
     }
   }, [startGame]);
 
-  // useEffect(()=>{
-
-  // },[level])
-
   return (
     <div
-      className={isOpen ? `${styles.card} ${styles.card_open}` : styles.card}
+      className={
+        isOpen
+          ? card.hasPair
+            ? `${styles.card} ${styles.card_open} ${styles.card__win}`
+            : `${styles.card} ${styles.card_open}`
+          : styles.card
+      }
       onClick={handler}
       role="button"
       tabIndex={0}

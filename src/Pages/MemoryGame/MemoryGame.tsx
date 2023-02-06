@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import CardComponent from "../Components/MemoryGame/CardComponent";
-import { cardsArr } from "../Components/MemoryGame/Data";
-import { type ICard } from "../Components/MemoryGame/Interfaces";
-import styles from "../Components/MemoryGame/Memorygame.module.scss";
+import Button from "../../Components/common/Button";
+import CardComponent from "../../Components/MemoryGame/CardComponent";
+import { cardsArr } from "../../Components/MemoryGame/Data";
+import { type ICard } from "../../Components/MemoryGame/Interfaces";
+
+import styles from "./Memorygame.module.scss";
 
 const randomArr = [...cardsArr].sort(() => Math.random() - 0.5);
 
@@ -56,16 +58,15 @@ const MemoryGame = () => {
   const restartGame = () => {
     setStartGame(true);
     const arr = [...cardsArr.slice(0, level).sort(() => Math.random() - 0.5)];
-    setCards(
-      arr.map((item) => ({
-        ...item,
-        hasPair: false,
-      }))
-    );
+    arr.forEach((item) => {
+      item.hasPair = false;
+    });
+    setCards(arr);
     setCountTry(0);
     pairs.current = [];
     openPairs.current = 0;
     setOpenCards(0);
+    setShowModal(false);
     setTimeout(() => {
       setStartGame(false);
     }, 3000);
@@ -101,15 +102,12 @@ const MemoryGame = () => {
   }, [level]);
 
   return (
-    <div>
+    <div className={styles.memory_main}>
       <h2> Memory Game</h2>
-      <div>
-        <button onClick={startGameFunc} disabled={!!inGame}>
-          Начать игру
-        </button>
-        <button onClick={restartGame}>Рестарт</button>
-        <p>Сложность: </p>
+      <div className={styles.memory_main__level}>
+        <p>Уровень: </p>
         <select
+          className={styles.memory_main__input}
           onChange={(e) => {
             setLevel(+e.target.value);
           }}
@@ -120,6 +118,12 @@ const MemoryGame = () => {
         </select>
       </div>
 
+      <div className={styles.btns_conteiner}>
+        <Button onClick={startGameFunc} disabled={!!inGame}>
+          Начать игру
+        </Button>
+        <Button onClick={restartGame}>Рестарт</Button>
+      </div>
       <p>Количество попыток: {countTry}</p>
       <div className={styles.cards_conteiner} style={{ width: `${width}px` }}>
         {cards.map((item) => (
@@ -136,26 +140,26 @@ const MemoryGame = () => {
         ))}
       </div>
       {showModal && (
-        <div className="modal-window">
-          <div className="modal-window__main">
+        <div className={styles.modal_window}>
+          <div className={styles.modal_window__main}>
             <p>Поздравляем с победой!!!</p>
             <p>Ваш результат {countTry}</p>
-            <button
+            <Button
               onClick={() => {
                 navigate("/main");
                 setShowModal(false);
               }}
             >
               На главную
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => {
                 restartGame();
                 setShowModal(false);
               }}
             >
               Начать заново
-            </button>
+            </Button>
           </div>
         </div>
       )}
