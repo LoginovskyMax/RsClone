@@ -15,16 +15,29 @@ const generateToken = (id, statuses) =>
 export async function resetpass(req, res) {
   try {
     const { userName, email } = req.body;
+
+    if (!userName && !email) {
+      res.status(401).json({ message: "Wrong Input Data" });
+    }
+
     const searchUser = userName
       ? await User.findOne({ userName })
       : await User.findOne({ email });
+
+    if (!searchUser) {
+      res.status(404).json({ message: "User not found" });
+    }
+
     mailService.sendResetPassEMail(
       searchUser.email,
       searchUser.userName,
       `https://${process.env.HOST}/resetpass?resetToken=${searchUser.resetToken}`
     );
 
-    res.json({ message: "E-mail sended" });
+    res.json({
+      message: `E-mail sended to ${searchUser.email}`,
+      resetToken: searchUser.resetToken,
+    });
   } catch (e) {
     res.status(400).json({ message: "Reset Error" });
   }
@@ -37,7 +50,7 @@ export async function setNewPass(req, res) {
     const searchUser = await User.findOne({ resetToken });
 
     if (!searchUser) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const hashPass = bcrypt.hashSync(password, 7);
@@ -132,6 +145,23 @@ export async function getUsers(_req, res) {
     res.json(users);
   } catch (err) {
     res.status(400).json({ message: "Failed to get users" });
+  }
+}
+
+export async function deleteUser(req, res) {
+  try {
+    const { userName } = req.body;
+    const user = await User.findOne({ userName });
+
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    }
+
+    await user.remove();
+    res.status(204).json({ message: `User ${userName} has been deleted` });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({ message: "Failed to delete user" });
   }
 }
 
