@@ -7,8 +7,6 @@ export function adminMiddleware(statuses) {
       next();
     }
 
-    console.log(req.headers);
-
     try {
       const token = req.headers.authorization.split(" ")[1];
 
@@ -20,7 +18,6 @@ export function adminMiddleware(statuses) {
         token,
         process.env.KEY
       );
-      console.log("uStatuses", uStatuses);
       const hasStatus = uStatuses.some((status) => statuses.includes(status));
 
       if (!hasStatus) {
@@ -29,8 +26,6 @@ export function adminMiddleware(statuses) {
 
       next();
     } catch (err) {
-      console.error(err);
-
       return res.status(403).json({ message: "User not authorized" });
     }
   };

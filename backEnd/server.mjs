@@ -8,7 +8,10 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 
-import { router } from "./auth.mjs";
+import { getGameData } from "./controllers/game-data-controller.mjs";
+import { GameData } from "./data/game.mjs";
+// import { gameRouter } from "./games.mjs";
+import { router } from "./router.mjs";
 
 dotenv.config();
 
@@ -54,4 +57,28 @@ http.createServer(app).listen(ports, () => {
 app.get("/", (_req, res) => {
   console.log("Server is online");
   res.send({ resp: "Server is online" });
+});
+
+app.get("/gameData/:name", getGameData);
+
+// Использовать для добавления записей в БД
+app.get("/addGame", (_req, res) => {
+  try {
+    const gameData = new GameData({
+      name: "Memorygame",
+      descriptionRu:
+        "Игра на память, хорошо развивает зрительную память и реакцию",
+      descriptionEn:
+        "Игра на память, хорошо развивает зрительную память и реакцию",
+      rulesRu:
+        "После нажатия на кнопку старт карточки открываются, и у Вас есть 3 секунды чтобы запомнить их расположение, после чего, вы должны попарно открыть их за наименьшее количество попыток.",
+      rulesEn: "After press start ..",
+      rating: 5,
+    });
+    gameData.save();
+  } catch (err) {
+    res
+      .status(400)
+      .json({ message: "Failed to add new game", error: err.message });
+  }
 });

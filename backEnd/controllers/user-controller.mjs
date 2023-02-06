@@ -4,9 +4,9 @@ import jsonwebtoken from "jsonwebtoken";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from "uuid";
 
-import { UserStatus } from "./data/status.mjs";
-import { User } from "./data/user.mjs";
-import { mailService } from "./mail/mail-service.js";
+import { UserStatus } from "../data/status.mjs";
+import { User } from "../data/user.mjs";
+import { mailService } from "../mail/mail-service.js";
 
 const generateToken = (id, statuses) =>
   jsonwebtoken.sign({ id, statuses }, process.env.KEY, { expiresIn: "60d" });
@@ -21,10 +21,10 @@ export async function resetpass(req, res) {
     mailService.sendResetPassEMail(
       searchUser.email,
       searchUser.userName,
-      `https://${process.env.HOST}/resetpass/${searchUser.resetToken}`
+      `https://${process.env.HOST}/resetpass?resetToken=${searchUser.resetToken}`
     );
 
-    return res.redirect(process.env.CLIENT_URL);
+    res.json({ message: "E-mail sended" });
   } catch (e) {
     res.status(400).json({ message: "Reset Error" });
   }
@@ -40,12 +40,13 @@ export async function setNewPass(req, res) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    searchUser.password = password;
+    const hashPass = bcrypt.hashSync(password, 7);
+    searchUser.password = hashPass;
     searchUser.save();
     mailService.sendPassChangedEmail(
       searchUser.email,
       searchUser.userName,
-      password
+      hashPass
     );
     res.json({ message: "Password has been changed!" });
   } catch (e) {
@@ -91,14 +92,18 @@ export async function register(req, res) {
 // eslint-disable-next-line consistent-return
 export async function login(req, res) {
   try {
+    console.log(req.body);
     const { userName, password } = req.body;
+    console.log(userName, password);
     const searchUser = await User.findOne({ userName });
+    console.log(searchUser);
 
     if (!searchUser) {
       return res.status(404).json({ message: `User ${userName} not found` });
     }
 
     const validPass = bcrypt.compareSync(password, searchUser.password);
+    console.log(validPass);
 
     if (!validPass) {
       return res
@@ -108,18 +113,23 @@ export async function login(req, res) {
 
     // eslint-disable-next-line no-underscore-dangle
     const token = generateToken(searchUser._id, searchUser.status);
+    console.log(token);
 
-    return res.cookie({ token });
+    res.cookie("token", token, {
+      maxAge: 60 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+    });
+    res.json({ token });
   } catch (err) {
     res.status(400).json({ message: "Login Error" });
   }
 }
 
-export async function getUsers(req, res) {
+export async function getUsers(_req, res) {
   try {
     const users = await User.find();
     res.json(users);
-    console.log(req);
   } catch (err) {
     res.status(400).json({ message: "Failed to get users" });
   }

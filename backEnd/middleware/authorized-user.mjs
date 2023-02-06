@@ -1,7 +1,7 @@
 import jsonwebtoken from "jsonwebtoken";
 
 // eslint-disable-next-line consistent-return
-export function middleware(req, res, next) {
+export function authorizedUser(req, res, next) {
   if (req.method === "OPTIONS") {
     next();
   }
