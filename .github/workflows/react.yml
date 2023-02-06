@@ -28,6 +28,7 @@ jobs:
         cache: 'npm'
     - run: sudo systemctl stop rsback
     - run: npm i
+    - run: cp /home/worker/env/.env /home/worker/_build/RsClone/RsClone/
     - run: rm vite.config.ts
     - run: mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
     - run: npm run build
