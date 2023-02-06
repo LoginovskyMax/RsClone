@@ -1,5 +1,3 @@
-import React from "react";
-
 import styles from "./ModalWindow.module.scss";
 
 export default function ModalWindow() {

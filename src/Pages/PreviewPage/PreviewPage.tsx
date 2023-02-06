@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import Button from "../../Components/common/Button";
@@ -44,7 +44,7 @@ export default function PreviewPage() {
       });
   };
 
-  const addComment = () => {};
+  // const addComment = () => {};
 
   useEffect(() => {
     getGameData();
