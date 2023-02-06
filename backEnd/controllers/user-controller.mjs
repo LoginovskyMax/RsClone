@@ -4,8 +4,8 @@ import jsonwebtoken from "jsonwebtoken";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from "uuid";
 
-import { UserStatus } from "../data/status.mjs";
-import { User } from "../data/user.mjs";
+import { UserStatus } from "../data/Status.mjs";
+import { User } from "../data/User.mjs";
 import { mailService } from "../mail/mail-service.js";
 
 const generateToken = (id, statuses) =>
