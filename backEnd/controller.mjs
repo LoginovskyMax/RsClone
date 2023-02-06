@@ -1,16 +1,57 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import bcrypt from "bcryptjs";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { validationResult } from "express-validator";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import jsonwebtoken from "jsonwebtoken";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { v4 as uuidv4 } from "uuid";
 
-import { UserStatus } from "./data/Status.mjs";
-import { User } from "./data/User.mjs";
-import { S_KEY } from "./key.mjs";
+import { UserStatus } from "./data/status.mjs";
+import { User } from "./data/user.mjs";
+import { mailService } from "./mail/mail-service.js";
 
 const generateToken = (id, statuses) =>
-  jsonwebtoken.sign({ id, statuses }, S_KEY.secret, { expiresIn: "48h" });
+  jsonwebtoken.sign({ id, statuses }, process.env.KEY, { expiresIn: "60d" });
+
+// eslint-disable-next-line consistent-return
+export async function resetpass(req, res) {
+  try {
+    const { userName, email } = req.body;
+    const searchUser = userName
+      ? await User.findOne({ userName })
+      : await User.findOne({ email });
+    mailService.sendResetPassEMail(
+      searchUser.email,
+      searchUser.userName,
+      `https://${process.env.HOST}/resetpass/${searchUser.resetToken}`
+    );
+
+    return res.redirect(process.env.CLIENT_URL);
+  } catch (e) {
+    res.status(400).json({ message: "Reset Error" });
+  }
+}
+
+// eslint-disable-next-line consistent-return
+export async function setNewPass(req, res) {
+  try {
+    const { password, resetToken } = req.body;
+    const searchUser = await User.findOne({ resetToken });
+
+    if (!searchUser) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    searchUser.password = password;
+    searchUser.save();
+    mailService.sendPassChangedEmail(
+      searchUser.email,
+      searchUser.userName,
+      password
+    );
+    res.json({ message: "Password has been changed!" });
+  } catch (e) {
+    res.status(400).json({ message: "Password Reset Error" });
+  }
+}
 
 // eslint-disable-next-line consistent-return
 export async function register(req, res) {
@@ -21,7 +62,7 @@ export async function register(req, res) {
       return res.status(401).json({ message: "Validation error", errors });
     }
 
-    const { userName, password } = req.body;
+    const { userName, email, password } = req.body;
     const searchUser = await User.findOne({ userName });
 
     if (searchUser) {
@@ -30,14 +71,19 @@ export async function register(req, res) {
 
     const hashPass = bcrypt.hashSync(password, 7);
     const userStatus = await UserStatus.findOne({ value: "admin" });
+    const resetToken = uuidv4();
     const user = new User({
       userName,
+      email,
       password: hashPass,
       status: [userStatus.value],
+      resetToken,
     });
+    await mailService.sendRegistrEmail(email, userName, password);
     user.save();
-    res.json("New User has been successfully created!");
+    res.json({ message: "New User has been successfully created!" });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ message: "Registration Error" });
   }
 }
@@ -63,7 +109,7 @@ export async function login(req, res) {
     // eslint-disable-next-line no-underscore-dangle
     const token = generateToken(searchUser._id, searchUser.status);
 
-    return res.json({ token });
+    return res.cookie({ token });
   } catch (err) {
     res.status(400).json({ message: "Login Error" });
   }

@@ -2,15 +2,21 @@ import * as fs from "fs";
 import http from "http";
 import https from "https";
 
+import cookieParser from "cookie-parser";
 import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 
 import { router } from "./auth.mjs";
 
+dotenv.config();
+
 const port = Number(process.env.PORT) || 8888;
 const ports = Number(process.env.PORTS) || 8000;
-const pass = process.env.PASS || "rs_temp_pass";
+const pass = process.env.PASS || "temp_pass";
+const sslSrt = process.env.SSL_CRT || "backEnd/ssl/selfsigned.crt";
+const sslKey = process.env.SSL_KEY || "backEnd/ssl/selfsigned.key";
 
 /*
   {
@@ -25,23 +31,24 @@ const pass = process.env.PASS || "rs_temp_pass";
 const app = express();
 app.use("/auth", router);
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 
 const options = {
-  key: fs.readFileSync("backEnd/selfsigned.key", "utf8"),
-  cert: fs.readFileSync("backEnd/selfsigned.crt", "utf8"),
+  key: fs.readFileSync(sslKey, "utf8"),
+  cert: fs.readFileSync(sslSrt, "utf8"),
 };
 
 await mongoose.connect(
   `mongodb+srv://rsgames:${pass}@cluster0.d9hevcc.mongodb.net/?retryWrites=true&w=majority`
 );
 https.createServer(options, app).listen(port, () => {
-  console.log(`server is runing at port ${port}`);
+  console.log(`https server is runing at port ${port}`);
 });
 
 http.createServer(app).listen(ports, () => {
-  console.log(`server is runing at port ${ports}`);
+  console.log(`http server is runing at port ${ports}`);
 });
 
 app.get("/", (_req, res) => {

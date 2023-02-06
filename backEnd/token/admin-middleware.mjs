@@ -1,9 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import jsonwebtoken from "jsonwebtoken";
 
-import { S_KEY } from "../key.mjs";
-
-// eslint-disable-next-line consistent-return
 export function adminMiddleware(statuses) {
   // eslint-disable-next-line func-names, consistent-return
   return function (req, res, next) {
@@ -20,7 +16,10 @@ export function adminMiddleware(statuses) {
         return res.status(403).json({ message: "User not authorized" });
       }
 
-      const { statuses: uStatuses } = jsonwebtoken.verify(token, S_KEY.secret);
+      const { statuses: uStatuses } = jsonwebtoken.verify(
+        token,
+        process.env.KEY
+      );
       console.log("uStatuses", uStatuses);
       const hasStatus = uStatuses.some((status) => statuses.includes(status));
 
