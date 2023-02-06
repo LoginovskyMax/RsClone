@@ -26,19 +26,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: sudo systemctl stop rsback
     - run: npm i
+    - run: rm vite.config.ts
+    - run: mv /home/worker/_build/RsClone/RsClone/vite.config.ts.prod /home/worker/_build/RsClone/RsClone/vite.config.ts
     - run: npm run build
-  lint:
-    runs-on: self-hosted
-    strategy:
-      matrix:
-        node-version: [18.x]
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm i
-    - run: npm run lint
+    - run: rm -rf /var/www/html/*
+    - run: cp -rf /home/worker/_build/RsClone/RsClone/dist/* /var/www/html/
+    - run: sudo systemctl start rsback
