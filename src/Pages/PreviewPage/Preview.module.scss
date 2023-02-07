@@ -21,3 +21,15 @@
         padding: 5px 20px;
     }
 }
+.modal{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  &_area{
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    resize: none;
+}
+}
