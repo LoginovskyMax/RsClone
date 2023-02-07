@@ -65,7 +65,7 @@ export async function setNewPass(req, res) {
     mailService.sendPassChangedEmail(
       searchUser.email,
       searchUser.userName,
-      hashPass
+      password
     );
     res.json({ message: "Password has been changed!" });
   } catch (e) {
