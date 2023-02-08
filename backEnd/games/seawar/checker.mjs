@@ -90,11 +90,11 @@ function checSpacesCount(gameMatrix) {
 
 export function checkMatrix(gameMatrix) {
   if (!checSpacesCount(gameMatrix)) {
-    return "Wrong ships position";
+    return SEAWAR.MTX_WRONG_CELLS;
   }
 
   if (!checShipCount(gameMatrix)) {
-    return "Wrong ships count";
+    return SEAWAR.MTX_WRONG_SHIPS;
   }
 
   return "Correct!";
