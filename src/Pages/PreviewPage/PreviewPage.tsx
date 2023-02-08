@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
+import useUserStore from "../../store";
 import Button from "../../Components/common/Button";
+import Modal from "../../Components/common/Modal";
 
 import styles from "./Preview.module.scss";
 
@@ -29,6 +30,8 @@ export default function PreviewPage() {
   const [rating, setRating] = useState(0);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  let [comment, setComment] = useState('');
+  const user = useUserStore((state) => state.user);
 
   const getGameData = () => {
     fetch(`http://localhost:8888/gameData/${gameName}`)
@@ -44,7 +47,21 @@ export default function PreviewPage() {
       });
   };
 
-  // const addComment = () => {};
+  const addComment = () => {
+     let sendComment = {user,comment}
+     fetch(`http://localhost:8888/`,{
+      method:'POST',
+      headers: {
+              "Content-Type": "application/json; charset=utf-8",
+            },
+       body: JSON.stringify(sendComment)
+     })
+     .catch((error) => {
+      console.log(error);
+    });
+     setComment('')
+     setShowModal(false)
+  };
 
   useEffect(() => {
     getGameData();
@@ -68,7 +85,12 @@ export default function PreviewPage() {
           </div>
         ))}
       </div>
-      {showModal && <div />}
+      {showModal && <Modal setModalClosed={()=>setShowModal(false)} title="Комментарий">
+        <div  className={styles.modal}>
+          <textarea placeholder="Текст комментария" className={styles.modal_area} onChange={(e)=>setComment(e.target.value)}/>
+          <Button onClick={addComment}>Добавить</Button>
+        </div>
+        </Modal>}
     </div>
   );
 }
