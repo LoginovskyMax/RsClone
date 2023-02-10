@@ -2,6 +2,12 @@
     display: flex;
     justify-content: center;
     gap: 50px;
+    &_create{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
     &_conteiner{
         display: flex;
         flex-direction: column;

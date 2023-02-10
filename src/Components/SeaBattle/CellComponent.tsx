@@ -1,18 +1,20 @@
-import styles from './Cell.module.scss' 
-import mine from '../../assets/seaBattle/mine.png'
-import { Cell } from './Board'
+import mine from "../../assets/seaBattle/mine.png";
 
-interface IProps{
-    cell:Cell
-    addMark:Function
+import type { Cell } from "./Board";
+import styles from "./Cell.module.scss";
+
+interface IProps {
+  cell: Cell;
+  addMark: Function;
 }
 
-export const CellComponent = ({cell, addMark}:IProps) => {
-    const classes = [styles.cell]
-    classes.push(styles[cell.mark.color])
+export const CellComponent = ({ cell, addMark }: IProps) => {
+  const classes = [styles.cell];
+  classes.push(styles[cell.mark.color]);
+
   return (
-    <div className={classes.join(' ')} onClick={()=>addMark(cell.x,cell.y)}>
-      {cell?.mark?.name === 'miss' && <img src={mine} width='20'/>}
+    <div className={classes.join(" ")} onClick={() => addMark(cell.x, cell.y)}>
+      {cell.mark.name === "miss" && <img src={mine} width="20" alt="mine"/>}
     </div>
-  )
-}
+  );
+};
