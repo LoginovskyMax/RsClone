@@ -1,14 +1,24 @@
-/* eslint-disable */
+import bodyParser from "body-parser";
 import { Router } from "express";
 import expressWs from "express-ws";
 
+import {
+  addNewGame,
+  editGameData,
+  getGameData,
+  getGamesList,
+} from "./controllers/game-data-controller.mjs";
 import { SEAWAR } from "./games/variables.mjs";
+// eslint-disable-next-line import/no-cycle
 import { seaWarSocket } from "./games/ws/ws-main.mjs";
+import { adminMiddleware } from "./middleware/admin-middleware.mjs";
 
 export const gameRouter = new Router();
 const wsServer = expressWs(gameRouter);
 const aWssSeaWar = wsServer.getWss();
 const wsSeaWarPort = 8001;
+
+const jsonParser = bodyParser.json();
 
 gameRouter.ws(`/game/${SEAWAR.NAME}`, seaWarSocket);
 
@@ -22,9 +32,28 @@ export function sendForUser(player, gameId, message) {
   }
 
   aWssSeaWar.clients.forEach((client) => {
-    if (client.id.split(":")[0] === player
-      && client.id.split(":")[1] === gameId) {
+    if (
+      client.id.split(":")[0] === player &&
+      client.id.split(":")[1] === gameId
+    ) {
       client.send(message);
     }
   });
 }
+
+export const gameHttpRouter = new Router();
+
+gameHttpRouter.get("/list", getGamesList);
+gameHttpRouter.get("/data", getGameData);
+gameHttpRouter.post(
+  "/data",
+  adminMiddleware(["admin", "moderator"]),
+  jsonParser,
+  addNewGame
+);
+gameHttpRouter.put(
+  "/data",
+  adminMiddleware(["admin", "moderator"]),
+  jsonParser,
+  editGameData
+);

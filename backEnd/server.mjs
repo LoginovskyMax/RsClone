@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-console */
 import * as fs from "fs";
 import http from "http";
 import https from "https";
@@ -6,18 +6,17 @@ import https from "https";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import expressWs from "express-ws";
 import express from "express";
+import expressWs from "express-ws";
 import mongoose from "mongoose";
 
 import { getGameData } from "./controllers/game-data-controller.mjs";
-// import { GameData } from "./data/game.mjs";
+import { gameHttpRouter } from "./games.mjs";
 import { router } from "./router.mjs";
-import { gameRouter } from "./games.mjs";
 
 dotenv.config();
 const app = express();
-const wsServer = expressWs(app);
+expressWs(app);
 const port = Number(process.env.PORT) || 8888;
 const ports = Number(process.env.PORTS) || 8000;
 const pass = process.env.PASS || "temp_pass";
@@ -25,6 +24,7 @@ const sslSrt = process.env.SSL_CRT || "backEnd/ssl/selfsigned.crt";
 const sslKey = process.env.SSL_KEY || "backEnd/ssl/selfsigned.key";
 
 app.use("/auth", router);
+app.use("/games", gameHttpRouter);
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
@@ -106,13 +106,3 @@ app.get("/gameData/:name", getGameData);
 //   rating:5
 // }
 // ]
-
-/*
-  {
-    _id: [Object],
-    userName: "Vasya",
-    password: "123",
-    status: "user",
-    date: "12.10.2000",
-  },
-*/
