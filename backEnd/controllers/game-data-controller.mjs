@@ -52,6 +52,7 @@ export async function editGameData(req, res) {
     }
 
     if (data.name) gameData.name = data.name;
+    if (data.image) gameData.image = data.image;
     if (data.descriptionRu) gameData.descriptionRu = data.descriptionRu;
     if (data.descriptionEn) gameData.descriptionEn = data.descriptionEn;
     if (data.rulesRu) gameData.rulesRu = data.rulesRu;
