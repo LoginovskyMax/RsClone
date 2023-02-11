@@ -216,6 +216,36 @@
 }
 ```
 
+8. Изменение статуса пользователя (доступно администратору)
+  - *adress:* **/auth/user/**
+  - *method:* `PUT`, 
+  - *body:*
+``` JSON
+{ 
+	"userName": "Vasya"
+}
+```
+  - *unsuccessful response:* code: **405**
+``` JSON
+{
+	"message": "You do not have permission"
+}
+```
+  - *unsuccessful response:* code: **400**
+``` JSON
+{
+	"message": "Failed to set new status"
+}
+```
+  - *successful response:* code: **200**
+``` JSON
+{
+   "message": "Status changed",
+   "user": <User>
+}
+```
+Изменяет заменяет массив статусов пользователя на новый.
+
 ## Токен пользователя
 Для авторизированного пользователя, чтобы сообщить серверу, какой пользователь отправляет запросы, нужно отправлять на сервер запросы с заголовком __"Authorization"__ тогда сервер сможет корректно обрабатывать запросы:
   - *Header Name:* `Authorization`
