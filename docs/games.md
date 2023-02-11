@@ -1,5 +1,4 @@
 # Работа со списком игр, Back End
-
   
 Основной адрес для запросов связанных с авторизацией:
 
@@ -10,7 +9,7 @@
 ### Запросы на сервер :
 
 1. Получить список всех игр
--  *address:*  **/games/list/**
+-  *address:*  **/games/all/**
 -  *method:*  `GET`
 -  *successful response:* code: **200**
 ``` JSON
@@ -145,5 +144,42 @@
 ``` JSON
 {
   "message": "Failed to add game"
+}
+```
+
+5. Получить список созданных мултиплеер-игр
+-  *address:*  **/games/list?name={gameName}**
+-  *method:*  `GET`
+Название игры пишется слитно, без пробелов.
+-  *successful response:* code: **200**
+``` JSON
+[
+  {
+    "name": "SeaWar",
+    "gameId": "<gameId>",
+    "player": "Vasya",
+    "maxPlayers": 2,
+    "playersInGame": 1
+  },
+  //...
+]
+```
+* name - название игры
+* gameId - идентификатор игры, используется для подключения к игре
+* player - имя "главного" игрока (создателя)
+* maxPlayers - максимальное количество игроков в игре
+* playersInGame - текущее кол-во игроков в игре
+В массиве отображаются только не начатые и не законченные игры, после нажатия кнопки "старт" - игра не будет отображаться в списке игр.
+
+-  *unsuccessful response:* code: **404**
+``` JSON
+{
+  "message": "Games not found!"
+}
+```
+-  *unsuccessful response:* code: **400**
+``` JSON
+{
+  "message": "Failed to get games list"
 }
 ```
