@@ -199,6 +199,40 @@ export async function deleteUser(req, res) {
   }
 }
 
+export function banUser(banned) {
+  return async function(req, res) {
+    try {
+      const { userName } = req.query;
+      const user = await User.findOne({ userName });
+  
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+      } else {
+        user.banned = banned;
+        await user.save();
+        res.json({ message: `User ${userName} has been ${banned ? "banned" : "unbanned"}` });
+      }
+    } catch (err) {
+      res.status(400).json({ message: "Failed to ban user" });
+    }
+  }
+}
+
+export async function getUserByName(req, res) {
+  try {
+    const { userName } = req.query;
+    const user = await User.findOne({ userName });
+
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    } else {
+      res.json(user);
+    }
+  } catch (err) {
+    res.status(400).json({ message: "Failed to get user" });
+  }
+}
+
 export async function saveStatusesToDB() {
   const userStatus = new UserStatus();
   const adminStatus = new UserStatus({ value: "admin" });
