@@ -10,7 +10,8 @@ interface IProps {
   shipsReady: boolean;
   isEnemy: boolean;
   canShoot: boolean;
-  shoot?: Function;
+  shoot?: (x:number,y:number)=>void
+  setShip?:(x:number,y:number)=>void
 }
 
 export const FieldComp = ({
@@ -20,6 +21,7 @@ export const FieldComp = ({
   isEnemy,
   canShoot,
   shoot,
+  setShip
 }: IProps) => {
   const classes = [styles.board];
 
@@ -28,13 +30,14 @@ export const FieldComp = ({
     setBoard(newBoard);
   };
 
-  const ClickHandler = () => {
+  // const ClickHandler = () => {
     
-  }
+  // }
 
   const addMark = (x: number, y: number) => {
     if (!shipsReady && !isEnemy) {
       board.createShip(x, y);
+      setShip && setShip(x,y)
     } else if (canShoot && isEnemy) {
       shoot && shoot(x, y);
     }

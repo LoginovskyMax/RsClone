@@ -2,7 +2,6 @@ import type { Cell } from "./Board";
 
 export class Mark {
   cell: Cell;
-
   constructor(cell: Cell) {
     this.cell = cell;
     this.cell.mark.logo = 0;
@@ -11,7 +10,6 @@ export class Mark {
     this.cell.mark.name = "";
   }
 }
-
 export class Ship extends Mark {
   constructor(cell: Cell) {
     super(cell);
@@ -20,7 +18,6 @@ export class Ship extends Mark {
     this.cell.mark.name = "ship"; 
   }
 }
-
 export class Miss extends Mark {
   constructor(cell: Cell) {
     super(cell);
