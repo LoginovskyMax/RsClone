@@ -188,7 +188,7 @@
   - *successful response:* code: **204**
 
 7. Получение данных о пользователе:
-  - *adress:* **/auth/user/**
+  - *adress:* **/auth/myuser/**
   - *method:* `GET`, 
   - *header:* `Authorization` with token
   - *unsuccessful response:* code: **403**
@@ -245,6 +245,57 @@
 }
 ```
 Изменяет заменяет массив статусов пользователя на новый.
+
+9. Получение данных о другом пользователе (доступно администратору и модератору):
+  - *adress:* **/auth/user?userName={userName}**
+  - *method:* `GET`, 
+  - *header:* `Authorization` with token
+  - *unsuccessful response:* code: **403**
+``` JSON
+{
+	"message": "User not authorized"
+}
+```
+  - *unsuccessful response:* code: **400**
+``` JSON
+{
+	"message": "Failed to get user"
+}
+```
+  - *successful response:* code: **200**
+``` JSON
+{
+  "userName": "Vasya",
+  "email": "vasya.371@mail.ru",
+  "status": [
+    "admin"
+  ],
+  "banned": false,
+  "date": "2023-02-06T09:07:46.283Z"
+}
+```
+
+10. Забанить пользователя (доступно администратору и модератору):
+  - *adress:* **/auth/user/ban?userName={userName}**
+  - *method:* `GET`, 
+  - *header:* `Authorization` with token
+  - *successful response:* code: **200**
+``` JSON
+{
+    "message": "User Vasya has been banned"
+}
+```
+
+11. Разбанить пользователя (доступно администратору и модератору):
+  - *adress:* **/auth/user/unban?userName={userName}**
+  - *method:* `GET`, 
+  - *header:* `Authorization` with token
+  - *successful response:* code: **200**
+``` JSON
+{
+    "message": "User Vasya has been unbanned"
+}
+```
 
 ## Токен пользователя
 Для авторизированного пользователя, чтобы сообщить серверу, какой пользователь отправляет запросы, нужно отправлять на сервер запросы с заголовком __"Authorization"__ тогда сервер сможет корректно обрабатывать запросы:
