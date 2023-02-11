@@ -6,6 +6,7 @@ import {
   addNewGame,
   editGameData,
   getGameData,
+  getGameList,
   getGamesList,
 } from "./controllers/game-data-controller.mjs";
 import { SEAWAR } from "./games/variables.mjs";
@@ -43,7 +44,7 @@ export function sendForUser(player, gameId, message) {
 
 export const gameHttpRouter = new Router();
 
-gameHttpRouter.get("/list", getGamesList);
+gameHttpRouter.get("/all", getGamesList);
 gameHttpRouter.get("/data", getGameData);
 gameHttpRouter.post(
   "/data",
@@ -57,3 +58,4 @@ gameHttpRouter.put(
   jsonParser,
   editGameData
 );
+gameHttpRouter.get("/list", getGameList);

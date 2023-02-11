@@ -38,7 +38,13 @@ export function leaveSeaWarGame(data, ws) {
     };
   }
 
-  return sendDataForPlayers(gameId);
+  if (game.players.length === 0) {
+    delete games[gameId];
+  } else {
+    return sendDataForPlayers(gameId);
+  }
+
+  return null;
 }
 
 export function createSeaWarGame(_data, ws) {
@@ -51,7 +57,9 @@ export function createSeaWarGame(_data, ws) {
   const gameId = uuidv4();
   ws.id = `${player}:${gameId}`;
   games[gameId] = new Game(SEAWAR.NAME);
-  games[gameId].players.push(new SeaWarPlayer(player));
+  const newPlayer = new SeaWarPlayer(player);
+  newPlayer.isOnline = true;
+  games[gameId].players.push(newPlayer);
 
   sendDataForPlayers(gameId);
 }
@@ -77,7 +85,11 @@ export function joinSeaWarGame(data, ws) {
   }
 
   if (!isJoined) {
-    game.players.push(new SeaWarPlayer(userName));
+    const newPlayer = new SeaWarPlayer(userName);
+    newPlayer.isOnline = true;
+    game.players.push(newPlayer);
+  } else {
+    game.players.find((plr) => plr.userName === userName).isOnline = true;
   }
 
   return sendDataForPlayers(gameId);

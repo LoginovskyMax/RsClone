@@ -1,13 +1,14 @@
 import { GameData } from "../data/game.mjs";
+import { games } from "../games/data/games.mjs";
 
 export async function getGamesList(_req, res) {
   try {
-    const games = await GameData.find();
+    const gamesList = await GameData.find();
 
-    if (!games) {
+    if (!gamesList) {
       res.status(404).json({ message: "Games not found!" });
     } else {
-      res.json(games);
+      res.json(gamesList);
     }
   } catch (err) {
     res.status(400).json({ message: "Failed to get games list" });
@@ -63,5 +64,33 @@ export async function editGameData(req, res) {
     res.json(gameData);
   } catch (err) {
     res.status(400).json({ message: "Failed to edit game" });
+  }
+}
+
+export async function getGameList(req, res) {
+  try {
+    const { name } = req.query;
+    const gameKeys = Object.keys(games);
+    const gamesList = [];
+    gameKeys.forEach((key) => {
+      if (
+        games[key].gameName === name &&
+        !games[key].isStarted &&
+        !games[key].winner
+      ) {
+        gamesList.push({
+          name,
+          gameId: key,
+          player: games[key].players[0].userName,
+          maxPlayers: games[key].playersCount,
+          playersInGame: games[key].players.length,
+        });
+      }
+    });
+    res.json(gamesList);
+  } catch (err) {
+    res
+      .status(400)
+      .json({ message: `Failed to get list of games for ${req.query.name}` });
   }
 }
