@@ -157,7 +157,28 @@ export async function getUser(req, res) {
     res.json({ userName, email, status, banned, date });
   } catch (err) {
     console.error(err);
-    res.status(400).json({ message: "Failed to get users" });
+    res.status(400).json({ message: "Failed to get user" });
+  }
+}
+
+export async function setUserStatus(req, res) {
+  try {
+    const { userName, status } = req.body;
+    console.log(userName, status);
+    const user = await User.findOne({ userName });
+    user.status = [];
+    await user.save()
+
+    for (let i = 0; i < status.length; i++ ) {
+      const stat = await UserStatus.findOne({ value: status[i] });
+      user.status.push(stat.value);
+    }
+    await user.save();
+
+    res.json({  message: "Status changed", user });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: "Failed to set new status" });
   }
 }
 

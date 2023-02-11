@@ -9,6 +9,7 @@ import {
   register,
   resetpass,
   setNewPass,
+  setUserStatus,
 } from "./controllers/user-controller.mjs";
 import { adminMiddleware } from "./middleware/admin-middleware.mjs";
 import { authorizedUser } from "./middleware/authorized-user.mjs";
@@ -23,6 +24,12 @@ router.post("/registr", jsonParser, register); // { userName, email, password }
 router.post("/login", jsonParser, login); // { userName, password }
 router.get("/users", adminMiddleware(["admin", "moderator"]), getUsers);
 router.get("/user", authorizedUser, getUser);
+router.post(
+  "/user",
+  jsonParser,
+  adminMiddleware(["admin", "moderator"]),
+  setUserStatus
+);
 router.delete(
   "/user",
   jsonParser,
