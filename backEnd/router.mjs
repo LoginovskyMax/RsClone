@@ -4,13 +4,14 @@ import { Router } from "express";
 import {
   deleteUser,
   getUsers,
+  getUser,
   login,
   register,
   resetpass,
   setNewPass,
 } from "./controllers/user-controller.mjs";
 import { adminMiddleware } from "./middleware/admin-middleware.mjs";
-// import { middleware } from "./middleware/middleware.mjs";
+import { authorizedUser } from "./middleware/authorized-user.mjs";
 
 const jsonParser = bodyParser.json();
 
@@ -21,6 +22,7 @@ router.post("/setpass", jsonParser, setNewPass); // {password, resetToken}
 router.post("/registr", jsonParser, register); // { userName, email, password }
 router.post("/login", jsonParser, login); // { userName, password }
 router.get("/users", adminMiddleware(["admin", "moderator"]), getUsers);
+router.get("/user", authorizedUser, getUser);
 router.delete(
   "/user",
   jsonParser,

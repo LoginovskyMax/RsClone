@@ -150,6 +150,18 @@ export async function getUsers(_req, res) {
   }
 }
 
+export async function getUser(req, res) {
+  try {
+    const user = await User.findById(req.user.id);
+    const { userName, email, status, banned, date } = user;
+    res.json({ userName, email, status, banned, date });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: "Failed to get users" });
+  }
+}
+
+
 export async function deleteUser(req, res) {
   try {
     const { userName } = req.body;
