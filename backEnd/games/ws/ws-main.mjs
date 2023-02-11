@@ -1,4 +1,5 @@
 import { checkUser } from "../../controllers/user-controller.mjs";
+import { games } from "../data/games.mjs";
 // eslint-disable-next-line import/no-cycle
 import {
   createSeaWarGame,
@@ -12,7 +13,7 @@ import {
   startSeaWarGame,
 } from "../seawar/seawar.mjs";
 import { makeAnswer } from "../seawar/seawar.utils.mjs";
-import { GAME } from "../variables.mjs";
+import { GAME, TIMEOUT } from "../variables.mjs";
 
 const messageHandler = {
   create: createSeaWarGame,
@@ -55,5 +56,30 @@ export async function seaWarSocket(ws, _req) {
       // eslint-disable-next-line no-console
       console.error(err.message);
     }
+  });
+  ws.on("close", () => {
+    const [userName, gameId] = ws.id.split(":");
+    const game = games[gameId];
+
+    if (!game) return;
+    const player = game.players.find((plr) => plr.userName === userName);
+    player.isOnline = false;
+
+    if (gameId === "") return;
+    // eslint-disable-next-line consistent-return
+    setTimeout(() => {
+      const resPlayer = game.players.find((plr) => plr.userName === userName);
+
+      if (resPlayer.isOnline) {
+        return null;
+      }
+
+      if (!game) {
+        return null;
+      }
+
+      leaveSeaWarGame({ gameId }, ws);
+      game.players = game.players.filter((plr) => plr.userName !== userName);
+    }, TIMEOUT);
   });
 }

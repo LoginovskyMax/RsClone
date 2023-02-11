@@ -14,6 +14,8 @@ export const GAME = {
   WS_CONNECTED: "You are connected",
 };
 
+export const TIMEOUT = 30000;
+
 // SeaWar
 export const SEAWAR = {
   NAME: "SeaWar",

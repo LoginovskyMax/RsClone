@@ -7,7 +7,7 @@
 ### Запросы на сервер :
 
 1. Регистрация (registration)
-  - *adress:* **/auth/regist/**
+  - *address:* **/auth/regist/**
   - *method:* `POST`, 
   - *body:*
 
@@ -32,7 +32,7 @@
 ```
 
 2. **Авторизация** (login)
-  - *adress:* **/auth/login/**
+  - *address:* **/auth/login/**
   - *method:* `POST`, 
   - *body:*
 
@@ -63,7 +63,7 @@
 Полученный токен используется для авторизации пользователя. (см. Токен пользователя)
 
 3. **Получение списка пользователей** (users list)
-  - *adress:* **/auth/users/**
+  - *address:* **/auth/users/**
   - *method:* `GET`, 
   - *header:* `Authorization` with token
   - *unsuccessful response:* code: **405**
@@ -95,7 +95,7 @@
 Выводится список всех пользователей, команда доступна только пользователям со статусом admin
 
 4. Запрос восстановления доступа (забыл пароль)
-  - *adress:* **/auth/forgotpass/**
+  - *address:* **/auth/forgotpass/**
   - *method:* `POST`, 
   - *body:*
 ``` JSON
@@ -135,7 +135,7 @@
 Используйте страницу `https://rsgames.online/resetpas` и query-параметр `resetToken`  для сброса пароля. Используя для этого следующий запрос:
 
 5. Восстановления доступа - новый пароль
-  - *adress:* **/auth/setpass/**
+  - *address:* **/auth/setpass/**
   - *method:* `POST`, 
   - *body:*
 ``` JSON
@@ -165,7 +165,7 @@
 ```
 
 6. Удаление пользователя (доступно администратору)
-  - *adress:* **/auth/user/**
+  - *address:* **/auth/user/**
   - *method:* `DELETE`, 
   - *body:*
 ``` JSON
@@ -188,7 +188,7 @@
   - *successful response:* code: **204**
 
 7. Получение данных о пользователе:
-  - *adress:* **/auth/myuser/**
+  - *address:* **/auth/myuser/**
   - *method:* `GET`, 
   - *header:* `Authorization` with token
   - *unsuccessful response:* code: **403**
@@ -217,7 +217,7 @@
 ```
 
 8. Изменение статуса пользователя (доступно администратору)
-  - *adress:* **/auth/user/**
+  - *address:* **/auth/user/**
   - *method:* `PUT`, 
   - *body:*
 ``` JSON
@@ -247,7 +247,7 @@
 Изменяет заменяет массив статусов пользователя на новый.
 
 9. Получение данных о другом пользователе (доступно администратору и модератору):
-  - *adress:* **/auth/user?userName={userName}**
+  - *address:* **/auth/user?userName={userName}**
   - *method:* `GET`, 
   - *header:* `Authorization` with token
   - *unsuccessful response:* code: **403**
@@ -276,7 +276,7 @@
 ```
 
 10. Забанить пользователя (доступно администратору и модератору):
-  - *adress:* **/auth/user/ban?userName={userName}**
+  - *address:* **/auth/user/ban?userName={userName}**
   - *method:* `GET`, 
   - *header:* `Authorization` with token
   - *successful response:* code: **200**
@@ -287,7 +287,7 @@
 ```
 
 11. Разбанить пользователя (доступно администратору и модератору):
-  - *adress:* **/auth/user/unban?userName={userName}**
+  - *address:* **/auth/user/unban?userName={userName}**
   - *method:* `GET`, 
   - *header:* `Authorization` with token
   - *successful response:* code: **200**

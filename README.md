@@ -40,4 +40,5 @@ NODE_TLS_REJECT_UNAUTHORIZED=0
 
 ### Разделы по работе с Back-End:
 - [Авторизация](docs/auth.md)
+- [Список Игр](docs/games.md)
 - [Морской Бой](docs/seawar.md)

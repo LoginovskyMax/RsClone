@@ -4,5 +4,6 @@ export class Player {
     this.isReady = false;
     this.moves = 0;
     this.isLead = false;
+    this.isOnline = true;
   }
 }
