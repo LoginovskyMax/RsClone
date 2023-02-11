@@ -24,7 +24,7 @@ router.post("/registr", jsonParser, register); // { userName, email, password }
 router.post("/login", jsonParser, login); // { userName, password }
 router.get("/users", adminMiddleware(["admin", "moderator"]), getUsers);
 router.get("/user", authorizedUser, getUser);
-router.post(
+router.put(
   "/user",
   jsonParser,
   adminMiddleware(["admin", "moderator"]),
