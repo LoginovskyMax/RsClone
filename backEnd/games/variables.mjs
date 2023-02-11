@@ -1,16 +1,17 @@
 export const GAME = {
-  ERR_MAIN_USER: "This user is the starter of the game",
   ERR_USER_NOT_FOUND: "This user is not connected to the game",
   ERR_NOT_ENOUGH: "Not enough players for start",
   ERR_WRONG_MAIN_PLAYER: "You don't have permission to start the game",
   ERR_NOT_ALL_READY: "Not all players are ready to start the game",
   ERR_WRONG_GAME_ID: "Game not found!",
+  ERR_WRONG_TOKEN: "Wrong or expired token",
+  ERR_GAME_IS_FULL: "Maximum number of players in the game",
+  ERR_GAME_IS_STARTED:
+    "The game is already started, you can not change the position of the ships",
+  ERR_SERVER: "Server error!",
 
-  USER_CONNECT: "User has joined the game",
-  USER_DISCONNECT: "The user has disconnected from the game",
-  USER_IS_READY: "User is ready to play",
-  USER_IS_NOT_READY: "User is not ready to play",
-  GAME_STARTED: "Game start!",
+  GAME_ENDED: "Game is ended!",
+  WS_CONNECTED: "You are connected",
 };
 
 // SeaWar

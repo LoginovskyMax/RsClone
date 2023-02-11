@@ -1,3 +1,4 @@
+/* eslint-disable */
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import jsonwebtoken from "jsonwebtoken";
@@ -103,7 +104,7 @@ export async function register(req, res) {
     user.save();
     res.json({ message: "New User has been successfully created!" });
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
     res.status(400).json({ message: "Registration Error" });
   }
 }
@@ -111,18 +112,14 @@ export async function register(req, res) {
 // eslint-disable-next-line consistent-return
 export async function login(req, res) {
   try {
-    console.log(req.body);
     const { userName, password } = req.body;
-    console.log(userName, password);
     const searchUser = await User.findOne({ userName });
-    console.log(searchUser);
 
     if (!searchUser) {
       return res.status(404).json({ message: `User ${userName} not found` });
     }
 
     const validPass = bcrypt.compareSync(password, searchUser.password);
-    console.log(validPass);
 
     if (!validPass) {
       return res
@@ -132,7 +129,6 @@ export async function login(req, res) {
 
     // eslint-disable-next-line no-underscore-dangle
     const token = generateToken(searchUser._id, searchUser.status);
-    console.log(token);
 
     res.cookie("token", token, {
       maxAge: 60 * 24 * 60 * 60 * 1000,
@@ -178,4 +174,10 @@ export async function saveStatusesToDB() {
   await userStatus.save();
   await adminStatus.save();
   await moderatorStatus.save();
+}
+
+export async function checkUser(userName, token) {
+  const { id: _id } = jsonwebtoken.decode(token)
+  const searchUser = await User.findById({ _id });
+  return searchUser && searchUser.userName === userName;
 }
