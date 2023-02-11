@@ -1,4 +1,3 @@
-/* eslint-disable */
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import jsonwebtoken from "jsonwebtoken";
@@ -104,7 +103,6 @@ export async function register(req, res) {
     user.save();
     res.json({ message: "New User has been successfully created!" });
   } catch (err) {
-    console.log(err.message);
     res.status(400).json({ message: "Registration Error" });
   }
 }
@@ -150,6 +148,37 @@ export async function getUsers(_req, res) {
   }
 }
 
+export async function getUser(req, res) {
+  try {
+    const user = await User.findById(req.user.id);
+    const { userName, email, status, banned, date } = user;
+    res.json({ userName, email, status, banned, date });
+  } catch (err) {
+    res.status(400).json({ message: "Failed to get user" });
+  }
+}
+
+export async function setUserStatus(req, res) {
+  try {
+    const { userName, status } = req.body;
+    const user = await User.findOne({ userName });
+    user.status = [];
+    await user.save();
+
+    for (let i = 0; i < status.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      const stat = await UserStatus.findOne({ value: status[i] });
+      user.status.push(stat.value);
+    }
+
+    await user.save();
+
+    res.json({ message: "Status changed", user });
+  } catch (err) {
+    res.status(400).json({ message: "Failed to set new status" });
+  }
+}
+
 export async function deleteUser(req, res) {
   try {
     const { userName } = req.body;
@@ -166,6 +195,44 @@ export async function deleteUser(req, res) {
   }
 }
 
+export function banUser(banned) {
+  return async function ban(req, res) {
+    try {
+      const { userName } = req.query;
+      const user = await User.findOne({ userName });
+
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+      } else {
+        user.banned = banned;
+        await user.save();
+        res.json({
+          message: `User ${userName} has been ${
+            banned ? "banned" : "unbanned"
+          }`,
+        });
+      }
+    } catch (err) {
+      res.status(400).json({ message: "Failed to ban user" });
+    }
+  };
+}
+
+export async function getUserByName(req, res) {
+  try {
+    const { userName } = req.query;
+    const user = await User.findOne({ userName });
+
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    } else {
+      res.json(user);
+    }
+  } catch (err) {
+    res.status(400).json({ message: "Failed to get user" });
+  }
+}
+
 export async function saveStatusesToDB() {
   const userStatus = new UserStatus();
   const adminStatus = new UserStatus({ value: "admin" });
@@ -177,7 +244,8 @@ export async function saveStatusesToDB() {
 }
 
 export async function checkUser(userName, token) {
-  const { id: _id } = jsonwebtoken.decode(token)
+  const { id: _id } = jsonwebtoken.decode(token);
   const searchUser = await User.findById({ _id });
+
   return searchUser && searchUser.userName === userName;
 }

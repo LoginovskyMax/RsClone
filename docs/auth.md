@@ -82,14 +82,14 @@
 ``` JSON
 [
   {
- 	"_id": "63dfd49b2571ef2e8ea3113d",
- 	"userName": "Vasya",
- 	"password": "$2A$07$isD5IKBkZasc8fUjEa9SGO4.btlmL3cq0FkT0m4scZpUMX3sHEOFu",
- 	"status": [ "user" ],
- 	"date": "2023-02-05T16:08:59.414Z",
- 	"__v": 0
-   },
-...
+ 	  "_id": "63dfd49b2571ef2e8ea3113d",
+ 	  "userName": "Vasya",
+ 	  "password": "$2A$07$isD5IKBkZasc8fUjEa9SGO4.btlmL3cq0FkT0m4scZpUMX3sHEOFu",
+ 	  "status": [ "user" ],
+ 	  "date": "2023-02-05T16:08:59.414Z",
+ 	  "__v": 0
+  },
+  // ...
 ]
 ```
 Выводится список всех пользователей, команда доступна только пользователям со статусом admin
@@ -186,6 +186,116 @@
 }
 ```
   - *successful response:* code: **204**
+
+7. Получение данных о пользователе:
+  - *adress:* **/auth/myuser/**
+  - *method:* `GET`, 
+  - *header:* `Authorization` with token
+  - *unsuccessful response:* code: **403**
+``` JSON
+{
+	"message": "User not authorized"
+}
+```
+  - *unsuccessful response:* code: **400**
+``` JSON
+{
+	"message": "Failed to get users"
+}
+```
+  - *successful response:* code: **200**
+``` JSON
+{
+  "userName": "Vasya",
+  "email": "vasya.371@mail.ru",
+  "status": [
+    "admin"
+  ],
+  "banned": false,
+  "date": "2023-02-06T09:07:46.283Z"
+}
+```
+
+8. Изменение статуса пользователя (доступно администратору)
+  - *adress:* **/auth/user/**
+  - *method:* `PUT`, 
+  - *body:*
+``` JSON
+{ 
+	"userName": "Vasya"
+}
+```
+  - *unsuccessful response:* code: **405**
+``` JSON
+{
+	"message": "You do not have permission"
+}
+```
+  - *unsuccessful response:* code: **400**
+``` JSON
+{
+	"message": "Failed to set new status"
+}
+```
+  - *successful response:* code: **200**
+``` JSON
+{
+   "message": "Status changed",
+   "user": <User>
+}
+```
+Изменяет заменяет массив статусов пользователя на новый.
+
+9. Получение данных о другом пользователе (доступно администратору и модератору):
+  - *adress:* **/auth/user?userName={userName}**
+  - *method:* `GET`, 
+  - *header:* `Authorization` with token
+  - *unsuccessful response:* code: **403**
+``` JSON
+{
+	"message": "User not authorized"
+}
+```
+  - *unsuccessful response:* code: **400**
+``` JSON
+{
+	"message": "Failed to get user"
+}
+```
+  - *successful response:* code: **200**
+``` JSON
+{
+  "userName": "Vasya",
+  "email": "vasya.371@mail.ru",
+  "status": [
+    "admin"
+  ],
+  "banned": false,
+  "date": "2023-02-06T09:07:46.283Z"
+}
+```
+
+10. Забанить пользователя (доступно администратору и модератору):
+  - *adress:* **/auth/user/ban?userName={userName}**
+  - *method:* `GET`, 
+  - *header:* `Authorization` with token
+  - *successful response:* code: **200**
+``` JSON
+{
+    "message": "User Vasya has been banned"
+}
+```
+
+11. Разбанить пользователя (доступно администратору и модератору):
+  - *adress:* **/auth/user/unban?userName={userName}**
+  - *method:* `GET`, 
+  - *header:* `Authorization` with token
+  - *successful response:* code: **200**
+``` JSON
+{
+    "message": "User Vasya has been unbanned"
+}
+```
 
 ## Токен пользователя
 Для авторизированного пользователя, чтобы сообщить серверу, какой пользователь отправляет запросы, нужно отправлять на сервер запросы с заголовком __"Authorization"__ тогда сервер сможет корректно обрабатывать запросы:

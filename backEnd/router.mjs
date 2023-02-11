@@ -4,13 +4,17 @@ import { Router } from "express";
 import {
   deleteUser,
   getUsers,
+  getUser,
+  getUserByName,
   login,
   register,
   resetpass,
   setNewPass,
+  setUserStatus,
+  banUser,
 } from "./controllers/user-controller.mjs";
 import { adminMiddleware } from "./middleware/admin-middleware.mjs";
-// import { middleware } from "./middleware/middleware.mjs";
+import { authorizedUser } from "./middleware/authorized-user.mjs";
 
 const jsonParser = bodyParser.json();
 
@@ -21,9 +25,13 @@ router.post("/setpass", jsonParser, setNewPass); // {password, resetToken}
 router.post("/registr", jsonParser, register); // { userName, email, password }
 router.post("/login", jsonParser, login); // { userName, password }
 router.get("/users", adminMiddleware(["admin", "moderator"]), getUsers);
-router.delete(
-  "/user",
-  jsonParser,
+router.get("/myuser", authorizedUser, getUser);
+router.get("/user", adminMiddleware(["admin", "moderator"]), getUserByName);
+router.put("/user", jsonParser, adminMiddleware(["admin"]), setUserStatus);
+router.delete("/user", jsonParser, adminMiddleware(["admin"]), deleteUser); // { userName }
+router.get("/user/ban", adminMiddleware(["admin", "moderator"]), banUser(true));
+router.get(
+  "/user/unban",
   adminMiddleware(["admin", "moderator"]),
-  deleteUser
-); // { userName }
+  banUser(false)
+);
