@@ -187,6 +187,35 @@
 ```
   - *successful response:* code: **204**
 
+7. Получение данных о пользователе:
+  - *adress:* **/auth/user/**
+  - *method:* `GET`, 
+  - *header:* `Authorization` with token
+  - *unsuccessful response:* code: **403**
+``` JSON
+{
+	"message": "User not authorized"
+}
+```
+  - *unsuccessful response:* code: **400**
+``` JSON
+{
+	"message": "Failed to get users"
+}
+```
+  - *successful response:* code: **200**
+``` JSON
+{
+  "userName": "Vasya",
+  "email": "vasya.371@mail.ru",
+  "status": [
+    "admin"
+  ],
+  "banned": false,
+  "date": "2023-02-06T09:07:46.283Z"
+}
+```
+
 ## Токен пользователя
 Для авторизированного пользователя, чтобы сообщить серверу, какой пользователь отправляет запросы, нужно отправлять на сервер запросы с заголовком __"Authorization"__ тогда сервер сможет корректно обрабатывать запросы:
   - *Header Name:* `Authorization`
