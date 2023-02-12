@@ -12,7 +12,7 @@ export interface ISeaWarPlayer {
 }
 
 export interface IGameData {
-    gameId:number
+    gameId:string
     isStarted:boolean
     isMainUser:boolean
     player:ISeaWarPlayer

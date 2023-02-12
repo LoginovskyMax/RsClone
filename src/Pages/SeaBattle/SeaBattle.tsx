@@ -4,7 +4,7 @@ import Button from "../../Components/common/Button";
 import { Board } from "../../Components/SeaBattle/Board";
 import { FieldComp } from "../../Components/SeaBattle/FieldComp";
 import { InfoComp } from "../../Components/SeaBattle/InfoComp";
-import { IGameData, IRequest } from "../../Components/SeaBattle/Interfaces";
+import { IGameData } from "../../Components/SeaBattle/Interfaces";
 import useUserStore from "../../store";
 
 const webSocket = new WebSocket('ws://rsgames.online:8001/game/SeaWar')
@@ -37,6 +37,7 @@ export const SeaBattle = () => {
   const [canShoot, setCanShoot] = useState(false);
   const [actualMy, setActulMy] = useState<number[][]>(initialState)
   const [actualEnemy, setActulEnemy] = useState<number[][]>(initialState)
+  const [start, setStar] = useState('')
 
   const restart = () => {
     const newBoard = new Board();
@@ -63,6 +64,7 @@ export const SeaBattle = () => {
         gameId,x,y,
       }
     }
+   console.log(request);
     webSocket.send(JSON.stringify(request))
   };
 
@@ -109,15 +111,17 @@ export const SeaBattle = () => {
 
   webSocket.onmessage = (resp:MessageEvent<string>) => {
     const type:string = JSON.parse(resp.data).type
-    const payload:IGameData = JSON.parse(resp.data).data
-    const {player , enemyName, gameId, enemyField, yourField} = payload
-    console.log(type,payload)
+    const payload = JSON.parse(resp.data)
+    
+    console.log(payload)
     switch (type) {
       case "message": 
         // return navigate('/') 
-        console.log(payload)
+       
       break
       case "game-data":
+        console.log(payload)
+        const {player , enemyName, gameId, enemyField, yourField} = payload.data
         findCells(enemyField,enemyBoard,setEnemyBoard,actualEnemy,setActulEnemy,true) 
         findCells(yourField,myBoard,setMyBoard,actualMy,setActulMy,false) 
         setEnemyName(enemyName)
@@ -140,7 +144,8 @@ export const SeaBattle = () => {
       data:{gameId}
     }
     webSocket.send(JSON.stringify(request))
-    setShipsReady(true)
+    setStar('start')
+    setCanShoot(true)
   }
 
   useEffect(() => {
@@ -179,7 +184,7 @@ export const SeaBattle = () => {
           />
         </div>
       </div>
-      <InfoComp ready={ready} canShoot={canShoot} shipsReady={shipsReady}/>
+      <InfoComp ready={ready} canShoot={canShoot} shipsReady={shipsReady} start={start}/>
       <Button onClick={startGame}>Старт</Button>
     </div>
   );

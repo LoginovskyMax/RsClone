@@ -45,7 +45,7 @@ export const FieldComp = ({
     updateBoard();
   };
 
-  if (!canShoot && isEnemy) {
+  if (canShoot && isEnemy) {
     classes.push(styles.can_shoot);
   }
 

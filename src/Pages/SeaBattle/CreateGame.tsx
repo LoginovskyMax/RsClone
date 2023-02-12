@@ -10,7 +10,7 @@ const webSocket = new WebSocket('ws://rsgames.online:8001/game/SeaWar')
 export const CreateGame = () => {
     const navigate = useNavigate()
     const [inviteGame, setInviteGame] = useState(false)
-    const [gameID, setGameID] = useState(0)
+    const [gameID, setGameID] = useState('')
     const [token, setToken] = useState('')
     const [testUser, setUser] = useState('')
     const user = useUserStore((state) => state.user);
@@ -18,15 +18,16 @@ export const CreateGame = () => {
 
     webSocket.onmessage = (resp:MessageEvent<string>) => {
         const type:string = JSON.parse(resp.data).type
-        const payload:IGameData = JSON.parse(resp.data).data
-        const {gameId} = payload
-        console.log(type,payload)
+        const data:{type:string,data:IGameData} = JSON.parse(resp.data)
+     
         switch (type) {
             case "message": 
               // return navigate('/') 
-              console.log(payload)
+              console.log(data)
             break
             case "game-data":
+                const { gameId }  = data.data
+                console.log(gameId);
                 setGameID(gameId)
             break 
           }
@@ -34,16 +35,18 @@ export const CreateGame = () => {
     }
 
     const startGame = () => {
-        if(gameID!==0){
+        if(gameID!==''){
             navigate(`/SeaBattle/${gameID}`)
         }
     }
+
+    
     const createGame = (create:boolean) => {
-        let request:{type:string, data:{gameId:number}|null}
+        let request:{type:string, data:{gameId:string}|{}}
         if(create){
             request = {
                 type:"create",
-                data:null
+                data:{}
               }
         }else{
             request = {
@@ -51,6 +54,7 @@ export const CreateGame = () => {
                 data:{gameId:gameID}
               }
         }
+        console.log(request);
         webSocket.send(JSON.stringify(request))
     }
 
@@ -60,7 +64,7 @@ export const CreateGame = () => {
                 type:"ws-connect",
                 data:{
                  player:testUser,
-                 token}
+                 token:token}
               }
               webSocket.send(JSON.stringify(request))
         }
@@ -86,11 +90,14 @@ export const CreateGame = () => {
                    onChange={()=>setInviteGame(true)}
                    />
         </div>
-        {inviteGame ? <input placeholder="ID игры"
-                                 type='number'
-                                 onChange={(e)=>setGameID(parseFloat(e.target.value))}></input> 
+        {inviteGame ? <div>
+            <input placeholder="ID игры"
+                                 type='text'
+                                 onChange={(e)=>setGameID(e.target.value)}></input> 
+            <Button  onClick={()=>createGame(false)}>Войти</Button>
+        </div>
                         : <Button onClick={()=>createGame(true)}>Создать игру</Button>}
-        {gameID!==0 && <p>ID для вашей игры: {gameID}</p>}
+        {gameID!=='' && <p>ID для вашей игры: {gameID}</p>}
         <input type="text" placeholder="token" onChange={(e)=>setToken(e.target.value)}/>
         <input type="text" placeholder="test user" onChange={(e)=>setUser(e.target.value)}/>
         <Button onClick={startGame}>Начать</Button>
