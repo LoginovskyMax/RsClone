@@ -10,9 +10,11 @@ import express from "express";
 import expressWs from "express-ws";
 import mongoose from "mongoose";
 
+import { capchaGenerator } from "./controllers/capcha.mjs";
 import { getGameData } from "./controllers/game-data-controller.mjs";
 import { gameHttpRouter } from "./games.mjs";
 import { router } from "./router.mjs";
+import bodyParser from 'body-parser';
 
 dotenv.config();
 const app = express();
@@ -52,3 +54,19 @@ app.get("/", (_req, res) => {
 });
 
 app.get("/gameData/:name", getGameData);
+
+const jsonParser = bodyParser.json();
+
+app.get("/capcha", async (_req, res) => {
+  const capchaRes = await capchaGenerator.newCapcha();
+  res.json(capchaRes);
+});
+
+app.post("/capcha", jsonParser, (req, res) => {
+  const { capchaToken, capchaValue } = req.body;
+  const isCorrect = capchaGenerator.checkCorrectCapcha(
+    capchaToken,
+    capchaValue
+  );
+  res.json({ isCorrect });
+});

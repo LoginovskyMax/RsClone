@@ -1,4 +1,6 @@
+import { Comment } from "../data/comment.mjs";
 import { GameData } from "../data/game.mjs";
+import { User } from "../data/User.mjs";
 import { games } from "../games/data/games.mjs";
 
 export async function getGamesList(_req, res) {
@@ -93,4 +95,37 @@ export async function getGameList(req, res) {
       .status(400)
       .json({ message: `Failed to get list of games for ${req.query.name}` });
   }
+}
+
+export async function getAllComments(req, res) {
+  try {
+    const { gameName: name } = req;
+
+    const comments = (await Comment.find())
+      .map(async (comment) => {
+        const { text, raiting, date } = comment;
+        const userName = await User.findById(comment.user);
+        const gameName = await GameData.findById(comment.game);
+
+        return { userName, gameName, text, raiting, date };
+      })
+      .filter((comment) => (name ? name === comment.gameName : true));
+
+    res.json(comments);
+  } catch (err) {
+    res.status(400).json({ message: "Faild to get commets" });
+    console.error(err);
+  }
+}
+
+export async function addComment(req, res) {
+  try {} catch(err) {}
+}
+
+export async function removeComment(req, res) {
+  try {} catch(err) {}
+}
+
+export async function editComment(req, res) {
+  try {} catch(err) {}
 }
