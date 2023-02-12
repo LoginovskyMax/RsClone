@@ -35,7 +35,6 @@ async function wsConnect(ws, data) {
   }
 
   ws.id = `${player}:`;
-  console.log(ws.id);
 
   return ws.send(makeAnswer(GAME.WS_CONNECTED));
 }

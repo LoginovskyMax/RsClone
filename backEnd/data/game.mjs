@@ -7,8 +7,7 @@ const gameData = new Schema({
   descriptionEn: { type: String, default: "No description" },
   rulesRu: { type: String, default: "Нет правил" },
   rulesEn: { type: String, default: "No rules" },
-  comments: [{ type: String, ref: "Comment" }],
-  raiting: { type: Number, default: 5 },
+  // raiting: { type: Number, default: 5 },
 });
 
-export const GameData = model("GameData", gameData);
+export const GameData = model.gameData || model("GameData", gameData);

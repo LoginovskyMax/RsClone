@@ -3,6 +3,7 @@ import * as fs from "fs";
 import http from "http";
 import https from "https";
 
+import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -11,6 +12,7 @@ import expressWs from "express-ws";
 import mongoose from "mongoose";
 
 import { getGameData } from "./controllers/game-data-controller.mjs";
+import { capchaGenerator } from "./data/capcha.mjs";
 import { gameHttpRouter } from "./games.mjs";
 import { router } from "./router.mjs";
 
@@ -52,3 +54,19 @@ app.get("/", (_req, res) => {
 });
 
 app.get("/gameData/:name", getGameData);
+
+const jsonParser = bodyParser.json();
+
+app.get("/capcha", async (_req, res) => {
+  const capchaRes = await capchaGenerator.newCapcha();
+  res.json(capchaRes);
+});
+
+app.post("/capcha", jsonParser, (req, res) => {
+  const { capchaToken, capchaValue } = req.body;
+  const isCorrect = capchaGenerator.checkCorrectCapcha(
+    capchaToken,
+    capchaValue
+  );
+  res.json({ isCorrect });
+});
