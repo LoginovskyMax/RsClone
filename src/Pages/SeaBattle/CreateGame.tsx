@@ -5,13 +5,13 @@ import Button from "../../Components/common/Button"
 import styles from "./SeaBattle.module.scss";
 import useUserStore from "../../store";
 import { webSocketController, wsGameData } from './web-socket/WebSoket';
-import { query } from 'express';
 
 export const CreateGame = () => {
     const navigate = useNavigate()
     const [inviteGame, setInviteGame] = useState(false)
     const [token, setToken] = useState('')
     const [testUser, setUser] = useState('')
+    const [gameId, setGameId] = useState('')
     const user = useUserStore((state) => state.user);
 
     // вот тут стейт, в который будет прилетать все данные по webSocket
@@ -64,7 +64,6 @@ export const CreateGame = () => {
                 data:{}
               }
         }else{
-            const gameId = webSocketController.getGameId()
             request = {
                 type:"join",
                 data:{ gameId }
@@ -101,11 +100,13 @@ export const CreateGame = () => {
         {inviteGame ? <div>
             <input placeholder="ID игры"
                                  type='text'
-                                 /*onChange={(e)=>setGameID(e.target.value)}*/></input> 
+                                 onChange={(e)=>{ 
+                                    setGameId(e.target.value);
+                                }}></input> 
             <Button  onClick={()=>createGame(false)}>Войти</Button>
         </div>
                         : <Button onClick={()=>createGame(true)}>Создать игру</Button>}
-         {webSocketController.getGameId()!=='' && <p>ID для вашей игры: {webSocketController.getGameId()}</p>}
+         {gameId!=='' && <p>ID для вашей игры: {gameId}</p>}
         <input type="text" placeholder="token" onChange={(e)=>setToken(e.target.value)}/>
         <input type="text" placeholder="test user" onChange={(e)=>setUser(e.target.value)}/>
         <Button onClick={startGame}>Начать</Button>

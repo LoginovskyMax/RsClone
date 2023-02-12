@@ -33,26 +33,30 @@ class WebSocketController {
 
   wsMessageHandler(resp: MessageEvent<string>) {
     try {
-      const res = JSON.parse(resp.data);
+      const res: wsGameData = JSON.parse(resp.data);
 
       if (this.callbacks) {
         this.callbacks.forEach((callback) => {
           callback(res);
         });
       }
-      // const data: { type: string; data: IGameData } = JSON.parse(resp.data);
 
-      // switch (type) {
-      //   case "message":
-      //     // return navigate('/')
-      //     console.log(data);
-      //     break;
-      //   case "game-data":
-      //     // eslint-disable-next-line no-case-declarations
-      //     const { gameId: id } = data.data;
-      //     console.log(id);
-      //     this.gameId = id;
-      //     break;
+      const { type, data } = res;
+
+      // eslint-disable-next-line default-case
+      switch (type) {
+        case "message":
+          // return navigate('/')
+          console.log(data);
+          break;
+        case "game-data":
+          // eslint-disable-next-line no-case-declarations
+          const { gameId } = data as GameData;
+          console.log(gameId);
+          this.gameId = gameId;
+
+          break;
+      }
 
       //   default:
       //     console.log("default");
