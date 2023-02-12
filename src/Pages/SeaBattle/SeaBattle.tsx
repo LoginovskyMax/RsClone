@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../Components/common/Button";
@@ -6,8 +7,6 @@ import { FieldComp } from "../../Components/SeaBattle/FieldComp";
 import { InfoComp } from "../../Components/SeaBattle/InfoComp";
 import { IGameData } from "../../Components/SeaBattle/Interfaces";
 import useUserStore from "../../store";
-
-const webSocket = new WebSocket('ws://rsgames.online:8001/game/SeaWar')
 
 const initialState = [
   [0,0,0,0,0,0,0,0,0,0],
@@ -24,6 +23,7 @@ const initialState = [
 
 
 import styles from "./SeaBattle.module.scss";
+import { webSocketController } from './web-socket/WebSoket';
 
 export const SeaBattle = () => {
   const params = useParams();
@@ -55,7 +55,7 @@ export const SeaBattle = () => {
         gameId,x,y,
       }
     }
-    webSocket.send(JSON.stringify(request))
+    webSocketController.send(JSON.stringify(request))
   };
   const setShip = (x: number, y: number) => {
     const request = {
@@ -65,7 +65,7 @@ export const SeaBattle = () => {
       }
     }
    console.log(request);
-    webSocket.send(JSON.stringify(request))
+    webSocketController.send(JSON.stringify(request))
   };
 
   // const changeBoard = (
@@ -109,32 +109,32 @@ export const SeaBattle = () => {
     setActual(data)
   }
 
-  webSocket.onmessage = (resp:MessageEvent<string>) => {
-    const type:string = JSON.parse(resp.data).type
-    const payload = JSON.parse(resp.data)
+  // webSocket.onmessage = (resp:MessageEvent<string>) => {
+  //   const type:string = JSON.parse(resp.data).type
+  //   const payload = JSON.parse(resp.data)
     
-    console.log(payload)
-    switch (type) {
-      case "message": 
-        // return navigate('/') 
+  //   console.log(payload)
+  //   switch (type) {
+  //     case "message": 
+  //       // return navigate('/') 
        
-      break
-      case "game-data":
-        console.log(payload)
-        const {player , enemyName, gameId, enemyField, yourField} = payload.data
-        findCells(enemyField,enemyBoard,setEnemyBoard,actualEnemy,setActulEnemy,true) 
-        findCells(yourField,myBoard,setMyBoard,actualMy,setActulMy,false) 
-        setEnemyName(enemyName)
-      break 
-    }
-  }
+  //     break
+  //     case "game-data":
+  //       console.log(payload)
+  //       const {player , enemyName, gameId, enemyField, yourField} = payload.data
+  //       findCells(enemyField,enemyBoard,setEnemyBoard,actualEnemy,setActulEnemy,true) 
+  //       findCells(yourField,myBoard,setMyBoard,actualMy,setActulMy,false) 
+  //       setEnemyName(enemyName)
+  //     break 
+  //   }
+  // }
 
   const ready = () => {
     const request = {
       type:"ready",
       data:{gameId}
     }
-    webSocket.send(JSON.stringify(request))
+    webSocketController.send(JSON.stringify(request))
     setShipsReady(true)
   }
 
@@ -143,7 +143,7 @@ export const SeaBattle = () => {
       type:"start",
       data:{gameId}
     }
-    webSocket.send(JSON.stringify(request))
+    webSocketController.send(JSON.stringify(request))
     setStar('start')
     setCanShoot(true)
   }

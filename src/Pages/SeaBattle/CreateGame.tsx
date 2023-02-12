@@ -1,42 +1,57 @@
+/* eslint-disable */
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import Button from "../../Components/common/Button"
 import styles from "./SeaBattle.module.scss";
 import useUserStore from "../../store";
-import { IGameData } from "../../Components/SeaBattle/Interfaces";
-
-const webSocket = new WebSocket('ws://rsgames.online:8001/game/SeaWar')
+import { webSocketController, wsGameData } from './web-socket/WebSoket';
+import { query } from 'express';
 
 export const CreateGame = () => {
     const navigate = useNavigate()
     const [inviteGame, setInviteGame] = useState(false)
-    const [gameID, setGameID] = useState('')
     const [token, setToken] = useState('')
     const [testUser, setUser] = useState('')
     const user = useUserStore((state) => state.user);
 
+    // вот тут стейт, в который будет прилетать все данные по webSocket
+    // сообщения, данные игры и т.п.
+    const [gameData, setGameData] = useState<wsGameData>({ type: "" });
+    const location = useLocation();
 
-    webSocket.onmessage = (resp:MessageEvent<string>) => {
-        const type:string = JSON.parse(resp.data).type
-        const data:{type:string,data:IGameData} = JSON.parse(resp.data)
-     
-        switch (type) {
-            case "message": 
-              // return navigate('/') 
-              console.log(data)
-            break
-            case "game-data":
-                const { gameId }  = data.data
-                console.log(gameId);
-                setGameID(gameId)
-            break 
-          }
+    useEffect(() => {
+        // подклюаемся к сокету
+        webSocketController.connect(); 
+        // передаем сеттер нашего стейта слушателю сообщений
+        // чтобы на каждое сообщение менял стейт с данными
+        webSocketController.addMessageListener(setGameData)
+
+        // подключаемся к игре, если есть квери параметры с id игры
+        const queryParams = new URLSearchParams(location.search);
+        const gameId = queryParams.get("gameId");
+        if (gameId) {
+            webSocketController.send(
+                JSON.stringify({ type: "join", data: { gameId }})
+            )
+        }
         
-    }
+        // убиваем все слушатели при выходе со страницы
+        return () => webSocketController.deleteAllCallbacks();
+    }, [])
+
+    useEffect(() => {
+        // Здесь слушаем изменения и выполняем все операции
+        console.log("Message resieved");
+        console.log(gameData)
+        // в общем тут вся логика работы с web soket'ом
+    }, [gameData])
+
+    console.log("CreateGame called!")
 
     const startGame = () => {
-        if(gameID!==''){
-            navigate(`/SeaBattle/${gameID}`)
+        if(webSocketController.getGameId() !== ''){
+            const gameId = webSocketController.getGameId()
+            navigate(`/SeaBattle/${ gameId }`)
         }
     }
 
@@ -49,25 +64,18 @@ export const CreateGame = () => {
                 data:{}
               }
         }else{
+            const gameId = webSocketController.getGameId()
             request = {
                 type:"join",
-                data:{gameId:gameID}
+                data:{ gameId }
               }
         }
         console.log(request);
-        webSocket.send(JSON.stringify(request))
+        webSocketController.send(JSON.stringify(request))
     }
 
     useEffect(() => {
-        if(token){
-            const request = {
-                type:"ws-connect",
-                data:{
-                 player:testUser,
-                 token:token}
-              }
-              webSocket.send(JSON.stringify(request))
-        }
+    
       }, [token]);
 
   return (
@@ -93,11 +101,11 @@ export const CreateGame = () => {
         {inviteGame ? <div>
             <input placeholder="ID игры"
                                  type='text'
-                                 onChange={(e)=>setGameID(e.target.value)}></input> 
+                                 /*onChange={(e)=>setGameID(e.target.value)}*/></input> 
             <Button  onClick={()=>createGame(false)}>Войти</Button>
         </div>
                         : <Button onClick={()=>createGame(true)}>Создать игру</Button>}
-        {gameID!=='' && <p>ID для вашей игры: {gameID}</p>}
+         {webSocketController.getGameId()!=='' && <p>ID для вашей игры: {webSocketController.getGameId()}</p>}
         <input type="text" placeholder="token" onChange={(e)=>setToken(e.target.value)}/>
         <input type="text" placeholder="test user" onChange={(e)=>setUser(e.target.value)}/>
         <Button onClick={startGame}>Начать</Button>
