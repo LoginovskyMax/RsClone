@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 const CAPCHA_LENGTH = 5;
 const CAPCHA_WIDTH = 450;
 const CAPCHA_HEIGHT = 200;
-const CAPCHA_TIMEOUT = 260000;
+const CAPCHA_TIMEOUT = 5 * 60 * 1000;
 
 class CaptchaGenerator {
   capches = {};
@@ -46,10 +46,7 @@ class CaptchaGenerator {
     const capcha = this.capches[token];
     if (!capcha) return false;
 
-    console.log(capcha.value, typeof capcha.value);
-
     if (capcha.value !== value) {
-      console.log("capcha.getValue() != value");
       delete this.capches[token];
 
       return false;
@@ -58,10 +55,6 @@ class CaptchaGenerator {
     delete this.capches[token];
 
     return true;
-  }
-
-  getValue() {
-    return this.capcha.value;
   }
 }
 

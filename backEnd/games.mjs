@@ -1,25 +1,25 @@
 import bodyParser from "body-parser";
 import { Router } from "express";
 import expressWs from "express-ws";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { asyncMiddleware } from "middleware-async";
 
 import {
-  addComment,
   addNewGame,
-  editComment,
   editGameData,
   getAllComments,
   getGameData,
   getGameList,
   getGamesList,
   removeComment,
+  setComment,
 } from "./controllers/game-data-controller.mjs";
 import { SEAWAR } from "./games/variables.mjs";
 // eslint-disable-next-line import/no-cycle
 import { seaWarSocket } from "./games/ws/ws-main.mjs";
 import { adminMiddleware } from "./middleware/admin-middleware.mjs";
 import { authorizedUser } from "./middleware/authorized-user.mjs";
-import { banedUser } from './middleware/baned-midleware.mjs';
+import { banedUser } from "./middleware/baned-midleware.mjs";
 
 export const gameRouter = new Router();
 const wsServer = expressWs(gameRouter);
@@ -75,18 +75,14 @@ gameHttpRouter.get(
 );
 gameHttpRouter.post(
   "/comments",
+  jsonParser,
   asyncMiddleware(authorizedUser),
   banedUser,
-  addComment
-);
-gameHttpRouter.put(
-  "/comments",
-  asyncMiddleware(authorizedUser),
-  banedUser,
-  editComment
+  setComment
 );
 gameHttpRouter.delete(
   "/comments",
+  jsonParser,
   asyncMiddleware(authorizedUser),
   banedUser,
   removeComment

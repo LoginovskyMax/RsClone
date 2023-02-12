@@ -3,6 +3,7 @@ import * as fs from "fs";
 import http from "http";
 import https from "https";
 
+import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -10,11 +11,10 @@ import express from "express";
 import expressWs from "express-ws";
 import mongoose from "mongoose";
 
-import { capchaGenerator } from "./controllers/capcha.mjs";
 import { getGameData } from "./controllers/game-data-controller.mjs";
+import { capchaGenerator } from "./data/capcha.mjs";
 import { gameHttpRouter } from "./games.mjs";
 import { router } from "./router.mjs";
-import bodyParser from 'body-parser';
 
 dotenv.config();
 const app = express();
