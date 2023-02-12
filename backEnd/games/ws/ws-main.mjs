@@ -35,6 +35,7 @@ async function wsConnect(ws, data) {
   }
 
   ws.id = `${player}:`;
+  console.log(ws.id);
 
   return ws.send(makeAnswer(GAME.WS_CONNECTED));
 }
@@ -58,28 +59,40 @@ export async function seaWarSocket(ws, _req) {
     }
   });
   ws.on("close", () => {
-    const [userName, gameId] = ws.id.split(":");
-    const game = games[gameId];
+    try {
+      const [userName, gameId] = ws.id.split(":");
+      const game = games[gameId];
 
-    if (!game) return;
-    const player = game.players.find((plr) => plr.userName === userName);
-    player.isOnline = false;
+      if (!game) return;
+      const player = game.players.find((plr) => plr.userName === userName);
+      player.isOnline = false;
 
-    if (gameId === "") return;
-    // eslint-disable-next-line consistent-return
-    setTimeout(() => {
-      const resPlayer = game.players.find((plr) => plr.userName === userName);
+      if (gameId === "") return;
+      // eslint-disable-next-line consistent-return
+      setTimeout(() => {
+        try {
+          const resPlayer = game.players.find(
+            (plr) => plr.userName === userName
+          );
 
-      if (resPlayer.isOnline) {
-        return null;
-      }
+          if (resPlayer.isOnline) {
+            return null;
+          }
 
-      if (!game) {
-        return null;
-      }
+          if (!game) {
+            return null;
+          }
 
-      leaveSeaWarGame({ gameId }, ws);
-      game.players = game.players.filter((plr) => plr.userName !== userName);
-    }, TIMEOUT);
+          leaveSeaWarGame({ gameId }, ws);
+          game.players = game.players.filter(
+            (plr) => plr.userName !== userName
+          );
+        } catch {
+          /* empty */
+        }
+      }, TIMEOUT);
+    } catch {
+      /* empty */
+    }
   });
 }

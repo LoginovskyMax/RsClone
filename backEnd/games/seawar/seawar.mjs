@@ -49,6 +49,8 @@ export function leaveSeaWarGame(data, ws) {
 
 export function createSeaWarGame(_data, ws) {
   // Dissconnect player from other games
+  console.log(ws.id);
+
   if (ws.id.split(":")[1] !== "") {
     leaveSeaWarGame({ gameId: ws.id.split(":")[1] }, ws);
   }
