@@ -6,7 +6,7 @@ const token =
 
 export interface wsGameData {
   type: string;
-  data?: GameData | string | null;
+  data: GameData | string | null;
 }
 
 export type wsCallback = (res: wsGameData) => void;
@@ -17,6 +17,26 @@ class WebSocketController {
   private gameId = "";
 
   private callbacks: Array<wsCallback> = [];
+
+  token:string = ''
+
+  user:string = ''
+
+  gameData:GameData | string | null = null
+
+  getGameId() {
+    console.log(this.gameId);
+    console.log(this.user);
+    return this.gameId;
+  }
+
+  setGameId(gameId: string) {
+    this.gameId = gameId;
+  }
+
+  getData() {
+    return this.gameData
+  }
 
   connect() {
     if (!this.webSocket) {
@@ -36,6 +56,8 @@ class WebSocketController {
       const res: wsGameData = JSON.parse(resp.data);
 
       if (this.callbacks) {
+        console.log('callback');
+        
         this.callbacks.forEach((callback) => {
           callback(res);
         });
@@ -46,21 +68,18 @@ class WebSocketController {
       // eslint-disable-next-line default-case
       switch (type) {
         case "message":
-          // return navigate('/')
-          console.log(data);
+          console.log(res);
           break;
         case "game-data":
           // eslint-disable-next-line no-case-declarations
           const { gameId } = data as GameData;
-          console.log(gameId);
+          console.log(data);
           this.gameId = gameId;
-
+          this.gameData = data;
+          console.log(this.gameData);
           break;
       }
 
-      //   default:
-      //     console.log("default");
-      // }
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
@@ -68,15 +87,16 @@ class WebSocketController {
   }
 
   private wsOpenHandler = () => {
-    if (token) {
+    if (this.token) {
       try {
         const request = {
           type: "ws-connect",
           data: {
-            player: "Test",
-            token,
+            player: this.user,
+            token:this.token,
           },
         };
+     
         this.webSocket?.send(JSON.stringify(request));
       } catch (err) {
         // eslint-disable-next-line no-console
@@ -85,13 +105,7 @@ class WebSocketController {
     }
   };
 
-  getGameId() {
-    return this.gameId;
-  }
-
-  setGameId(gameId: string) {
-    this.gameId = gameId;
-  }
+ 
 
   addMessageListener(callback: wsCallback) {
     if (this.webSocket) {
@@ -112,6 +126,14 @@ class WebSocketController {
       // eslint-disable-next-line no-console
       console.error(err);
     }
+  }
+
+  setToken(token:string){
+    this.token = token
+  }
+
+  setUser(user:string){
+    this.user = user
   }
 }
 

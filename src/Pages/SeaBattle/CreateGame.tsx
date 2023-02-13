@@ -16,15 +16,15 @@ export const CreateGame = () => {
 
     // вот тут стейт, в который будет прилетать все данные по webSocket
     // сообщения, данные игры и т.п.
-    const [gameData, setGameData] = useState<wsGameData>({ type: "" });
+    const [gameData, setGameData] = useState<wsGameData>();
     const location = useLocation();
 
     useEffect(() => {
         // подклюаемся к сокету
-        webSocketController.connect(); 
+       
         // передаем сеттер нашего стейта слушателю сообщений
         // чтобы на каждое сообщение менял стейт с данными
-        webSocketController.addMessageListener(setGameData)
+        
 
         // подключаемся к игре, если есть квери параметры с id игры
         const queryParams = new URLSearchParams(location.search);
@@ -46,8 +46,6 @@ export const CreateGame = () => {
         // в общем тут вся логика работы с web soket'ом
     }, [gameData])
 
-    console.log("CreateGame called!")
-
     const startGame = () => {
         if(webSocketController.getGameId() !== ''){
             const gameId = webSocketController.getGameId()
@@ -57,11 +55,11 @@ export const CreateGame = () => {
 
     
     const createGame = (create:boolean) => {
-        let request:{type:string, data:{gameId:string}|{}}
+        let request:{type:string, data:{gameId:string}|null}
         if(create){
             request = {
                 type:"create",
-                data:{}
+                data:null
               }
         }else{
             request = {
@@ -74,7 +72,13 @@ export const CreateGame = () => {
     }
 
     useEffect(() => {
-    
+    if(token){
+        webSocketController.setUser(testUser)
+        webSocketController.setToken(token)
+        webSocketController.connect(); 
+     
+        console.log('connect');
+    }
       }, [token]);
 
   return (

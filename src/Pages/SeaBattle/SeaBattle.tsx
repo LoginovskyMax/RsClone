@@ -23,7 +23,7 @@ const initialState = [
 
 
 import styles from "./SeaBattle.module.scss";
-import { webSocketController } from './web-socket/WebSoket';
+import { webSocketController, wsGameData } from './web-socket/WebSoket';
 
 export const SeaBattle = () => {
   const params = useParams();
@@ -38,6 +38,7 @@ export const SeaBattle = () => {
   const [actualMy, setActulMy] = useState<number[][]>(initialState)
   const [actualEnemy, setActulEnemy] = useState<number[][]>(initialState)
   const [start, setStar] = useState('')
+  const [gameData, setGameData] = useState<wsGameData>();
 
   const restart = () => {
     const newBoard = new Board();
@@ -50,13 +51,14 @@ export const SeaBattle = () => {
 
   const shoot = (x: number, y: number) => {
     const request = {
-      type:"ready",
+      type:"move",
       data:{
         gameId,x,y,
       }
     }
     webSocketController.send(JSON.stringify(request))
   };
+
   const setShip = (x: number, y: number) => {
     const request = {
       type:"set",
@@ -64,8 +66,9 @@ export const SeaBattle = () => {
         gameId,x,y,
       }
     }
-   console.log(request);
     webSocketController.send(JSON.stringify(request))
+    console.log(webSocketController.getData());
+    console.log(webSocketController.gameData);
   };
 
   // const changeBoard = (
@@ -108,6 +111,11 @@ export const SeaBattle = () => {
     setBoard(newBoard)
     setActual(data)
   }
+  useEffect(() => {
+    // Здесь слушаем изменения и выполняем все операции
+    console.log(gameData);
+    // в общем тут вся логика работы с web soket'ом
+}, [gameData])
 
   // webSocket.onmessage = (resp:MessageEvent<string>) => {
   //   const type:string = JSON.parse(resp.data).type
@@ -154,6 +162,7 @@ export const SeaBattle = () => {
     //   data:{player:user, gameId}
     // }
     // webSocket.send(JSON.stringify(request))
+    webSocketController.addMessageListener(setGameData)
     restart();
   }, []);
 
