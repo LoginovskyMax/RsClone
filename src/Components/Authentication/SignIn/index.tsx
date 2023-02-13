@@ -2,6 +2,8 @@ import { useFormik } from "formik";
 import type { FC } from "react";
 import * as yup from "yup";
 
+import { authLogin, checkUserToken } from "../../../controller/Auth";
+import type { Values } from "../../../data/authData";
 import useUserStore from "../../../store";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
@@ -10,13 +12,13 @@ import HelperText from "../HelperText";
 import "../style.scss";
 
 const schema = yup.object().shape({
-  name: yup.string().min(3).max(30).required(),
+  userName: yup.string().min(3).max(30).required(),
   password: yup.string().required(),
 });
 
 const inputsProps = [
   {
-    key: "name",
+    key: "userName",
     label: "Name",
     placeholder: "Username",
     type: "text",
@@ -40,31 +42,22 @@ const SignIn: FC<SignInProps> = ({ setSignInModalOpened, setModalClosed }) => {
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
       initialValues: {
-        name: "",
+        userName: "",
         password: "",
       },
       validationSchema: schema,
-      onSubmit: (data) => {
-        fetch("http://localhost:8888/authUser", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((response) => {
-            if (response.ok) {
-              return response.json();
-            }
+      onSubmit: (data: Values) => {
+        authLogin(data)
+          .then((resToken) => {
+            console.log("resToken", resToken);
 
-            return response.text().then((errorMessage) => {
-              throw new Error(errorMessage);
-            });
+            return checkUserToken();
           })
-          .then((userDetails) => {
+          .then((userData) => {
+            console.log("userData", userData);
             setUser({
-              user: userDetails.response.name,
-              status: userDetails.response.status,
+              userName: userData.userName,
+              status: userData.status,
             });
 
             setModalClosed();

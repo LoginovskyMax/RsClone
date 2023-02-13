@@ -1,7 +1,9 @@
 import jsonwebtoken from "jsonwebtoken";
 
+import { User } from "../data/User.mjs";
+
 // eslint-disable-next-line consistent-return
-export function authorizedUser(req, res, next) {
+export async function authorizedUser(req, res, next) {
   if (req.method === "OPTIONS") {
     next();
   }
@@ -15,6 +17,9 @@ export function authorizedUser(req, res, next) {
 
     const data = jsonwebtoken.verify(token, process.env.KEY);
     req.user = data;
+    const user = await User.findById(data.id);
+    req.userName = user ? user.userName : null;
+    req.banned = user ? user.banned : false;
     next();
   } catch (err) {
     return res.status(403).json({ message: "User not authorized" });

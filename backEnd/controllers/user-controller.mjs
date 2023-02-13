@@ -103,7 +103,6 @@ export async function register(req, res) {
     user.save();
     res.json({ message: "New User has been successfully created!" });
   } catch (err) {
-    console.log(err);
     res.status(400).json({ message: "Registration Error" });
   }
 }
@@ -111,18 +110,14 @@ export async function register(req, res) {
 // eslint-disable-next-line consistent-return
 export async function login(req, res) {
   try {
-    console.log(req.body);
     const { userName, password } = req.body;
-    console.log(userName, password);
     const searchUser = await User.findOne({ userName });
-    console.log(searchUser);
 
     if (!searchUser) {
       return res.status(404).json({ message: `User ${userName} not found` });
     }
 
     const validPass = bcrypt.compareSync(password, searchUser.password);
-    console.log(validPass);
 
     if (!validPass) {
       return res
@@ -132,11 +127,10 @@ export async function login(req, res) {
 
     // eslint-disable-next-line no-underscore-dangle
     const token = generateToken(searchUser._id, searchUser.status);
-    console.log(token);
 
     res.cookie("token", token, {
       maxAge: 60 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
     });
     res.json({ token });
@@ -151,6 +145,37 @@ export async function getUsers(_req, res) {
     res.json(users);
   } catch (err) {
     res.status(400).json({ message: "Failed to get users" });
+  }
+}
+
+export async function getUser(req, res) {
+  try {
+    const user = await User.findById(req.user.id);
+    const { userName, email, status, banned, date } = user;
+    res.json({ userName, email, status, banned, date });
+  } catch (err) {
+    res.status(400).json({ message: "Failed to get user" });
+  }
+}
+
+export async function setUserStatus(req, res) {
+  try {
+    const { userName, status } = req.body;
+    const user = await User.findOne({ userName });
+    user.status = [];
+    await user.save();
+
+    for (let i = 0; i < status.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      const stat = await UserStatus.findOne({ value: status[i] });
+      user.status.push(stat.value);
+    }
+
+    await user.save();
+
+    res.json({ message: "Status changed", user });
+  } catch (err) {
+    res.status(400).json({ message: "Failed to set new status" });
   }
 }
 
@@ -170,6 +195,44 @@ export async function deleteUser(req, res) {
   }
 }
 
+export function banUser(banned) {
+  return async function ban(req, res) {
+    try {
+      const { userName } = req.query;
+      const user = await User.findOne({ userName });
+
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+      } else {
+        user.banned = banned;
+        await user.save();
+        res.json({
+          message: `User ${userName} has been ${
+            banned ? "banned" : "unbanned"
+          }`,
+        });
+      }
+    } catch (err) {
+      res.status(400).json({ message: "Failed to ban user" });
+    }
+  };
+}
+
+export async function getUserByName(req, res) {
+  try {
+    const { userName } = req.query;
+    const user = await User.findOne({ userName });
+
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    } else {
+      res.json(user);
+    }
+  } catch (err) {
+    res.status(400).json({ message: "Failed to get user" });
+  }
+}
+
 export async function saveStatusesToDB() {
   const userStatus = new UserStatus();
   const adminStatus = new UserStatus({ value: "admin" });
@@ -178,4 +241,11 @@ export async function saveStatusesToDB() {
   await userStatus.save();
   await adminStatus.save();
   await moderatorStatus.save();
+}
+
+export async function checkUser(userName, token) {
+  const { id: _id } = jsonwebtoken.decode(token);
+  const searchUser = await User.findById({ _id });
+
+  return searchUser && searchUser.userName === userName;
 }
