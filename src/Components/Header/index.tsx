@@ -39,7 +39,7 @@ const Header: FC = () => {
           className="header__theme"
         />
         {userName ? (
-          <User username={userName} />
+          <User username={userName} setUser={setUser} />
         ) : (
           <Button onClick={() => setModalClosed(false)}>Sign in</Button>
         )}

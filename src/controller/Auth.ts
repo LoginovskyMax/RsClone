@@ -15,6 +15,10 @@ export const getUserToken = (): string => {
   return token?.split("=")[1] ?? '';
 }
 
+export const logoutUser = () => {
+  document.cookie = `${COOKIE_TOKEN_VAL}=;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+}
+
 const getUserDataByToken = async () =>
   fetch(`${BACKEND_URL}${BACKEND_MYUSER_PATH}`, {
     method: "GET",
@@ -42,7 +46,6 @@ export const checkUserToken = async () =>
         resolve(userData);
       })
       .catch((err) => {
-        // document.cookie = `${COOKIE_TOKEN_VAL}=;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
         reject(err);
       });
   });
