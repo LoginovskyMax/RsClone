@@ -1,4 +1,5 @@
 import bodyParser from "body-parser";
+import cors from "cors";
 import { Router } from "express";
 
 import {
@@ -20,6 +21,7 @@ const jsonParser = bodyParser.json();
 
 export const router = new Router();
 
+router.use(cors());
 router.post("/forgotpass", jsonParser, resetpass); // {userName, email}
 router.post("/setpass", jsonParser, setNewPass); // {password, resetToken}
 router.post("/registr", jsonParser, register); // { userName, email, password }

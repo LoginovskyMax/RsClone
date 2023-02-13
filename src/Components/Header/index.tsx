@@ -1,5 +1,6 @@
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 
+import { checkUserToken } from "../../controller/Auth";
 import useUserStore from "../../store";
 import AuthenticationModal from "../Authentication";
 import Button from "../common/Button";
@@ -11,7 +12,24 @@ import "./style.scss";
 
 const Header: FC = () => {
   const [isModalClosed, setModalClosed] = useState(true);
-  const user = useUserStore((state) => state.user);
+  const userName = useUserStore((state) => state.userName);
+
+  const setUser = useUserStore((state) => state.setUser);
+
+  useEffect(() => {
+    checkUserToken()
+      .then((userData) => {
+        setUser({
+          userName: userData.userName,
+          status: userData.status,
+          banned: userData.banned,
+          email: userData.email,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <header className="header">
@@ -22,8 +40,8 @@ const Header: FC = () => {
           alt="theme"
           className="header__theme"
         />
-        {user ? (
-          <User username={user} />
+        {userName ? (
+          <User username={userName} setUser={setUser} />
         ) : (
           <Button onClick={() => setModalClosed(false)}>Sign in</Button>
         )}

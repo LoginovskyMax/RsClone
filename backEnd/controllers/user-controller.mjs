@@ -89,6 +89,14 @@ export async function register(req, res) {
       return res.status(400).json({ message: "User is allredy registred" });
     }
 
+    const searchUserByEmail = await User.findOne({ email });
+
+    if (searchUserByEmail) {
+      return res
+        .status(400)
+        .json({ message: "User with current email is allredy registred" });
+    }
+
     const hashPass = bcrypt.hashSync(password, 7);
     const userStatus = await UserStatus.findOne({ value: "admin" });
     const resetToken = uuidv4();
@@ -130,7 +138,7 @@ export async function login(req, res) {
 
     res.cookie("token", token, {
       maxAge: 60 * 24 * 60 * 60 * 1000,
-      httpOnly: true,
+      httpOnly: false,
       secure: true,
     });
     res.json({ token });

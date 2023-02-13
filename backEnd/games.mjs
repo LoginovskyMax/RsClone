@@ -1,4 +1,5 @@
 import bodyParser from "body-parser";
+import cors from "cors";
 import { Router } from "express";
 import expressWs from "express-ws";
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -28,6 +29,7 @@ const wsSeaWarPort = 8001;
 
 const jsonParser = bodyParser.json();
 
+gameRouter.use(cors());
 gameRouter.ws(`/game/${SEAWAR.NAME}`, seaWarSocket);
 
 gameRouter.listen(wsSeaWarPort, () => {
