@@ -126,18 +126,18 @@ export const forgotPassword = async (data: ForgotUserData) =>
 
 export const getUserNameByResetToken = async (resetToken: string) =>
   new Promise<ForgotUserData>((resolve, reject) => {
-    fetch(`${BACKEND_URL}${BACKEND_FORGOT_PATH}?resetToken=${resetToken}`).then(
-      (response) => {
-        if (response.ok) {
-          resolve(response.json());
-        } else {
-          response
-            .json()
-            .then((errorMessage) => reject(errorMessage))
-            .catch((err) => reject(err.message));
-        }
+    fetch(
+      `${BACKEND_URL}${BACKEND_SETPASS_PATH}?resetToken=${resetToken}`
+    ).then((response) => {
+      if (response.ok) {
+        resolve(response.json());
+      } else {
+        response
+          .json()
+          .then((errorMessage) => reject(errorMessage))
+          .catch((err) => reject(err.message));
       }
-    );
+    });
   });
 
 export const setNewPassword = async (data: NewPassData) =>

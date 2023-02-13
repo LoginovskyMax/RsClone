@@ -44,10 +44,21 @@ const ResetPass: FC<ResetPassProps> = ({ setInfoMsg, resetToken }) => {
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    getUserNameByResetToken(resetToken).then((resp) => {
-      const resUserName = resp.userName ?? "";
-      setUserName(resUserName);
-    });
+    getUserNameByResetToken(resetToken)
+      .then((resp) => {
+        console.log(resp);
+        const resUserName = resp.userName ?? "";
+        // if("")
+        setUserName(resUserName);
+      })
+      .catch((error) => {
+        try {
+          const { message } = JSON.parse(error);
+          setInfoMsg(message);
+        } catch {
+          setInfoMsg(error.message);
+        }
+      });
   }, []);
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
