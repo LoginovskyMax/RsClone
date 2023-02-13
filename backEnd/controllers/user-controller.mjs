@@ -22,7 +22,7 @@ export async function resetpass(req, res) {
 
     const searchUser = userName
       ? await User.findOne({ userName })
-      : await User.findOne({ email });
+      : await User.findOne({ email: email.toLocaleLowerCase() });
 
     if (!searchUser) {
       res.status(404).json({ message: "User not found" });
@@ -88,7 +88,9 @@ export async function register(req, res) {
       return res.status(400).json({ message: "User is allredy registred" });
     }
 
-    const searchUserByEmail = await User.findOne({ email });
+    const searchUserByEmail = await User.findOne({
+      email: email.toLocaleLowerCase(),
+    });
 
     if (searchUserByEmail) {
       return res
@@ -101,7 +103,7 @@ export async function register(req, res) {
     const resetToken = uuidv4();
     const user = new User({
       userName,
-      email,
+      email: email.toLocaleLowerCase(),
       password: hashPass,
       status: [userStatus.value],
       resetToken,
