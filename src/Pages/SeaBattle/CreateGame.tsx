@@ -12,7 +12,7 @@ export const CreateGame = () => {
     const [token, setToken] = useState('')
     const [testUser, setUser] = useState('')
     const [gameId, setGameId] = useState('')
-    const user = useUserStore((state) => state.user);
+    const user = useUserStore((state) => state.userName);
 
     // вот тут стейт, в который будет прилетать все данные по webSocket
     // сообщения, данные игры и т.п.

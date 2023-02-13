@@ -18,7 +18,7 @@ export const SeaBattle = () => {
   const navigate = useNavigate()
   const [myBoard, setMyBoard] = useState(new Board());
   const [enemyBoard, setEnemyBoard] = useState(new Board());
-  const user = useUserStore((state) => state.user);
+  const user = useUserStore((state) => state.userName);
   const [enemyName, setEnemyName] = useState<string|null>("");
   const [shipsReady, setShipsReady] = useState(false);
   const [canShoot, setCanShoot] = useState(false);
