@@ -1,12 +1,9 @@
 import type { GameData } from "./websocketData";
 
-// TODO: Get from coocie
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZTU0MGVkMmFiNjA2YmJjMzQwZGQyZiIsInN0YXR1c2VzIjpbImFkbWluIl0sImlhdCI6MTY3NTk5NzI0OCwiZXhwIjoxNjgxMTgxMjQ4fQ.cPXvAj225Rn_NkMkeC0AgxPiarPvMlA_HCP-ASGjb98";
-
 export interface wsGameData {
   type: string;
   data: GameData | string | null;
+  message?:string
 }
 
 export type wsCallback = (res: wsGameData) => void;
@@ -18,24 +15,17 @@ class WebSocketController {
 
   private callbacks: Array<wsCallback> = [];
 
-  token:string = ''
+  private token:string = ''
 
-  user:string = ''
+  private user:string = ''
 
-  gameData:GameData | string | null = null
 
   getGameId() {
-    console.log(this.gameId);
-    console.log(this.user);
     return this.gameId;
   }
 
   setGameId(gameId: string) {
     this.gameId = gameId;
-  }
-
-  getData() {
-    return this.gameData
   }
 
   connect() {
@@ -51,13 +41,11 @@ class WebSocketController {
     return this.webSocket;
   }
 
-  wsMessageHandler(resp: MessageEvent<string>) {
+  wsMessageHandler = (resp: MessageEvent<string>) => {
     try {
       const res: wsGameData = JSON.parse(resp.data);
 
       if (this.callbacks) {
-        console.log('callback');
-        
         this.callbacks.forEach((callback) => {
           callback(res);
         });
@@ -67,16 +55,10 @@ class WebSocketController {
 
       // eslint-disable-next-line default-case
       switch (type) {
-        case "message":
-          console.log(res);
-          break;
         case "game-data":
           // eslint-disable-next-line no-case-declarations
           const { gameId } = data as GameData;
-          console.log(data);
           this.gameId = gameId;
-          this.gameData = data;
-          console.log(this.gameData);
           break;
       }
 
@@ -104,8 +86,6 @@ class WebSocketController {
       }
     }
   };
-
- 
 
   addMessageListener(callback: wsCallback) {
     if (this.webSocket) {

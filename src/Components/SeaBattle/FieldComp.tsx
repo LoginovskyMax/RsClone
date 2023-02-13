@@ -30,13 +30,13 @@ export const FieldComp = ({
     setBoard(newBoard);
   };
 
-  // const ClickHandler = () => {
-    
-  // }
-
   const addMark = (x: number, y: number) => {
     if (!shipsReady && !isEnemy) {
-      board.createShip(x, y);
+      if(board.getCell(x,y).mark.name === 'ship'){
+        board.empty(x,y)
+      }else{
+        board.createShip(x, y);
+      }
       setShip && setShip(x,y)
     } else if (canShoot && isEnemy) {
       shoot && shoot(x, y);

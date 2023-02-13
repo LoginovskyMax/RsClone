@@ -1,7 +1,6 @@
-import { Ship, Miss, Damage } from "./Ship";
+import { Ship, Miss, Damage, Mark } from "./Ship";
 
-interface Mark {
-  logo: number;
+interface Marked {
   color: string;
   id: number;
   name: string;
@@ -14,11 +13,11 @@ export class Cell {
 
   y: number;
 
-  mark: Mark;
+  mark: Marked;
 
   id: number;
 
-  constructor(board: Board, x: number, y: number, mark: Mark) {
+  constructor(board: Board, x: number, y: number, mark: Marked) {
     this.board = board;
     this.x = x;
     this.y = y;
@@ -37,7 +36,6 @@ export class Board {
       for (let j = 0; j < 10; j+=1) {
         row.push(
           new Cell(this, j, i, {
-            logo: 0,
             color: "",
             id: 0,
             name: "",
@@ -52,7 +50,6 @@ export class Board {
   getCopy() {
     const newBoard = new Board();
     newBoard.cells = this.cells;
-
     return newBoard;
   }
 
@@ -70,5 +67,9 @@ export class Board {
 
   damage(x: number, y: number) {
     new Damage(this.getCell(x, y));
+  }
+  
+  empty(x: number, y: number){
+    new Mark(this.getCell(x, y))
   }
 }
