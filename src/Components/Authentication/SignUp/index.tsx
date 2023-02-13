@@ -2,6 +2,11 @@ import { useFormik } from "formik";
 import type { FC } from "react";
 import * as yup from "yup";
 
+import {
+  authLogin,
+  checkUserToken,
+  createUser,
+} from "../../../controller/Auth";
 import useUserStore from "../../../store";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
@@ -10,7 +15,8 @@ import HelperText from "../HelperText";
 import "../style.scss";
 
 const schema = yup.object().shape({
-  name: yup.string().min(3).max(30).required(),
+  userName: yup.string().min(3).max(30).required(),
+  email: yup.string().email().required(),
   password: yup.string().required(),
   confirmPassword: yup
     .string()
@@ -19,10 +25,16 @@ const schema = yup.object().shape({
 
 const inputsProps = [
   {
-    key: "name",
+    key: "userName",
     label: "Name",
     type: "text",
     placeholder: "Username",
+  },
+  {
+    key: "email",
+    label: "Email",
+    type: "email",
+    placeholder: "Email",
   },
   {
     key: "password",
@@ -49,32 +61,20 @@ const SignUp: FC<SignUpProps> = ({ setSignInModalOpened, setModalClosed }) => {
   const { values, handleChange, handleBlur, handleSubmit, touched, errors } =
     useFormik({
       initialValues: {
-        name: "",
+        userName: "",
+        email: "",
         password: "",
         confirmPassword: "",
       },
       validationSchema: schema,
       onSubmit: (data) => {
-        fetch("http://localhost:8888/registUser", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((response) => {
-            if (response.ok) {
-              return response.json();
-            }
-
-            return response.text().then((errorMessage) => {
-              throw new Error(errorMessage);
-            });
-          })
+        createUser(data)
+          .then(() => authLogin(data))
+          .then(() => checkUserToken())
           .then((userDetails) => {
             setUser({
-              user: userDetails.response.name,
-              status: userDetails.response.status,
+              userName: userDetails.userName,
+              status: userDetails.status,
             });
 
             setModalClosed();

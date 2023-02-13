@@ -4,7 +4,7 @@ export const BACKEND_LOGIN_PATH = "/auth/login/";
 
 export const BACKEND_MYUSER_PATH = "/auth/myuser/";
 
-export const BACKEND_REGISTR_PATH = "/auth/registr/";
+export const BACKEND_REG_PATH = "/auth/registr/";
 
 export const COOKIE_TOKEN_VAL = "userToken";
 
@@ -23,4 +23,10 @@ export interface UserData {
 
 export interface TokenData {
   token: string;
+}
+
+export interface NewUserData {
+  userName: string;
+  email: string;
+  password: string;
 }

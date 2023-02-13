@@ -1,9 +1,10 @@
 /* eslint-disable*/
-import type { TokenData, UserData, Values } from "../data/authData";
+import type { TokenData, UserData, Values, NewUserData } from "../data/authData";
 import {
   BACKEND_URL,
   BACKEND_MYUSER_PATH,
   BACKEND_LOGIN_PATH,
+  BACKEND_REG_PATH,
   COOKIE_TOKEN_VAL,
 } from "../data/authData";
 
@@ -72,3 +73,21 @@ export const authLogin = async (data: Values) =>
     })
     // eslint-disable-next-line @typescript-eslint/no-shadow
     .then((data: TokenData) => (document.cookie = `userToken=${data.token}`));
+
+export const createUser = async (data: NewUserData) =>
+  fetch(`${BACKEND_URL}${BACKEND_REG_PATH}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+
+      return response.json().then((errorMessage) => {
+        throw new Error(errorMessage);
+      });
+    });
