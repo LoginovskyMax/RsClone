@@ -1,14 +1,14 @@
 import { create } from "zustand";
 
 interface UsersState {
-  user: string | null;
-  status: string | null;
-  setUser: (user: { user: string | null; status: string | null }) => void;
+  userName: string | null;
+  status: Array<string>;
+  setUser: (user: { userName: string | null; status: Array<string> }) => void;
 }
 
 const useUserStore = create<UsersState>((set) => ({
-  user: null,
-  status: null,
+  userName: null,
+  status: [],
   setUser: (newUser) => set(() => newUser),
 }));
 
