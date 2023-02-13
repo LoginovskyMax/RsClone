@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import type { FC } from "react";
+import { FC, useState } from "react";
 import * as yup from "yup";
 
 import {
@@ -58,6 +58,8 @@ interface SignUpProps {
 const SignUp: FC<SignUpProps> = ({ setSignInModalOpened, setModalClosed }) => {
   const setUser = useUserStore((state) => state.setUser);
 
+  const [errorMsg, setErrorMsg] = useState("");
+
   const { values, handleChange, handleBlur, handleSubmit, touched, errors } =
     useFormik({
       initialValues: {
@@ -72,15 +74,17 @@ const SignUp: FC<SignUpProps> = ({ setSignInModalOpened, setModalClosed }) => {
           .then(() => authLogin(data))
           .then(() => checkUserToken())
           .then((userDetails) => {
-            setUser({
-              userName: userDetails.userName,
-              status: userDetails.status,
-            });
-
+            setUser(userDetails);
+            setErrorMsg("");
             setModalClosed();
           })
           .catch((error) => {
-            console.log(error);
+            try {
+              const { message } = JSON.parse(error);
+              setErrorMsg(message);
+            } catch {
+              setErrorMsg(error.message);
+            }
           });
       },
     });
@@ -104,6 +108,7 @@ const SignUp: FC<SignUpProps> = ({ setSignInModalOpened, setModalClosed }) => {
             }
           />
         ))}
+        <div className="authentication__error">{errorMsg}</div>
         <HelperText
           text="Already signed up?"
           linkText="Go to login"

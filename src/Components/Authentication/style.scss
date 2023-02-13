@@ -9,7 +9,7 @@
     color: #4f4c6b;
     font-size: 24px;
     font-weight: 600;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 
   &__content {
@@ -21,6 +21,13 @@
   &__button {
     max-width: 300px;
     margin: 0 auto;
-    margin-top: 40px;
+    margin-top: 20px;
+  }
+
+  &__error{
+    color: #ba4d4d;
+    padding-bottom: 8px;
+    text-align: center;
+    font-weight: 700;
   }
 }

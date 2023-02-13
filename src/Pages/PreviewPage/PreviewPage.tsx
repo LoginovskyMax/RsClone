@@ -31,8 +31,8 @@ export default function PreviewPage() {
   const [rating, setRating] = useState(0);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [comment, setComment] = useState("");
-  const user = useUserStore((state) => state.user);
+  let [comment, setComment] = useState('');
+  const userName = useUserStore((state) => state.userName);
 
   const getGameData = () => {
     fetch(`http://localhost:8888/gameData/${gameName}`)
@@ -49,9 +49,9 @@ export default function PreviewPage() {
   };
 
   const addComment = () => {
-    const sendComment = { user, comment };
-    fetch(`http://localhost:8888/`, {
-      method: "POST",
+     let sendComment = {userName,comment}
+     fetch(`http://localhost:8888/`,{
+      method:'POST',
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },

@@ -1,11 +1,13 @@
 import { type FC } from "react";
 
 import { logoutUser } from "../../../controller/Auth";
+import type { userSetter } from "../../../store";
+import { nullUser } from "../../../store";
 import "./style.scss";
 
 interface UserProps {
   username: string;
-  setUser: (user: { userName: string | null; status: string[] }) => void;
+  setUser: userSetter;
 }
 
 const User: FC<UserProps> = ({ username, setUser }) => (
@@ -16,7 +18,7 @@ const User: FC<UserProps> = ({ username, setUser }) => (
       className="button"
       onClick={() => {
         logoutUser();
-        setUser({ userName: null, status: [] });
+        setUser(nullUser);
       }}
     >
       logout
