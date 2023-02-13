@@ -12,9 +12,20 @@ import "./style.scss";
 
 const Header: FC = () => {
   const [isModalClosed, setModalClosed] = useState(true);
+
   const userName = useUserStore((state) => state.userName);
 
   const setUser = useUserStore((state) => state.setUser);
+  // const [resetToken, setResetToken] = useState("");
+  const resetToken = new URLSearchParams(window.location.search).get(
+    "resetToken"
+  );
+
+  useEffect(() => {
+    if (resetToken) {
+      setModalClosed(false);
+    }
+  }, []);
 
   useEffect(() => {
     checkUserToken()

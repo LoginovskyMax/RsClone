@@ -5,12 +5,12 @@ import Modal from "../common/Modal";
 
 import ForgotPass from "./Forgot";
 import { PopupMessage } from "./Message/PopMessage";
+import ResetPass from "./Reset";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 
 interface AuthenticationModalProps {
   setModalClosed: () => void;
-  resetToken?: string;
 }
 
 const MSG_TIMEOUT = 2000;
@@ -24,8 +24,11 @@ enum authWindow {
 
 const AuthenticationModal: FC<AuthenticationModalProps> = ({
   setModalClosed,
-  resetToken,
 }) => {
+  const resetToken = new URLSearchParams(window.location.search).get(
+    "resetToken"
+  );
+
   const [windowVisible, setWindowVisible] = useState<authWindow>(
     resetToken ? authWindow.reset : authWindow.login
   );
@@ -36,6 +39,10 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
       if (!infoMgs) return;
       setInfoMsg(null);
       setModalClosed();
+
+      if (windowVisible === authWindow.reset) {
+        window.location.search = "";
+      }
     }, MSG_TIMEOUT);
   }, [infoMgs]);
 
@@ -72,6 +79,9 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
               setWindowVisible(authWindow.login);
             }}
           />
+        )}
+        {windowVisible === authWindow.reset && (
+          <ResetPass setInfoMsg={setInfoMsg} resetToken={resetToken ?? ""} />
         )}
       </Modal>
     </>

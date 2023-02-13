@@ -35,7 +35,7 @@ export async function resetpass(req, res) {
     mailService.sendResetPassEMail(
       searchUser.email,
       searchUser.userName,
-      `https://${process.env.HOST}/resetpass?resetToken=${newResetToken}`
+      `https://${process.env.HOST}?resetToken=${newResetToken}`
     );
 
     res.json({
@@ -69,6 +69,22 @@ export async function setNewPass(req, res) {
     res.json({ message: "Password has been changed!" });
   } catch (e) {
     res.status(400).json({ message: "Password Reset Error" });
+  }
+}
+
+// eslint-disable-next-line consistent-return
+export async function getNameForNewPass(req, res) {
+  try {
+    const { resetToken } = req.query;
+    const searchUser = await User.findOne({ resetToken });
+
+    if (!searchUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ userName: searchUser.userName });
+  } catch (e) {
+    res.status(400).json({ message: "Error: Cannot get userName" });
   }
 }
 

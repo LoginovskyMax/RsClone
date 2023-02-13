@@ -5,6 +5,7 @@ import type {
   NewUserData,
   ForgotUserData,
   MessageData,
+  NewPassData,
 } from "../data/authData";
 import {
   BACKEND_URL,
@@ -13,6 +14,7 @@ import {
   BACKEND_REG_PATH,
   BACKEND_FORGOT_PATH,
   COOKIE_TOKEN_VAL,
+  BACKEND_SETPASS_PATH,
 } from "../data/authData";
 
 export const getUserToken = (): string => {
@@ -105,6 +107,42 @@ export const createUser = async (data: NewUserData) =>
 export const forgotPassword = async (data: ForgotUserData) =>
   new Promise<MessageData>((resolve, reject) => {
     fetch(`${BACKEND_URL}${BACKEND_FORGOT_PATH}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      if (response.ok) {
+        resolve(response.json());
+      } else {
+        response
+          .json()
+          .then((errorMessage) => reject(errorMessage))
+          .catch((err) => reject(err.message));
+      }
+    });
+  });
+
+export const getUserNameByResetToken = async (resetToken: string) =>
+  new Promise<ForgotUserData>((resolve, reject) => {
+    fetch(`${BACKEND_URL}${BACKEND_FORGOT_PATH}?resetToken=${resetToken}`).then(
+      (response) => {
+        if (response.ok) {
+          resolve(response.json());
+        } else {
+          response
+            .json()
+            .then((errorMessage) => reject(errorMessage))
+            .catch((err) => reject(err.message));
+        }
+      }
+    );
+  });
+
+export const setNewPassword = async (data: NewPassData) =>
+  new Promise<MessageData>((resolve, reject) => {
+    fetch(`${BACKEND_URL}${BACKEND_SETPASS_PATH}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
