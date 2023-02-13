@@ -22,6 +22,8 @@ const Header: FC = () => {
         setUser({
           userName: userData.userName,
           status: userData.status,
+          banned: userData.banned,
+          email: userData.email,
         });
       })
       .catch((error) => {

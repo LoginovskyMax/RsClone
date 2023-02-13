@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import type { FC } from "react";
+import { FC, useState } from "react";
 import * as yup from "yup";
 
 import { authLogin, checkUserToken } from "../../../controller/Auth";
@@ -39,6 +39,8 @@ interface SignInProps {
 const SignIn: FC<SignInProps> = ({ setSignInModalOpened, setModalClosed }) => {
   const setUser = useUserStore((state) => state.setUser);
 
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
       initialValues: {
@@ -48,22 +50,21 @@ const SignIn: FC<SignInProps> = ({ setSignInModalOpened, setModalClosed }) => {
       validationSchema: schema,
       onSubmit: (data: Values) => {
         authLogin(data)
-          .then((resToken) => {
-            console.log("resToken", resToken);
+          .then((qwe) => {
+            console.log("qwe", qwe);
 
             return checkUserToken();
           })
           .then((userData) => {
-            console.log("userData", userData);
-            setUser({
-              userName: userData.userName,
-              status: userData.status,
-            });
-
+            setUser(userData);
             setModalClosed();
           })
           .catch((error) => {
-            console.log(error);
+            if (error.message) {
+              setErrorMsg(error.message);
+            } else {
+              setErrorMsg(error);
+            }
           });
       },
     });
@@ -87,6 +88,7 @@ const SignIn: FC<SignInProps> = ({ setSignInModalOpened, setModalClosed }) => {
             }
           />
         ))}
+        <p className="authentication__error">{errorMsg}</p>
         <HelperText
           text="Don't have an account?"
           linkText="Sign up"
