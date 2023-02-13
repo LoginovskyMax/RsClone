@@ -3,77 +3,58 @@ import type { FC } from "react";
 import { useState } from "react";
 import * as yup from "yup";
 
-import { authLogin, checkUserToken } from "../../../controller/Auth";
-import type { Values } from "../../../data/authData";
-import useUserStore from "../../../store";
+import { forgotPassword } from "../../../controller/Auth";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 import HelperText from "../HelperText";
 
 import "../style.scss";
+import { isEmail } from "./forgot.utils";
 
 const schema = yup.object().shape({
   userName: yup.string().min(3).max(30).required(),
-  password: yup.string().required(),
 });
 
 const inputsProps = [
   {
     key: "userName",
-    label: "Name",
-    placeholder: "Username",
+    label: "Name or Email",
+    placeholder: "Name or Email",
     type: "text",
-  },
-  {
-    key: "password",
-    label: "Password",
-    placeholder: "Password",
-    type: "password",
   },
 ] as const;
 
-interface SignInProps {
+interface ForgotPassProps {
   setSignInModalOpened: () => void;
-  setModalClosed: () => void;
-  setForgotOpened: () => void;
+  setInfoMsg: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const SignIn: FC<SignInProps> = ({
+const ForgotPass: FC<ForgotPassProps> = ({
   setSignInModalOpened,
-  setModalClosed,
-  setForgotOpened,
+  setInfoMsg,
 }) => {
-  const setUser = useUserStore((state) => state.setUser);
-
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
       initialValues: {
         userName: "",
-        password: "",
       },
       validationSchema: schema,
-      onSubmit: (data: Values) => {
-        authLogin(data)
-          .then(() => checkUserToken())
-          .then((userData) => {
-            setUser(userData);
-            setModalClosed();
-          })
-          .catch((error) => {
-            if (error.message) {
-              setErrorMsg(error.message);
-            } else {
-              setErrorMsg(error);
-            }
-          });
+      onSubmit: (data) => {
+        const newData = isEmail(data.userName)
+          ? { email: data.userName }
+          : { userName: data.userName };
+
+        forgotPassword(newData)
+          .then(({ message }) => setInfoMsg(message))
+          .catch(({ message }) => setErrorMsg(message));
       },
     });
 
   return (
     <div className="authentication">
-      <p className="authentication__title">Sign In</p>
+      <p className="authentication__title">Forgot password:</p>
       <form className="authentication__content" onSubmit={handleSubmit}>
         {inputsProps.map(({ key, label, type, placeholder }) => (
           <Input
@@ -92,21 +73,16 @@ const SignIn: FC<SignInProps> = ({
         ))}
         <p className="authentication__error">{errorMsg}</p>
         <HelperText
-          text=""
-          linkText="Forgot password?"
-          onClick={setForgotOpened}
-        />
-        <HelperText
-          text="Don't have an account?"
-          linkText="Sign up"
+          text="Remember you login and password?"
+          linkText="Go to login"
           onClick={setSignInModalOpened}
         />
         <Button className="authentication__button" type="submit">
-          Sign In
+          Send mail
         </Button>
       </form>
     </div>
   );
 };
 
-export default SignIn;
+export default ForgotPass;

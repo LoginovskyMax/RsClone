@@ -1,79 +1,76 @@
 import { useFormik } from "formik";
 import type { FC } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as yup from "yup";
 
-import { authLogin, checkUserToken } from "../../../controller/Auth";
-import type { Values } from "../../../data/authData";
-import useUserStore from "../../../store";
+import {
+  getUserNameByResetToken,
+  setNewPassword,
+} from "../../../controller/Auth";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
-import HelperText from "../HelperText";
 
 import "../style.scss";
 
 const schema = yup.object().shape({
-  userName: yup.string().min(3).max(30).required(),
   password: yup.string().required(),
+  confirmPassword: yup
+    .string()
+    .equals([yup.ref("password")], "Should be equal to password"),
 });
 
 const inputsProps = [
   {
-    key: "userName",
-    label: "Name",
-    placeholder: "Username",
-    type: "text",
-  },
-  {
     key: "password",
     label: "Password",
-    placeholder: "Password",
     type: "password",
+    placeholder: "Password",
+  },
+  {
+    key: "confirmPassword",
+    label: "Confirm password",
+    type: "password",
+    placeholder: "Confirm password",
   },
 ] as const;
 
-interface SignInProps {
-  setSignInModalOpened: () => void;
-  setModalClosed: () => void;
-  setForgotOpened: () => void;
+interface ResetPassProps {
+  setInfoMsg: React.Dispatch<React.SetStateAction<string | null>>;
+  resetToken: string;
 }
 
-const SignIn: FC<SignInProps> = ({
-  setSignInModalOpened,
-  setModalClosed,
-  setForgotOpened,
-}) => {
-  const setUser = useUserStore((state) => state.setUser);
-
+const ResetPass: FC<ResetPassProps> = ({ setInfoMsg, resetToken }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    getUserNameByResetToken(resetToken).then((resp) => {
+      const resUserName = resp.userName ?? "";
+      setUserName(resUserName);
+    });
+  }, []);
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
       initialValues: {
         userName: "",
         password: "",
+        confirmPassword: "",
       },
       validationSchema: schema,
-      onSubmit: (data: Values) => {
-        authLogin(data)
-          .then(() => checkUserToken())
-          .then((userData) => {
-            setUser(userData);
-            setModalClosed();
-          })
-          .catch((error) => {
-            if (error.message) {
-              setErrorMsg(error.message);
-            } else {
-              setErrorMsg(error);
-            }
-          });
+      onSubmit: (data) => {
+        const { password } = data;
+
+        console.log({ resetToken, password });
+        setNewPassword({ resetToken, password })
+          .then(({ message }) => setInfoMsg(message))
+          .catch(({ message }) => setErrorMsg(message));
       },
     });
 
   return (
     <div className="authentication">
-      <p className="authentication__title">Sign In</p>
+      <p className="authentication__title">Set password for {userName}:</p>
       <form className="authentication__content" onSubmit={handleSubmit}>
         {inputsProps.map(({ key, label, type, placeholder }) => (
           <Input
@@ -91,22 +88,12 @@ const SignIn: FC<SignInProps> = ({
           />
         ))}
         <p className="authentication__error">{errorMsg}</p>
-        <HelperText
-          text=""
-          linkText="Forgot password?"
-          onClick={setForgotOpened}
-        />
-        <HelperText
-          text="Don't have an account?"
-          linkText="Sign up"
-          onClick={setSignInModalOpened}
-        />
         <Button className="authentication__button" type="submit">
-          Sign In
+          Set Password
         </Button>
       </form>
     </div>
   );
 };
 
-export default SignIn;
+export default ResetPass;

@@ -11,6 +11,7 @@ import {
   register,
   resetpass,
   setNewPass,
+  getNameForNewPass,
   setUserStatus,
   banUser,
 } from "./controllers/user-controller.mjs";
@@ -24,6 +25,7 @@ export const router = new Router();
 router.use(cors());
 router.post("/forgotpass", jsonParser, resetpass); // {userName, email}
 router.post("/setpass", jsonParser, setNewPass); // {password, resetToken}
+router.get("/setpass", jsonParser, getNameForNewPass); // {?resetToken=...}
 router.post("/registr", jsonParser, register); // { userName, email, password }
 router.post("/login", jsonParser, login); // { userName, password }
 router.get("/users", adminMiddleware(["admin", "moderator"]), getUsers);
