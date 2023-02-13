@@ -6,6 +6,8 @@ export const BACKEND_MYUSER_PATH = "/auth/myuser/";
 
 export const BACKEND_REG_PATH = "/auth/registr/";
 
+export const BACKEND_FORGOT_PATH = "/auth/forgotpass/";
+
 export const COOKIE_TOKEN_VAL = "userToken";
 
 export interface Values {
@@ -29,4 +31,13 @@ export interface NewUserData {
   userName: string;
   email: string;
   password: string;
+}
+
+export interface ForgotUserData {
+  userName?: string;
+  email?: string;
+}
+
+export interface MessageData {
+  message: string;
 }

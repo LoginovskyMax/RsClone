@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
-import { FC, useState } from "react";
+import type { FC } from "react";
+import { useState } from "react";
 import * as yup from "yup";
 
 import {
@@ -53,9 +54,14 @@ const inputsProps = [
 interface SignUpProps {
   setSignInModalOpened: () => void;
   setModalClosed: () => void;
+  setForgotOpened: () => void;
 }
 
-const SignUp: FC<SignUpProps> = ({ setSignInModalOpened, setModalClosed }) => {
+const SignUp: FC<SignUpProps> = ({
+  setSignInModalOpened,
+  setModalClosed,
+  setForgotOpened,
+}) => {
   const setUser = useUserStore((state) => state.setUser);
 
   const [errorMsg, setErrorMsg] = useState("");
@@ -109,6 +115,11 @@ const SignUp: FC<SignUpProps> = ({ setSignInModalOpened, setModalClosed }) => {
           />
         ))}
         <div className="authentication__error">{errorMsg}</div>
+        <HelperText
+          text=""
+          linkText="Forgot password?"
+          onClick={setForgotOpened}
+        />
         <HelperText
           text="Already signed up?"
           linkText="Go to login"

@@ -40,7 +40,6 @@ export async function resetpass(req, res) {
 
     res.json({
       message: `E-mail sended to ${searchUser.email}`,
-      resetToken: searchUser.resetToken,
     });
   } catch (e) {
     res.status(400).json({ message: "Reset Error" });
