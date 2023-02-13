@@ -89,6 +89,14 @@ export async function register(req, res) {
       return res.status(400).json({ message: "User is allredy registred" });
     }
 
+    const searchUserByEmail = await User.findOne({ email });
+
+    if (searchUserByEmail) {
+      return res
+        .status(400)
+        .json({ message: "User with current email is allredy registred" });
+    }
+
     const hashPass = bcrypt.hashSync(password, 7);
     const userStatus = await UserStatus.findOne({ value: "admin" });
     const resetToken = uuidv4();
