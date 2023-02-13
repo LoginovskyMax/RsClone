@@ -8,7 +8,7 @@ import { FieldComp } from "../../Components/SeaBattle/FieldComp";
 export const SeaBattle = () => {
   const [myBoard, setMyBoard] = useState(new Board())
   const [enemyBoard, setEnemyBoard] = useState(new Board())
-  const user = useUserStore((state) => state.user);
+  const user = useUserStore((state) => state.userName);
   const [enemyName, setEnemyName] = useState('')
   const [shipsReady, setShipsReady] = useState(false)
   const [canShoot, setCanShoot] = useState(false)
