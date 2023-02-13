@@ -7,7 +7,7 @@ import {
   COOKIE_TOKEN_VAL,
 } from "../data/authData";
 
-const getUserToken = (): string => {
+export const getUserToken = (): string => {
   const token = document.cookie
       .split(";")
       .find((val) => val.split("=")[0].trim() === COOKIE_TOKEN_VAL);
