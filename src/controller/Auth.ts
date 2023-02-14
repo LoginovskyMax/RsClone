@@ -1,4 +1,4 @@
-import type {
+import {
   TokenData,
   UserData,
   Values,
@@ -6,6 +6,7 @@ import type {
   ForgotUserData,
   MessageData,
   NewPassData,
+  FETCH_CORRECT_ERROR,
 } from "../data/authData";
 import {
   BACKEND_URL,
@@ -15,6 +16,7 @@ import {
   BACKEND_FORGOT_PATH,
   COOKIE_TOKEN_VAL,
   BACKEND_SETPASS_PATH,
+  FETCH_ERROR,
 } from "../data/authData";
 
 export const getUserToken = (): string => {
@@ -112,16 +114,24 @@ export const forgotPassword = async (data: ForgotUserData) =>
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      if (response.ok) {
-        resolve(response.json());
-      } else {
-        response
-          .json()
-          .then((errorMessage) => reject(errorMessage))
-          .catch((err) => reject(err.message));
-      }
-    });
+    })
+      .then((response) => {
+        if (response.ok) {
+          resolve(response.json());
+        } else {
+          response
+            .json()
+            .then((errorMessage) => reject(errorMessage))
+            .catch((err) => reject(err.message));
+        }
+      })
+      .catch((err) => {
+        if (err.message === FETCH_ERROR) {
+          err.message = FETCH_CORRECT_ERROR;
+        }
+
+        reject(err);
+      });
   });
 
 export const getUserNameByResetToken = async (resetToken: string) =>

@@ -12,6 +12,10 @@ export const BACKEND_SETPASS_PATH = "/auth/setpass/";
 
 export const COOKIE_TOKEN_VAL = "userToken";
 
+export const FETCH_ERROR = "Failed to fetch";
+
+export const FETCH_CORRECT_ERROR = "Too frequent requests";
+
 export interface Values {
   userName: string;
   password: string;
