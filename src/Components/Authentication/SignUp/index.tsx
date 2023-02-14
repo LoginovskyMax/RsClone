@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
-import { FC, useState } from "react";
+import type { FC } from "react";
+import { useState } from "react";
 import * as yup from "yup";
 
 import {

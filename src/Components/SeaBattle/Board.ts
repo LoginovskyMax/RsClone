@@ -1,5 +1,5 @@
 import { Ship, Miss, Damage, Mark } from "./Ship";
-
+// eslint disable max-classes-per-file
 interface Marked {
   color: string;
   id: number;
@@ -30,10 +30,10 @@ export class Board {
   cells: Cell[][] = [];
 
   initCells() {
-    for (let i = 0; i < 10; i+=1) {
+    for (let i = 0; i < 10; i += 1) {
       const row: Cell[] = [];
 
-      for (let j = 0; j < 10; j+=1) {
+      for (let j = 0; j < 10; j += 1) {
         row.push(
           new Cell(this, j, i, {
             color: "",
@@ -50,6 +50,7 @@ export class Board {
   getCopy() {
     const newBoard = new Board();
     newBoard.cells = this.cells;
+
     return newBoard;
   }
 
@@ -68,8 +69,8 @@ export class Board {
   damage(x: number, y: number) {
     new Damage(this.getCell(x, y));
   }
-  
-  empty(x: number, y: number){
-    new Mark(this.getCell(x, y))
+
+  empty(x: number, y: number) {
+    new Mark(this.getCell(x, y));
   }
 }

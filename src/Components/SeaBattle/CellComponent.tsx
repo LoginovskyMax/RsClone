@@ -1,3 +1,4 @@
+import fire from "../../assets/seaBattle/fire.png";
 import mine from "../../assets/seaBattle/mine.png";
 
 import type { Cell } from "./Board";
@@ -5,7 +6,7 @@ import styles from "./Cell.module.scss";
 
 interface IProps {
   cell: Cell;
-  addMark: Function;
+  addMark: (x: number, y: number) => void;
 }
 
 export const CellComponent = ({ cell, addMark }: IProps) => {
@@ -14,7 +15,8 @@ export const CellComponent = ({ cell, addMark }: IProps) => {
 
   return (
     <div className={classes.join(" ")} onClick={() => addMark(cell.x, cell.y)}>
-      {cell.mark.name === "miss" && <img src={mine} width="20" alt="mine"/>}
+      {cell.mark.name === "miss" && <img src={mine} width="13" alt="mine" />}
+      {cell.mark.name === "damage" && <img src={fire} width="16" alt="mine" />}
     </div>
   );
 };

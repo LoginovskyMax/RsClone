@@ -1,16 +1,14 @@
 /* eslint-disable */
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../Components/common/Button";
 import { Board } from "../../Components/SeaBattle/Board";
 import { FieldComp } from "../../Components/SeaBattle/FieldComp";
 import { InfoComp } from "../../Components/SeaBattle/InfoComp";
-import { IGameData } from "../../Components/SeaBattle/Interfaces";
 import useUserStore from "../../store";
 import styles from "./SeaBattle.module.scss";
 import { webSocketController, wsGameData  } from './web-socket/WebSoket';
 import { GameData } from "./web-socket/websocketData";
-
 
 export const SeaBattle = () => {
   const params = useParams();
@@ -27,7 +25,6 @@ export const SeaBattle = () => {
   const [otherData, setOtherData] = useState<GameData>()
   let [count, setCount] = useState(0)
   const [serverError, setServerError] = useState('')
-  const serverErr = useRef(false)
 
   const restart = () => {
     const newBoard = new Board();
@@ -77,31 +74,6 @@ export const SeaBattle = () => {
     const newBoard = board.getCopy()
     setBoard(newBoard)
   }
-  useEffect(() => {
-    if(gameData){
-      const  type  = gameData.type
-      switch (type) {
-        case "message": 
-          const message = gameData.message
-          console.log(gameData);
-          serverErr.current = false
-          setServerError(message as string)
-          setShipsReady(false)
-        break
-        case "game-data":
-          const data   = gameData.data
-          setOtherData(data as GameData)
-          const {enemyName, enemyField, yourField , player , winner} = (data as GameData)
-          findCells(enemyField,enemyBoard,setEnemyBoard) 
-          findCells(yourField,myBoard,setMyBoard) 
-          setEnemyName(enemyName as string)
-          if(player && !winner)setCanShoot(player?.isLead)
-          setServerError('')
-          
-        break 
-      }
-    }
-}, [gameData])
 
   const ready = () => {
     const request = {
@@ -109,9 +81,7 @@ export const SeaBattle = () => {
       data:{gameId}
     }
     webSocketController.send(JSON.stringify(request))
-    
     setShipsReady(true)
-    
   }
 
   const startGame = ()=>{
@@ -124,9 +94,42 @@ export const SeaBattle = () => {
     setCanShoot(true)
   }
 
+  const exitGame = () => {
+    const request = {
+      type:"leave",
+      data:{gameId}
+    }
+    webSocketController.send(JSON.stringify(request))
+    navigate('/SeaBattle')
+  }
+
+  useEffect(() => {
+    if(gameData){
+      const  type  = gameData.type
+      switch (type) {
+        case "message": 
+          const message = gameData.message
+          setServerError(message as string)
+          setShipsReady(false)
+        break
+        case "game-data":
+          const data   = gameData.data
+          setOtherData(data as GameData)
+          const {enemyName, enemyField, yourField , player , winner} = (data as GameData)
+          findCells(enemyField,enemyBoard,setEnemyBoard) 
+          findCells(yourField,myBoard,setMyBoard) 
+          setEnemyName(enemyName as string)
+          if(player && !winner)setCanShoot(player?.isLead)
+          setServerError('')
+        break 
+      }
+    }
+}, [gameData])
+
   useEffect(() => {
     webSocketController.addMessageListener(setGameData)
     restart();
+    return () => webSocketController.deleteAllCallbacks();
   }, []);
 
   return (
@@ -160,6 +163,7 @@ export const SeaBattle = () => {
       {serverError!=='' && <p>{serverError}</p>}
       {otherData && ((otherData.isMainUser && !start) && <Button onClick={startGame} 
                                                      disabled={!otherData.isEnemyReady}>Старт</Button>)}
+      <Button onClick={exitGame}>Выйти</Button>
     </div>
   );
 };

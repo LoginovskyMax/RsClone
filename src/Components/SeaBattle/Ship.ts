@@ -1,7 +1,9 @@
 import type { Cell } from "./Board";
 
+// eslint disable max-classes-per-file
 export class Mark {
   cell: Cell;
+
   constructor(cell: Cell) {
     this.cell = cell;
     this.cell.mark.color = "";
@@ -9,13 +11,15 @@ export class Mark {
     this.cell.mark.name = "";
   }
 }
+
 export class Ship extends Mark {
   constructor(cell: Cell) {
     super(cell);
     this.cell.mark.color = "blue";
-    this.cell.mark.name = "ship"; 
+    this.cell.mark.name = "ship";
   }
 }
+
 export class Miss extends Mark {
   constructor(cell: Cell) {
     super(cell);

@@ -1,9 +1,12 @@
+import { getUserToken } from "../../../controller/Auth";
+import useUserStore from "../../../store";
+
 import type { GameData } from "./websocketData";
 
 export interface wsGameData {
   type: string;
   data: GameData | string | null;
-  message?:string
+  message?: string;
 }
 
 export type wsCallback = (res: wsGameData) => void;
@@ -15,10 +18,9 @@ class WebSocketController {
 
   private callbacks: Array<wsCallback> = [];
 
-  private token:string = ''
+  private token = "";
 
-  private user:string = ''
-
+  private user = "";
 
   getGameId() {
     return this.gameId;
@@ -61,24 +63,30 @@ class WebSocketController {
           this.gameId = gameId;
           break;
       }
-
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
     }
-  }
+  };
 
   private wsOpenHandler = () => {
+    this.token = getUserToken();
+    const newUser = useUserStore((state) => state.userName);
+
+    if (newUser !== null) {
+      this.user = newUser;
+    }
+
     if (this.token) {
       try {
         const request = {
           type: "ws-connect",
           data: {
             player: this.user,
-            token:this.token,
+            token: this.token,
           },
         };
-     
+
         this.webSocket?.send(JSON.stringify(request));
       } catch (err) {
         // eslint-disable-next-line no-console
@@ -108,12 +116,12 @@ class WebSocketController {
     }
   }
 
-  setToken(token:string){
-    this.token = token
+  setToken(token: string) {
+    this.token = token;
   }
 
-  setUser(user:string){
-    this.user = user
+  setUser(user: string) {
+    this.user = user;
   }
 }
 

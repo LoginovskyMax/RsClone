@@ -31,7 +31,7 @@ export default function PreviewPage() {
   const [rating, setRating] = useState(0);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  let [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const userName = useUserStore((state) => state.userName);
 
   const getGameData = () => {
@@ -49,9 +49,9 @@ export default function PreviewPage() {
   };
 
   const addComment = () => {
-     let sendComment = {userName,comment}
-     fetch(`http://localhost:8888/`,{
-      method:'POST',
+    const sendComment = { userName, comment };
+    fetch(`http://localhost:8888/`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },

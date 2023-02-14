@@ -32,13 +32,16 @@ const getUserDataByToken = async (): Promise<UserData> =>
       .then((response) => {
         console.log(response.ok);
         if (response.ok) {
-          response.json().then((data) => resolve(data));
+          response.json()
+            .then((data) => resolve(data));
         } else {
           response.json()
             .then((errorMessage) => reject(errorMessage))
             .catch((err) => reject(err.message));
         }
-      })
+      }
+      )
+      .catch((err)=> console.log(err))
   })
 
 export const checkUserToken = async () =>
@@ -65,7 +68,8 @@ export const authLogin = async (data: Values) =>
     })
       .then((response) => {
         if (response.ok) {
-          response.json().then((data: TokenData) => {
+          response.json()
+            .then((data: TokenData) => {
             document.cookie = `userToken=${data.token}`;
             resolve(data);
           });

@@ -1,4 +1,5 @@
 .board{
+    font-family: 'Ceviche One', cursive;
     display: flex;
     width: 302px;
     flex-wrap: wrap;
@@ -8,4 +9,29 @@
 }
 .can_shoot{
     box-shadow: 0 0 5px 6px green;
+}
+.letters{
+    font-family: 'Ceviche One', cursive;
+    margin-left: 31px;
+    display: flex;
+    width: 302px;
+    &_item{
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+.horizontal{
+    display: flex;
+}
+.numbers{
+    font-family: 'Ceviche One', cursive;
+    &_item{
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
