@@ -27,6 +27,9 @@ dl,
 dd {
   margin: 0;
 }
-.App{
+
+.App {
   min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
 }
