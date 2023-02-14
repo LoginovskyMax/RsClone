@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { authLogin, checkUserToken } from "../../../controller/Auth";
 import type { Values } from "../../../data/authData";
 import useUserStore from "../../../store";
+import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 import HelperText from "../HelperText";
@@ -47,6 +48,8 @@ const SignIn: FC<SignInProps> = ({
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  const { setStatus } = useStatusStore();
+
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
       initialValues: {
@@ -55,13 +58,17 @@ const SignIn: FC<SignInProps> = ({
       },
       validationSchema: schema,
       onSubmit: (data: Values) => {
+        setStatus({ isLoading: true, message: "" });
         authLogin(data)
           .then(() => checkUserToken())
           .then((userData) => {
             setUser(userData);
+            setStatus({ isLoading: false, message: "You are logged in" });
             setModalClosed();
           })
           .catch((error) => {
+            setStatus({ isLoading: false, message: "" });
+
             if (error.message) {
               setErrorMsg(error.message);
             } else {

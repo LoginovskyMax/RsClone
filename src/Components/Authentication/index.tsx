@@ -1,10 +1,10 @@
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 
+import useStatusStore from "../../store/load-status";
 import Modal from "../common/Modal";
 
 import ForgotPass from "./Forgot";
-import { PopupMessage } from "./Message/PopMessage";
 import ResetPass from "./Reset";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
@@ -12,8 +12,6 @@ import SignUp from "./SignUp";
 interface AuthenticationModalProps {
   setModalClosed: () => void;
 }
-
-const MSG_TIMEOUT = 2000;
 
 enum authWindow {
   login,
@@ -32,59 +30,54 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
   const [windowVisible, setWindowVisible] = useState<authWindow>(
     resetToken ? authWindow.reset : authWindow.login
   );
-  const [infoMgs, setInfoMsg] = useState<string | null>(null);
+
+  const { message } = useStatusStore();
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!infoMgs) return;
-      setInfoMsg(null);
+    if (message) {
       setModalClosed();
 
       if (windowVisible === authWindow.reset) {
         window.location.search = "";
       }
-    }, MSG_TIMEOUT);
-  }, [infoMgs]);
+    }
+  }, [message]);
 
   return (
-    <>
-      <PopupMessage message={infoMgs} />
-      <Modal setModalClosed={setModalClosed} title="Authentication">
-        {windowVisible === authWindow.login && (
-          <SignIn
-            setModalClosed={setModalClosed}
-            setSignInModalOpened={() => {
-              setWindowVisible(authWindow.registr);
-            }}
-            setForgotOpened={() => {
-              setWindowVisible(authWindow.forgot);
-            }}
-          />
-        )}
-        {windowVisible === authWindow.registr && (
-          <SignUp
-            setModalClosed={setModalClosed}
-            setSignInModalOpened={() => {
-              setWindowVisible(authWindow.login);
-            }}
-            setForgotOpened={() => {
-              setWindowVisible(authWindow.forgot);
-            }}
-          />
-        )}
-        {windowVisible === authWindow.forgot && (
-          <ForgotPass
-            setInfoMsg={setInfoMsg}
-            setSignInModalOpened={() => {
-              setWindowVisible(authWindow.login);
-            }}
-          />
-        )}
-        {windowVisible === authWindow.reset && (
-          <ResetPass setInfoMsg={setInfoMsg} resetToken={resetToken ?? ""} />
-        )}
-      </Modal>
-    </>
+    <Modal setModalClosed={setModalClosed} title="Authentication">
+      {windowVisible === authWindow.login && (
+        <SignIn
+          setModalClosed={setModalClosed}
+          setSignInModalOpened={() => {
+            setWindowVisible(authWindow.registr);
+          }}
+          setForgotOpened={() => {
+            setWindowVisible(authWindow.forgot);
+          }}
+        />
+      )}
+      {windowVisible === authWindow.registr && (
+        <SignUp
+          setModalClosed={setModalClosed}
+          setSignInModalOpened={() => {
+            setWindowVisible(authWindow.login);
+          }}
+          setForgotOpened={() => {
+            setWindowVisible(authWindow.forgot);
+          }}
+        />
+      )}
+      {windowVisible === authWindow.forgot && (
+        <ForgotPass
+          setSignInModalOpened={() => {
+            setWindowVisible(authWindow.login);
+          }}
+        />
+      )}
+      {windowVisible === authWindow.reset && (
+        <ResetPass resetToken={resetToken ?? ""} />
+      )}
+    </Modal>
   );
 };
 

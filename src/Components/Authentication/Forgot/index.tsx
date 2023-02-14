@@ -1,11 +1,10 @@
-import { error } from 'firebase-functions/logger';
 import { useFormik } from "formik";
 import type { FC } from "react";
 import { useState } from "react";
 import * as yup from "yup";
 
 import { forgotPassword } from "../../../controller/Auth";
-import useStatusStore from '../../../store/load-status';
+import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 import HelperText from "../HelperText";
@@ -28,14 +27,11 @@ const inputsProps = [
 
 interface ForgotPassProps {
   setSignInModalOpened: () => void;
-  setInfoMsg: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const ForgotPass: FC<ForgotPassProps> = ({
-  setSignInModalOpened,
-  setInfoMsg,
-}) => {
+const ForgotPass: FC<ForgotPassProps> = ({ setSignInModalOpened }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const { setStatus } = useStatusStore();
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
@@ -54,13 +50,10 @@ const ForgotPass: FC<ForgotPassProps> = ({
         forgotPassword(newData)
           .then(({ message }) => {
             setStatus({ isLoading: false, message });
-            setInfoMsg(message); // TODO: Change to store
           })
           .catch((err) => {
-            console.log("ERROR!!!!!!");
-            console.log(err);
-            setStatus({ isLoading: false, message: err.message });
-            setErrorMsg(err.message); // TODO: Change to store
+            setStatus({ isLoading: false, message: "" });
+            setErrorMsg(err.message);
           });
       },
     });

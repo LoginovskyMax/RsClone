@@ -7,6 +7,7 @@ import {
   getUserNameByResetToken,
   setNewPassword,
 } from "../../../controller/Auth";
+import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 
@@ -35,28 +36,29 @@ const inputsProps = [
 ] as const;
 
 interface ResetPassProps {
-  setInfoMsg: React.Dispatch<React.SetStateAction<string | null>>;
   resetToken: string;
 }
 
-const ResetPass: FC<ResetPassProps> = ({ setInfoMsg, resetToken }) => {
+const ResetPass: FC<ResetPassProps> = ({ resetToken }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [userName, setUserName] = useState("");
 
+  const { setStatus } = useStatusStore();
+
   useEffect(() => {
+    setStatus({ isLoading: true, message: "" });
     getUserNameByResetToken(resetToken)
       .then((resp) => {
-        console.log(resp);
         const resUserName = resp.userName ?? "";
-        // if("")
         setUserName(resUserName);
+        setStatus({ isLoading: false, message: "" });
       })
       .catch((error) => {
         try {
           const { message } = JSON.parse(error);
-          setInfoMsg(message);
+          setStatus({ isLoading: false, message });
         } catch {
-          setInfoMsg(error.message);
+          setStatus({ isLoading: false, message: error.message });
         }
       });
   }, []);
@@ -70,11 +72,10 @@ const ResetPass: FC<ResetPassProps> = ({ setInfoMsg, resetToken }) => {
       },
       validationSchema: schema,
       onSubmit: (data) => {
+        setStatus({ isLoading: true, message: "" });
         const { password } = data;
-
-        console.log({ resetToken, password });
         setNewPassword({ resetToken, password })
-          .then(({ message }) => setInfoMsg(message))
+          .then(({ message }) => setStatus({ isLoading: false, message }))
           .catch(({ message }) => setErrorMsg(message));
       },
     });

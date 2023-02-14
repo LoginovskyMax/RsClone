@@ -17,7 +17,7 @@ export async function resetpass(req, res) {
     const { userName, email } = req.body;
 
     if (!userName && !email) {
-      res.status(401).json({ message: "Wrong Input Data" });
+      return res.status(401).json({ message: "Wrong Input Data" });
     }
 
     const searchUser = userName
@@ -25,7 +25,7 @@ export async function resetpass(req, res) {
       : await User.findOne({ email: email.toLocaleLowerCase() });
 
     if (!searchUser) {
-      res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const newResetToken = uuidv4();
