@@ -1,7 +1,8 @@
 .main {
-    border: 1px solid orangered;
+    border: 1px solid #7e6dd1;
+    border-radius: 10px;
     width: 100%;
-    padding: 30px;
+    padding: 30px 0px;
     display: flex;
     gap: 10px;
     flex-direction: column;
@@ -15,5 +16,13 @@
         background-color: rgba(255, 68, 0, 0.459);
         cursor: pointer;
      }
+    }
+    &_header{
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+    &_icon{
+        cursor: pointer;
     }
 }

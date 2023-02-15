@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from './CreateGamesList.module.scss'
+import { faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IGames {
 gameId:string
@@ -9,7 +11,7 @@ player:string
 playersInGame:number
 }
 interface IProps {
-    gameName:string
+    gameName:string|undefined
     joinGame:(id:string)=>void
 }
 
@@ -17,6 +19,7 @@ export const CreateGamesList = ({gameName, joinGame}:IProps) => {
   const [gamesArr, setGamesArr] = useState<IGames[]>([])
 
   const getGames = () => {
+ 
     fetch(`https://rsgames.online:8888/games/list?name=${gameName}`)
       .then<IGames[]>(response=>response.json())
       .then(data=>{
@@ -30,16 +33,21 @@ export const CreateGamesList = ({gameName, joinGame}:IProps) => {
   },[])
   return (
     <div className={styles.main}>
-        <h2>Список доступных игр </h2>
-       
-        {gamesArr.map((game)=><div key={game.gameId} 
+        <h2 className={styles.main_header}>Список доступных игр 
+        <FontAwesomeIcon
+            icon={faRefresh}
+            onClick={getGames}
+            className={styles.main_icon}
+         />
+        </h2>
+        {gamesArr.length!==0 ? gamesArr.map((game)=><div key={game.gameId} 
                                    className={styles.main_item}
                                    onClick={()=>joinGame(game.gameId)}>
         <p>Создал : {game.player}</p>
         <p>В игре : {game.maxPlayers} / {game.playersInGame}</p>
-       </div>)}
-     
-       <button onClick={getGames}>Refresh</button>
+       </div>)
+       :<p>Созданных игр пока нет</p>}
+      
     </div>
   )
 }

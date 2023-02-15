@@ -10,12 +10,30 @@
         gap: 30px;
         padding-top: 30px;
         margin: 0 auto;
+        width: 100%;
     }
     &_conteiner{
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 20px;
+    }
+    &_text{
+        padding: 10px;
+    }
+    &_radio{
+        display: flex;
+        gap: 30px;
+    }
+    &_label{
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 15px;
+        &:hover {
+            background-image: linear-gradient(to right, #667eea, #764ba2);
+        }
     }
 }
 .global{
@@ -24,4 +42,5 @@
     flex-direction: column;
     gap: 20px;
     font-family: 'Ceviche One', cursive;
+    margin: 0 auto;
 }
