@@ -6,8 +6,8 @@ name: gamescicd
 on:
   push:
     branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
+  # pull_request:
+  #   branches: [ "develop" ]
 
 jobs:
   build:
@@ -34,4 +34,5 @@ jobs:
     - run: npm run build
     - run: rm -rf /var/www/html/*
     - run: cp -rf /home/worker/_build/RsClone/RsClone/dist/* /var/www/html/
+    - run: cp -rf /root/test-img/* /var/www/html/images/
     - run: sudo systemctl start rsback

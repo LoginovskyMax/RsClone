@@ -20,10 +20,7 @@ export async function getCommentsForGame(name) {
   );
 
   return comments.filter(
-    (comment) =>
-      (name ? name === comment.gameName : true) &&
-      comment.userName &&
-      comment.gameName
+    (comment) => (name ? name === comment.gameName : true) && comment.userName
   );
 }
 

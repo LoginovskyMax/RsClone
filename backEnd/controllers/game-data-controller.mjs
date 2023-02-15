@@ -50,10 +50,25 @@ export async function getGameData(req, res) {
     const { name } = req.query;
     const game = await GameData.findOne({ name });
 
+    const raiting = await getGameRaiting(name);
+    const comments = await getCommentsForGame(name);
+
     if (!game) {
       res.status(404).json({ message: "Game not found!" });
     } else {
-      res.json(game);
+      const gameRes = {
+        // eslint-disable-next-line no-underscore-dangle
+        _id: game._id,
+        name: game.name,
+        image: game.image,
+        descriptionRu: game.descriptionRu,
+        descriptionEn: game.descriptionEn,
+        rulesRu: game.rulesRu,
+        rulesEn: game.rulesEn,
+        raiting,
+        comments,
+      };
+      res.json(gameRes);
     }
   } catch (err) {
     res.status(400).json({ message: "Failed to get game" });
