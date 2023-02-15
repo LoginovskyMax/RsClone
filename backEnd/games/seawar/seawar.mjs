@@ -5,6 +5,7 @@ import { SeaWarPlayer } from "../data/seawar-player.mjs";
 import { GAME, SEAWAR } from "../variables.mjs";
 
 import { checkMatrix } from "./checker.mjs";
+
 // eslint-disable-next-line import/no-cycle
 import {
   checkForKill,
