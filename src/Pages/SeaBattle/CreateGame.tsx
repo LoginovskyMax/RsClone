@@ -21,27 +21,32 @@ export const CreateGame = () => {
     }
   };
 
-  const createGame = (create: boolean) => {
-    let request: { type: string; data: { gameId: string } | null };
-
-    if (create) {
-      request = {
+  const createGame = () => {
+     const  request = {
         type: "create",
         data: null,
       };
-    } else {
-      const gameId = webSocketController.getGameId();
-      request = {
-        type: "join",
-        data: { gameId },
-      };
-    }
-
     webSocketController.send(JSON.stringify(request));
   };
 
+  const joinGame = (id:string) => {
+    console.log(id);
+    if(inviteGame){
+      const request = {
+        type: "join",
+        data: { gameId:id },
+      };
+      webSocketController.send(JSON.stringify(request));
+    }
+  }
+
   useEffect(() => {
-    webSocketController.connect();
+    console.log(user);
+    if(user!==null){
+      webSocketController.setUser(user)
+      webSocketController.connect();
+    }
+   
     // подключаемся к игре, если есть квери параметры с id игры
     const queryParams = new URLSearchParams(location.search);
     const gameId = queryParams.get("gameId");
@@ -78,16 +83,14 @@ export const CreateGame = () => {
           onChange={() => setInviteGame(true)}
         />
       </div>
-      {inviteGame ? (
-        <Button onClick={() => createGame(false)}>Войти</Button>
-      ) : (
-        <Button onClick={() => createGame(true)}>Создать игру</Button>
+      {!inviteGame && (
+        <Button onClick={() => createGame()}>Создать игру</Button>
       )}
       {/* <input type="text" placeholder="token" onChange={(e)=>setToken(e.target.value)}/>
         <input type="text" placeholder="test user" onChange={(e)=>setUser(e.target.value)}/> */}
       <Button onClick={startGame}>Начать</Button>
       <div>creating games</div>
-      <CreateGamesList gameName='seaBatle'></CreateGamesList>
+      <CreateGamesList gameName='SeaWar' joinGame={joinGame}></CreateGamesList>
     </div>
   );
 };
