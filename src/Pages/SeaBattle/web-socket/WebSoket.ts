@@ -1,4 +1,5 @@
 import { getUserToken } from "../../../controller/Auth";
+
 import type { GameData } from "./websocketData";
 
 export interface wsGameData {

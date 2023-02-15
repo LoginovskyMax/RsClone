@@ -38,8 +38,6 @@ app.use(cors());
 const options = {
   key: fs.readFileSync(sslKey, "utf8"),
   cert: fs.readFileSync(sslSrt, "utf8"),
-  requestCert: true,
-  rejectUnauthorized: true,
 };
 
 await mongoose.connect(
