@@ -8,15 +8,22 @@ export async function getCommentsForGame(name) {
       await Comment.find()
     ).map(async (comment) => {
       const { text, raiting, date } = comment;
-      const { userName } = await User.findById(comment.user);
-      const { name: gameName } = await GameData.findById(comment.game);
+      const user = await User.findById(comment.user);
+      const { userName } = user || { userName: "" };
+      const game = await GameData.findById(comment.game);
+      const { name: gameName } = game || { name: "" };
+
+      console.log({ userName, gameName, text, raiting, date });
 
       return { userName, gameName, text, raiting, date };
     })
   );
 
-  return comments.filter((comment) =>
-    name ? name === comment.gameName : true
+  return comments.filter(
+    (comment) =>
+      (name ? name === comment.gameName : true) &&
+      comment.userName &&
+      comment.gameName
   );
 }
 
