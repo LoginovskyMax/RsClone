@@ -32,7 +32,7 @@ class WebSocketController {
 
   connect() {
     if (!this.webSocket) {
-      this.webSocket = new WebSocket("ws://rsgames.online:8001/game/seawar");
+      this.webSocket = new WebSocket("wss://rsgames.online:8001/game/seawar");
 
       if (this.webSocket) {
         this.webSocket.onopen = this.wsOpenHandler;
