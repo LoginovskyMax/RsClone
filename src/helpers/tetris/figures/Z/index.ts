@@ -1,8 +1,10 @@
+// eslint-disable-next-line import/no-cycle
 import { Figure } from "..";
 import { ITEM_SIZE } from "../../constants";
 import type { Coordinates } from "../../movement";
+import type { IFigureNewGetter } from "../IFigureNewGetter";
 
-export class Z extends Figure {
+export class Z extends Figure implements IFigureNewGetter {
   constructor(offsetY?: number | Coordinates[], offsetX?: number) {
     super();
 
@@ -25,5 +27,14 @@ export class Z extends Figure {
             (offsetX || 0) + x,
             (offsetY || 0) + y,
           ]);
+  }
+
+  getNewFigure(
+    offsetY?: number | Coordinates[] | undefined,
+    offsetX?: number | undefined
+  ): Figure {
+    this.color = this.color ?? "#fff";
+
+    return new Z(offsetY, offsetX);
   }
 }

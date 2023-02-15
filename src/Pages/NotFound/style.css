@@ -32,7 +32,6 @@
 }
 
 #notfound {
-  // position: relative;
   height: calc(100vh - 80px - 80px);
   background-color: #fafbfd;
 }
@@ -117,7 +116,6 @@
   text-transform: uppercase;
   display: inline-block;
   padding: 15px 30px;
-  // border-radius: 5px;
   color: #fff;
   font-weight: 700;
   margin-top: 40px;

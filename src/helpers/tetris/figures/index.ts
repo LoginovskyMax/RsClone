@@ -2,7 +2,16 @@ import { ITEM_SIZE } from "../constants";
 import type { Coordinates } from "../movement";
 import { move, Moves, rotate } from "../movement";
 
-export class Figure {
+import type { IFigureNewGetter } from "./IFigureNewGetter";
+
+export class Figure implements IFigureNewGetter {
+  getNewFigure(
+    _offsetY?: number | Coordinates[] | undefined,
+    _offsetX?: number | undefined
+  ): Figure {
+    return this;
+  }
+
   coordinates: Coordinates[] = [];
 
   color = "";
@@ -93,5 +102,9 @@ export class Figure {
         )
       )
     );
+  }
+
+  static getNewFigure(_offsetY?: number | Coordinates[], _offsetX?: number) {
+    return new Figure();
   }
 }

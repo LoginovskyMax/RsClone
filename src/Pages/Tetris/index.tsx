@@ -29,6 +29,7 @@ const Tetris: FC = () => {
       [Keys.ArrowRight]: moveRight,
       [Keys.ArrowLeft]: moveLeft,
       [Keys.ArrowDown]: moveBottom,
+      [Keys.ArrowUp]: rotateRight,
       [Keys.R]: rotateLeft,
       [Keys.r]: rotateRight,
     }),
