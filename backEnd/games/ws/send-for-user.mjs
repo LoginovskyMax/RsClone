@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { aWssSeaWar } from "../../server.mjs";
 
 export function sendForUser(player, gameId, message) {

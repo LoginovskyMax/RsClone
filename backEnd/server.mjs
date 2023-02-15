@@ -10,6 +10,8 @@ import dotenv from "dotenv";
 import express from "express";
 import expressWs from "express-ws";
 import mongoose from "mongoose";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { WebSocketServer } from "ws";
 
 import { getGameData } from "./controllers/game-data-controller.mjs";
 import { capchaGenerator } from "./data/capcha.mjs";
@@ -43,8 +45,7 @@ const options = {
 await mongoose.connect(
   `mongodb+srv://rsgames:${pass}@cluster0.d9hevcc.mongodb.net/?retryWrites=true&w=majority`
 );
-const httpsServer = https.createServer(options, app);
-httpsServer.listen(port, () => {
+https.createServer(options, app).listen(port, () => {
   console.log(`https server is runing at port ${port}`);
 });
 
@@ -75,14 +76,11 @@ app.post("/capcha", jsonParser, (req, res) => {
   res.json({ isCorrect });
 });
 
-const wsServer = expressWs(app, httpsServer);
+const WS_SEAWAR_PORT = 8001;
+const server = https.createServer(options);
 
-export const aWssSeaWar = wsServer.getWss();
-const wsSeaWarPort = 8001;
-
-app.use(cors());
-app.ws(`/game/${SEAWAR.NAME}`, seaWarSocket);
-
-app.listen(wsSeaWarPort, () => {
-  console.log(`${SEAWAR.NAME} web socket is runing at port ${wsSeaWarPort}`);
+export const aWssSeaWar = new WebSocketServer({ server });
+aWssSeaWar.on("connection", seaWarSocket);
+server.listen(WS_SEAWAR_PORT, () => {
+  console.log(`${SEAWAR.NAME} web socket is runing at port ${WS_SEAWAR_PORT}`);
 });

@@ -39,7 +39,7 @@ async function wsConnect(ws, data) {
   return ws.send(makeAnswer(GAME.WS_CONNECTED));
 }
 
-export async function seaWarSocket(ws, _req) {
+export async function seaWarSocket(ws) {
   ws.on("message", async (msg) => {
     try {
       const { type, data } = JSON.parse(msg);
