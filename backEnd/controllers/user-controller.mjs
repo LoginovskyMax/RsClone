@@ -17,15 +17,15 @@ export async function resetpass(req, res) {
     const { userName, email } = req.body;
 
     if (!userName && !email) {
-      res.status(401).json({ message: "Wrong Input Data" });
+      return res.status(401).json({ message: "Wrong Input Data" });
     }
 
     const searchUser = userName
       ? await User.findOne({ userName })
-      : await User.findOne({ email });
+      : await User.findOne({ email: email.toLocaleLowerCase() });
 
     if (!searchUser) {
-      res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const newResetToken = uuidv4();
@@ -35,12 +35,11 @@ export async function resetpass(req, res) {
     mailService.sendResetPassEMail(
       searchUser.email,
       searchUser.userName,
-      `https://${process.env.HOST}/resetpass?resetToken=${newResetToken}`
+      `https://${process.env.HOST}?resetToken=${newResetToken}`
     );
 
     res.json({
       message: `E-mail sended to ${searchUser.email}`,
-      resetToken: searchUser.resetToken,
     });
   } catch (e) {
     res.status(400).json({ message: "Reset Error" });
@@ -74,6 +73,22 @@ export async function setNewPass(req, res) {
 }
 
 // eslint-disable-next-line consistent-return
+export async function getNameForNewPass(req, res) {
+  try {
+    const { resetToken } = req.query;
+    const searchUser = await User.findOne({ resetToken });
+
+    if (!searchUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ userName: searchUser.userName });
+  } catch (e) {
+    res.status(400).json({ message: "Error: Cannot get userName" });
+  }
+}
+
+// eslint-disable-next-line consistent-return
 export async function register(req, res) {
   try {
     const errors = validationResult(req);
@@ -89,7 +104,9 @@ export async function register(req, res) {
       return res.status(400).json({ message: "User is allredy registred" });
     }
 
-    const searchUserByEmail = await User.findOne({ email });
+    const searchUserByEmail = await User.findOne({
+      email: email.toLocaleLowerCase(),
+    });
 
     if (searchUserByEmail) {
       return res
@@ -102,7 +119,7 @@ export async function register(req, res) {
     const resetToken = uuidv4();
     const user = new User({
       userName,
-      email,
+      email: email.toLocaleLowerCase(),
       password: hashPass,
       status: [userStatus.value],
       resetToken,

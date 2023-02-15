@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { authLogin, checkUserToken } from "../../../controller/Auth";
 import type { Values } from "../../../data/authData";
 import useUserStore from "../../../store";
+import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 import HelperText from "../HelperText";
@@ -35,12 +36,19 @@ const inputsProps = [
 interface SignInProps {
   setSignInModalOpened: () => void;
   setModalClosed: () => void;
+  setForgotOpened: () => void;
 }
 
-const SignIn: FC<SignInProps> = ({ setSignInModalOpened, setModalClosed }) => {
+const SignIn: FC<SignInProps> = ({
+  setSignInModalOpened,
+  setModalClosed,
+  setForgotOpened,
+}) => {
   const setUser = useUserStore((state) => state.setUser);
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const { setStatus } = useStatusStore();
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
@@ -50,17 +58,17 @@ const SignIn: FC<SignInProps> = ({ setSignInModalOpened, setModalClosed }) => {
       },
       validationSchema: schema,
       onSubmit: (data: Values) => {
+        setStatus({ isLoading: true, message: "" });
         authLogin(data)
-          .then((qwe) => {
-            console.log("qwe", qwe);
-
-            return checkUserToken();
-          })
+          .then(() => checkUserToken())
           .then((userData) => {
             setUser(userData);
+            setStatus({ isLoading: false, message: "You are logged in" });
             setModalClosed();
           })
           .catch((error) => {
+            setStatus({ isLoading: false, message: "" });
+
             if (error.message) {
               setErrorMsg(error.message);
             } else {
@@ -73,7 +81,7 @@ const SignIn: FC<SignInProps> = ({ setSignInModalOpened, setModalClosed }) => {
   return (
     <div className="authentication">
       <p className="authentication__title">Sign In</p>
-      <form onSubmit={handleSubmit} className="authentication__content">
+      <form className="authentication__content" onSubmit={handleSubmit}>
         {inputsProps.map(({ key, label, type, placeholder }) => (
           <Input
             key={key}
@@ -90,6 +98,11 @@ const SignIn: FC<SignInProps> = ({ setSignInModalOpened, setModalClosed }) => {
           />
         ))}
         <p className="authentication__error">{errorMsg}</p>
+        <HelperText
+          text=""
+          linkText="Forgot password?"
+          onClick={setForgotOpened}
+        />
         <HelperText
           text="Don't have an account?"
           linkText="Sign up"

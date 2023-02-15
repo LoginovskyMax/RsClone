@@ -10,7 +10,7 @@ interface HelperTextProps {
 const HelperText: FC<HelperTextProps> = ({ text, linkText, onClick }) => (
   <p className="helper-text">
     {text}
-    <button className="helper-text__link" onClick={onClick}>
+    <button className="helper-text__link" onClick={onClick} type="button">
       {` ${linkText}`}
     </button>
   </p>

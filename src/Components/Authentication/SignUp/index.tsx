@@ -9,6 +9,7 @@ import {
   createUser,
 } from "../../../controller/Auth";
 import useUserStore from "../../../store";
+import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 import HelperText from "../HelperText";
@@ -54,12 +55,19 @@ const inputsProps = [
 interface SignUpProps {
   setSignInModalOpened: () => void;
   setModalClosed: () => void;
+  setForgotOpened: () => void;
 }
 
-const SignUp: FC<SignUpProps> = ({ setSignInModalOpened, setModalClosed }) => {
+const SignUp: FC<SignUpProps> = ({
+  setSignInModalOpened,
+  setModalClosed,
+  setForgotOpened,
+}) => {
   const setUser = useUserStore((state) => state.setUser);
 
   const [errorMsg, setErrorMsg] = useState("");
+
+  const { setStatus } = useStatusStore();
 
   const { values, handleChange, handleBlur, handleSubmit, touched, errors } =
     useFormik({
@@ -71,16 +79,22 @@ const SignUp: FC<SignUpProps> = ({ setSignInModalOpened, setModalClosed }) => {
       },
       validationSchema: schema,
       onSubmit: (data) => {
+        setStatus({ isLoading: true, message: "" });
+
         createUser(data)
           .then(() => authLogin(data))
           .then(() => checkUserToken())
           .then((userDetails) => {
+            setStatus({
+              isLoading: false,
+              message: "You have successfully registered!",
+            });
             setUser(userDetails);
-            setErrorMsg("");
             setModalClosed();
           })
           .catch((error) => {
             try {
+              setStatus({ isLoading: false, message: "" });
               const { message } = JSON.parse(error);
               setErrorMsg(message);
             } catch {
@@ -110,6 +124,11 @@ const SignUp: FC<SignUpProps> = ({ setSignInModalOpened, setModalClosed }) => {
           />
         ))}
         <div className="authentication__error">{errorMsg}</div>
+        <HelperText
+          text=""
+          linkText="Forgot password?"
+          onClick={setForgotOpened}
+        />
         <HelperText
           text="Already signed up?"
           linkText="Go to login"
