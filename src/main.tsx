@@ -4,10 +4,14 @@ import { HashRouter as Router } from "react-router-dom";
 import App from "./App";
 import Footer from "./Components/Footer";
 import Header from "./Components/Header";
+import Loading from "./Components/Loading/Lodaing";
+import PopupMessage from "./Components/Message/PopMessage";
 import "./index.scss";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Router>
+    <Loading />
+    <PopupMessage />
     <Header />
     <App />
     <Footer />

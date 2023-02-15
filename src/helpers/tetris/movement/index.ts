@@ -1,7 +1,7 @@
 import { Matrix } from "ml-matrix";
 
 import { PLAY_ZONE_WIDTH, PLAY_ZONE_HEIGHT, ITEM_SIZE } from "../constants";
-import type { Figure } from "../figures";
+import type { IFigureNewGetter } from "../figures/IFigureNewGetter";
 
 export const rotationRightMatrix = new Matrix([
   [0, -1],
@@ -23,6 +23,7 @@ export enum Keys {
   ArrowRight = "ArrowRight",
   ArrowLeft = "ArrowLeft",
   ArrowDown = "ArrowDown",
+  ArrowUp = "ArrowUp",
   r = "r",
   R = "R",
 }
@@ -53,7 +54,7 @@ const checkBorder = (matrix: Matrix, moveTo: Moves, isWeak?: boolean) => {
   }
 };
 
-export const rotate = (figure: Figure, isClockwise?: boolean) => {
+export const rotate = (figure: IFigureNewGetter, isClockwise?: boolean) => {
   const diff = new Matrix(figure.coordinates).add(
     new Matrix(figure.initialCoordinates).neg()
   );
@@ -66,7 +67,8 @@ export const rotate = (figure: Figure, isClockwise?: boolean) => {
     checkBorder(newCoords.clone(), Moves.bottom, true) ||
     checkBorder(newCoords.clone(), Moves.left, true) ||
     checkBorder(newCoords.clone(), Moves.right, true) ||
-    new figure.constructor(newCoords.to2DArray()).isCollided();
+    figure.getNewFigure(newCoords.to2DArray()).isCollided();
+  // new figure.constructor(newCoords.to2DArray()).isCollided();
 
   if (isCollided) {
     return figure.coordinates;
@@ -80,7 +82,7 @@ export const rotate = (figure: Figure, isClockwise?: boolean) => {
 };
 
 export const move = (
-  figure: Figure,
+  figure: IFigureNewGetter,
   moveTo: Moves,
   isEndCallback?: () => void
 ) => {
@@ -97,7 +99,9 @@ export const move = (
 
       newCoords = coords.map(([first, last]) => [first, last + ITEM_SIZE]);
 
-      if (new figure.constructor(newCoords).isCollided()) {
+      // getNewFigure(figure, newCoords.to2DArray()).isCollided();
+      // new figure.constructor(newCoords).isCollided()
+      if (figure.getNewFigure(newCoords).isCollided()) {
         return coords;
       }
 
@@ -110,7 +114,7 @@ export const move = (
 
       newCoords = coords.map(([first, last]) => [first, last - ITEM_SIZE]);
 
-      if (new figure.constructor(newCoords).isCollided()) {
+      if (figure.getNewFigure(newCoords).isCollided()) {
         return coords;
       }
 
@@ -127,7 +131,7 @@ export const move = (
 
       newCoords = coords.map(([first, last]) => [first + ITEM_SIZE, last]);
 
-      if (new figure.constructor(newCoords).isCollided()) {
+      if (figure.getNewFigure(newCoords).isCollided()) {
         if (isEndCallback) {
           isEndCallback();
         }
