@@ -20,7 +20,8 @@ const App = () => (
       <Route path="/Memorygame" element={<MemoryGame />} />
       <Route path="/tetris" element={<Tetris />} />
       <Route path="/preview/:game" element={<PreviewPage />} />
-      <Route path="/SeaBattle" element={<SeaBattle />} />
+      <Route path="/SeaBattle" element={<CreateGame />} />
+      <Route path="/SeaBattle/id" element={<SeaBattle />} />
       <Route path="/games" element={<Games />} />
       <Route
         path="/qwe"

@@ -73,6 +73,7 @@ export default function PreviewPage() {
       <p className={styles.preview_description}>{description}</p>
       <p className={styles.preview_rules}>{rules}</p>
       <p>Рейтинг игры: {rating}</p>
+      
       <Button onClick={() => navigate(`/${gameName}`)}>Играть!</Button>
       <Button onClick={() => setShowModal(true)}>Добавить комментарий</Button>
       <div className={styles.preview_comments}>
