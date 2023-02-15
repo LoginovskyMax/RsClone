@@ -1,3 +1,4 @@
+import { error } from 'firebase-functions/logger';
 import { BACKEND_URL } from "../data/authData";
 import { BACKEND_GAMES_PATH } from "../data/gamesData";
 import type { GameItem } from "../Pages/Games/games.data";
@@ -12,14 +13,16 @@ export const getAllGamesFromBackEnd = async () =>
         "Content-Type": "application/json",
         Authorization: `Bearer ${getUserToken()}`,
       },
-    }).then((response) => {
-      if (response.ok) {
-        response.json().then((data) => resolve(data));
-      } else {
-        response
-          .json()
-          .then((errorMessage) => reject(errorMessage))
-          .catch((err) => reject(err.message));
-      }
-    });
+    })
+      .then((response) => {
+        if (response.ok) {
+          response.json().then((data) => resolve(data));
+        } else {
+          response
+            .json()
+            .then((err) => reject(err))
+            .catch((err) => reject(err));
+        }
+      })
+      .catch((err) => reject(err));
   });
