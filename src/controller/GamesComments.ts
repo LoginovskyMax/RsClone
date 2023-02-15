@@ -1,4 +1,3 @@
-import { error } from 'firebase-functions/logger';
 import { BACKEND_URL } from "../data/authData";
 import { BACKEND_GAMES_PATH } from "../data/gamesData";
 import type { GameItem } from "../Pages/Games/games.data";
