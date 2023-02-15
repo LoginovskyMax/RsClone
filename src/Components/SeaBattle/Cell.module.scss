@@ -2,7 +2,14 @@
     width: 30px;
     height: 30px;
     border: 1px solid teal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
 }
 .blue{
     background-color: blue;
+}
+.fire{
+    background-color: red;
 }

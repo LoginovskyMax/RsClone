@@ -7,6 +7,7 @@ import MainPage from "./Pages/MainPage";
 import MemoryGame from "./Pages/MemoryGame/MemoryGame";
 import NotFound from "./Pages/NotFound/NotFound";
 import PreviewPage from "./Pages/PreviewPage/PreviewPage";
+import { CreateGame } from "./Pages/SeaBattle/CreateGame";
 import { SeaBattle } from "./Pages/SeaBattle/SeaBattle";
 import StartPage from "./Pages/StartPage";
 import Tetris from "./Pages/Tetris";
@@ -19,7 +20,8 @@ const App = () => (
       <Route path="/Memorygame" element={<MemoryGame />} />
       <Route path="/tetris" element={<Tetris />} />
       <Route path="/preview/:game" element={<PreviewPage />} />
-      <Route path="/SeaBattle" element={<SeaBattle />} />
+      <Route path="/SeaBattle" element={<CreateGame />} />
+      <Route path="/SeaBattle/:id" element={<SeaBattle />} />
       <Route path="/games" element={<Games />} />
       <Route
         path="/qwe"

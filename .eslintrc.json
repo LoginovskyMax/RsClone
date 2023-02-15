@@ -19,12 +19,14 @@
     "@typescript-eslint/no-explicit-any": "warn",
     "react/button-has-type": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/exhaustive-deps": "off",
     "react/prop-types": "off",
     "react/display-name": "off",
     "react/no-array-index-key": "off",
     "react/require-default-props": "off",
     "react/jsx-props-no-spreading": "off",
+    "no-new":"off",
+    "max-classes-per-file":"off",
     "react/jsx-filename-extension": [
       "error",
       {

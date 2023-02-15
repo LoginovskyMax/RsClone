@@ -73,15 +73,16 @@ export default function PreviewPage() {
       <p className={styles.preview_description}>{description}</p>
       <p className={styles.preview_rules}>{rules}</p>
       <p>Рейтинг игры: {rating}</p>
+      
       <Button onClick={() => navigate(`/${gameName}`)}>Играть!</Button>
       <Button onClick={() => setShowModal(true)}>Добавить комментарий</Button>
       <div className={styles.preview_comments}>
         <p>Комментарии пользователей: </p>
-        {comments.map((comment) => (
-          <div key={comment.id} className={styles.preview_item}>
-            <p>{comment.text}</p>
-            <p>{comment.userName}</p>
-            <p>{comment.data}</p>
+        {comments.map((elem) => (
+          <div key={elem.id} className={styles.preview_item}>
+            <p>{elem.text}</p>
+            <p>{elem.userName}</p>
+            <p>{elem.data}</p>
           </div>
         ))}
       </div>
