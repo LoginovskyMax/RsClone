@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Button from "../../Components/common/Button";
+import { CreateGamesList } from "../../Components/MultiGames/CreateGamesList";
 import useUserStore from "../../store";
 
 import styles from "./SeaBattle.module.scss";
@@ -86,6 +87,7 @@ export const CreateGame = () => {
         <input type="text" placeholder="test user" onChange={(e)=>setUser(e.target.value)}/> */}
       <Button onClick={startGame}>Начать</Button>
       <div>creating games</div>
+      <CreateGamesList gameName='seaBatle'></CreateGamesList>
     </div>
   );
 };
