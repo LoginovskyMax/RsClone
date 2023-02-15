@@ -31,7 +31,7 @@ const CardComponent = ({
         setIsOpen(false);
         canClick.current = true;
         clickCount(0);
-      }, 1000);
+      }, 700);
     }
   }, [countTry]);
 

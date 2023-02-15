@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import Button from "../../Components/common/Button";
 import Modal from "../../Components/common/Modal";
 import CardComponent from "../../Components/MemoryGame/CardComponent";
 import { cardsArr } from "../../Components/MemoryGame/Data";
 import { type ICard } from "../../Components/MemoryGame/Interfaces";
+
 import styles from "./Memorygame.module.scss";
 
 const randomArr = [...cardsArr].sort(() => Math.random() - 0.5);
@@ -138,9 +140,12 @@ const MemoryGame = () => {
           />
         ))}
       </div>
-      {showModal && (<Modal setModalClosed={()=>setShowModal(false)} title="Победа!">
-      <div className={styles.modal_window__main}>
-      <p className={styles.modal_window__text}>Ваш результат {countTry}</p>
+      {showModal && (
+        <Modal setModalClosed={() => setShowModal(false)} title="Победа!">
+          <div className={styles.modal_window__main}>
+            <p className={styles.modal_window__text}>
+              Ваш результат {countTry}
+            </p>
             <Button
               onClick={() => {
                 navigate("/main");
@@ -157,12 +162,11 @@ const MemoryGame = () => {
             >
               Начать заново
             </Button>
-      </div>
-           
-      </Modal>
+          </div>
+        </Modal>
         // <div className={styles.modal_window}>
         //   <div className={styles.modal_window__main}>
-           
+
         //   </div>
         // </div>
       )}

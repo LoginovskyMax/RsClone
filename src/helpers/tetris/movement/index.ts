@@ -1,4 +1,4 @@
-import { Matrix } from "ml-matrix";
+import { Matrix } from "ml-matrix"; 
 
 import { PLAY_ZONE_WIDTH, PLAY_ZONE_HEIGHT, ITEM_SIZE } from "../constants";
 import type { IFigureNewGetter } from "../figures/IFigureNewGetter";
