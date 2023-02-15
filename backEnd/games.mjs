@@ -53,6 +53,7 @@ export function sendForUser(player, gameId, message) {
 
 export const gameHttpRouter = new Router();
 
+gameHttpRouter.use(cors());
 gameHttpRouter.get("/all", getGamesList);
 gameHttpRouter.get("/data", getGameData);
 gameHttpRouter.post(
