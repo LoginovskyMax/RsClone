@@ -13,6 +13,9 @@ import mongoose from "mongoose";
 
 import { getGameData } from "./controllers/game-data-controller.mjs";
 import { capchaGenerator } from "./data/capcha.mjs";
+import { SEAWAR } from "./games/variables.mjs";
+// eslint-disable-next-line import/no-cycle
+import { seaWarSocket } from "./games/ws/ws-main.mjs";
 import { gameHttpRouter } from "./games.mjs";
 import { router } from "./router.mjs";
 
@@ -35,12 +38,15 @@ app.use(cors());
 const options = {
   key: fs.readFileSync(sslKey, "utf8"),
   cert: fs.readFileSync(sslSrt, "utf8"),
+  requestCert: true,
+  rejectUnauthorized: true,
 };
 
 await mongoose.connect(
   `mongodb+srv://rsgames:${pass}@cluster0.d9hevcc.mongodb.net/?retryWrites=true&w=majority`
 );
-https.createServer(options, app).listen(port, () => {
+const httpsServer = https.createServer(options, app);
+httpsServer.listen(port, () => {
   console.log(`https server is runing at port ${port}`);
 });
 
@@ -69,4 +75,16 @@ app.post("/capcha", jsonParser, (req, res) => {
     capchaValue
   );
   res.json({ isCorrect });
+});
+
+const wsServer = expressWs(app, httpsServer);
+
+export const aWssSeaWar = wsServer.getWss();
+const wsSeaWarPort = 8001;
+
+app.use(cors());
+app.ws(`/game/${SEAWAR.NAME}`, seaWarSocket);
+
+app.listen(wsSeaWarPort, () => {
+  console.log(`${SEAWAR.NAME} web socket is runing at port ${wsSeaWarPort}`);
 });

@@ -1,8 +1,9 @@
 // eslint-disable-next-line import/no-cycle
-import { sendForUser } from "../../games.mjs";
 import { SeaWarGameData } from "../data/game-data.mjs";
 import { games } from "../data/games.mjs";
 import { SEAWAR } from "../variables.mjs";
+// eslint-disable-next-line import/no-cycle
+import { sendForUser } from "../ws/send-for-user.mjs";
 
 export const makeAnswer = (message) =>
   JSON.stringify({ type: "message", message });
