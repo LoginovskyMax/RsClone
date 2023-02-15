@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { HashRouter as Router } from "react-router-dom";
 
@@ -10,13 +9,11 @@ import PopupMessage from "./Components/Message/PopMessage";
 import "./index.scss";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <Router>
-      <Loading />
-      <PopupMessage />
-      <Header />
-      <App />
-      <Footer />
-    </Router>
-  </React.StrictMode>
+  <Router>
+    <Loading />
+    <PopupMessage />
+    <Header />
+    <App />
+    <Footer />
+  </Router>
 );

@@ -1,0 +1,26 @@
+.tetris {
+  width: 100vw;
+  display: flex;
+
+  &__playzone {
+    overflow: hidden;
+    width: 600px;
+    height: 800px;
+    position: relative;
+    top: calc((100% - 800px) / 2);
+    left: calc((100% - 600px) / 2);
+    background-color: #f5f3ff;
+  }
+
+  &__text {
+    color: #6e61b6;
+    font-size: 30px
+  }
+
+  &__points {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%)
+  }
+}
