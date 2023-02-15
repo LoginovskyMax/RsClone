@@ -15,12 +15,12 @@ import Tetris from "./Pages/Tetris";
 const App = () => (
   <div className="App">
     <Routes>
-      <Route path="/" element={<StartPage />} />
-      <Route path="/main" element={<MainPage />} />
+      <Route path="/" element={<MainPage />} />
+      <Route path="/main" element={<StartPage />} />
       <Route path="/Memorygame" element={<MemoryGame />} />
       <Route path="/tetris" element={<Tetris />} />
       <Route path="/preview/:game" element={<PreviewPage />} />
-      <Route path="/SeaBattle" element={<CreateGame />} />
+      <Route path="/room/:gameName" element={<CreateGame />} />
       <Route path="/SeaBattle/:id" element={<SeaBattle />} />
       <Route path="/games" element={<Games />} />
       <Route

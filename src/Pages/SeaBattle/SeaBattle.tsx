@@ -159,7 +159,13 @@ export const SeaBattle = () => {
           />
         </div>
       </div>
-      <InfoComp ready={ready} canShoot={canShoot} shipsReady={shipsReady} start={start} count={count} winner={otherData?.winner}/>
+      <InfoComp ready={ready} 
+                canShoot={canShoot} 
+                shipsReady={shipsReady} 
+                start={start} 
+                count={count} 
+                winner={otherData?.winner}
+                mainUser={otherData?.isMainUser}/>
       {serverError!=='' && <p>{serverError}</p>}
       {otherData && ((otherData.isMainUser && !start) && <Button onClick={startGame} 
                                                      disabled={!otherData.isEnemyReady}>Старт</Button>)}

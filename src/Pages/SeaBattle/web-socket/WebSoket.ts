@@ -1,6 +1,4 @@
 import { getUserToken } from "../../../controller/Auth";
-import useUserStore from "../../../store";
-
 import type { GameData } from "./websocketData";
 
 export interface wsGameData {
@@ -109,10 +107,6 @@ class WebSocketController {
       // eslint-disable-next-line no-console
       console.error(err);
     }
-  }
-
-  setToken(token: string) {
-    this.token = token;
   }
 
   setUser(user: string) {

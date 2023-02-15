@@ -63,6 +63,15 @@ export default function PreviewPage() {
     setShowModal(false);
   };
 
+  const navigateHandler = ()=> {
+    if(gameName!=='SeaBattle'){
+      navigate(`/${gameName}`)
+    }else{
+      navigate(`/room/${gameName}`)
+    }
+   
+  }
+
   useEffect(() => {
     getGameData();
   }, []);
@@ -74,7 +83,7 @@ export default function PreviewPage() {
       <p className={styles.preview_rules}>{rules}</p>
       <p>Рейтинг игры: {rating}</p>
       
-      <Button onClick={() => navigate(`/${gameName}`)}>Играть!</Button>
+      <Button onClick={navigateHandler}>Играть!</Button>
       <Button onClick={() => setShowModal(true)}>Добавить комментарий</Button>
       <div className={styles.preview_comments}>
         <p>Комментарии пользователей: </p>
