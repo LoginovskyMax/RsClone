@@ -33,3 +33,11 @@ dd {
   display: flex;
   align-items: center;
 }
+
+.darkApp{
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  background-color: #373737;
+  color: bisque;
+}
