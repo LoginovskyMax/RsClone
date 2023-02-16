@@ -19,16 +19,13 @@ const FinishModal: FC<IFinishModalProps> = ({
   points,
   reset,
 }) =>
-  isModalClosed ? (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    <></>
-  ) : (
+  !isModalClosed ? (
     <Modal setModalClosed={setModalClosed} title="Finished">
       <div className="finish">
         <p className="finish__title">Score: {points}</p>
         <Button onClick={reset}>Reset</Button>
       </div>
     </Modal>
-  );
+  ) : null;
 
 export default memo(FinishModal);
