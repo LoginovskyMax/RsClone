@@ -1,4 +1,5 @@
 import { getUserToken } from "../../../controller/Auth";
+
 import type { GameData } from "./websocketData";
 
 export interface wsGameData {
@@ -30,7 +31,7 @@ class WebSocketController {
 
   connect() {
     if (!this.webSocket) {
-      this.webSocket = new WebSocket("wss://rsgames.online:8001/game/seawar");
+      this.webSocket = new WebSocket("wss://rsgames.online:8001/");
 
       if (this.webSocket) {
         this.webSocket.onopen = this.wsOpenHandler;

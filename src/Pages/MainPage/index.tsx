@@ -1,22 +1,24 @@
-import Button from "../../Components/common/Button";
-import "./style.scss";
-import AuthenticationModal from "../../Components/Authentication";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+
+import AuthenticationModal from "../../Components/Authentication";
+import Button from "../../Components/common/Button";
 import useUserStore from "../../store";
+
+import "./style.scss";
 
 const MainPage = () => {
   const [isModalClosed, setModalClosed] = useState(true);
   const navigate = useNavigate();
   const user = useUserStore((state) => state.userName);
-  
+
   const handler = () => {
-    if(user===null){
-      setModalClosed(false)
-    }else{
-      navigate('/main')
+    if (user === null) {
+      setModalClosed(false);
+    } else {
+      navigate("/games");
     }
-  }
+  };
 
   return (
     <div className="main-page">
@@ -31,13 +33,14 @@ const MainPage = () => {
         fun experience to play alone or with friends.
       </p>
       {}
-      <Button className="main-page__button" onClick={handler}>Get started</Button>
+      <Button className="main-page__button" onClick={handler}>
+        Get started
+      </Button>
       {!isModalClosed && (
-          <AuthenticationModal setModalClosed={() => setModalClosed(true)} />
-        )}
+        <AuthenticationModal setModalClosed={() => setModalClosed(true)} />
+      )}
     </div>
   );
-}
-
+};
 
 export default MainPage;

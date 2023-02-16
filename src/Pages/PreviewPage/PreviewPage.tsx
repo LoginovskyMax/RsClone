@@ -3,103 +3,156 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import Button from "../../Components/common/Button";
 import Modal from "../../Components/common/Modal";
+import { getGameData, postComment } from "../../controller/GamesComments";
+import type { GameComment, GameData } from "../../data/gamesData";
 import useUserStore from "../../store";
+import useStatusStore from "../../store/load-status";
+import StarsView from "../Games/StarsView/StarsView";
 
 import styles from "./Preview.module.scss";
-
-interface IComment {
-  id: number;
-  userName: string;
-  text: string;
-  data: string;
-}
-interface IGameData {
-  comments: [IComment];
-  descriptionRu: string;
-  descriptionEn: string;
-  rulesRu: string;
-  rulesEn: string;
-  rating: number;
-}
 
 export default function PreviewPage() {
   const params = useParams();
   const gameName = params.game;
-  const [comments, seComments] = useState<IComment[]>([]);
-  const [description, setDescription] = useState("");
-  const [rules, setRules] = useState("");
-  const [rating, setRating] = useState(0);
-  const navigate = useNavigate();
+
+  const { isLoading, setStatus } = useStatusStore();
+  const { userName } = useUserStore();
+
+  const [comments, setComments] = useState<GameComment[]>([]);
+  const [gameData, setGameData] = useState<GameData | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [comment, setComment] = useState("");
-  const userName = useUserStore((state) => state.userName);
+  const [raiting, setRaiting] = useState(5);
+  const [myRaiting, setMyRaiting] = useState(-1);
 
-  const getGameData = () => {
-    fetch(`http://localhost:8888/gameData/${gameName}`)
-      .then<IGameData>((response) => response.json())
+  const navigate = useNavigate();
+
+  const navigateHandler = () => {
+    if (gameName !== "SeaBattle") {
+      navigate(`/${gameName}`);
+    } else {
+      navigate(`/room/${gameName}`);
+    }
+  };
+
+  const getRating = () => {
+    const myComment = comments.find((com) => com.userName === userName);
+    setMyRaiting(myComment ? myComment.raiting : -1);
+  };
+
+  const refillData = () => {
+    setStatus({ isLoading: true, message: "" });
+    getGameData(gameName || "")
       .then((data) => {
-        seComments(data.comments);
-        setDescription(data.descriptionRu);
-        setRules(data.rulesRu);
-        setRating(data.rating);
+        setComments(data.comments);
+        setGameData(data);
       })
+      .then(() => setStatus({ isLoading: false, message: "" }))
       .catch((error) => {
-        console.log(error);
+        setStatus({ isLoading: false, message: error.message });
       });
   };
 
   const addComment = () => {
-    const sendComment = { userName, comment };
-    fetch(`http://localhost:8888/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify(sendComment),
-    }).catch((error) => {
-      console.log(error);
-    });
-    setComment("");
-    setShowModal(false);
+    setStatus({ isLoading: true, message: "" });
+    postComment(gameData?.name || "", comment, raiting)
+      .then(() => {
+        setShowModal(false);
+        setStatus({ isLoading: false, message: "" });
+      })
+      .catch((error) => {
+        setStatus({ isLoading: false, message: error.message });
+      });
   };
 
-  const navigateHandler = ()=> {
-    if(gameName!=='SeaBattle'){
-      navigate(`/${gameName}`)
-    }else{
-      navigate(`/room/${gameName}`)
-    }
-   
-  }
+  useEffect(() => refillData(), [showModal]);
 
-  useEffect(() => {
-    getGameData();
-  }, []);
+  useEffect(() => getRating(), [comments]);
 
   return (
     <div className={styles.preview}>
-      <h2 className={styles.preview_header}>{gameName}</h2>
-      <p className={styles.preview_description}>{description}</p>
-      <p className={styles.preview_rules}>{rules}</p>
-      <p>Рейтинг игры: {rating}</p>
-      
-      <Button onClick={navigateHandler}>Играть!</Button>
-      <Button onClick={() => setShowModal(true)}>Добавить комментарий</Button>
-      <div className={styles.preview_comments}>
-        <p>Комментарии пользователей: </p>
-        {comments.map((elem) => (
-          <div key={elem.id} className={styles.preview_item}>
-            <p>{elem.text}</p>
-            <p>{elem.userName}</p>
-            <p>{elem.data}</p>
-          </div>
-        ))}
-      </div>
+      {!isLoading && (
+        <>
+          <section
+            className={styles.preview__section}
+            style={{ backgroundImage: `url(${gameData?.image})` }}
+          >
+            <div className={styles.preview__wrapper}>
+              <h2 className={styles.preview_header}>{gameData?.fullName}</h2>
+              <p className={styles.preview_description}>
+                {gameData?.descriptionRu}
+              </p>
+              <StarsView
+                canSet
+                rating={gameData?.raiting ? gameData?.raiting : 0}
+                starSize={32}
+                settedRating={myRaiting}
+                setCallback={(rate) => {
+                  setRaiting(rate);
+                  setShowModal(true);
+                }}
+              />
+              <Button onClick={navigateHandler}>Играть!</Button>
+            </div>
+          </section>
+
+          <section className={styles.preview_rules}>
+            <h3 className={styles.preview_rulesTitle}>Правила Игры:</h3>
+            <p className={styles.preview_rulesText}>
+              {gameData?.rulesRu
+                .split("")
+                .map((ch) => (ch === "\n" ? "\n\n" : ch))
+                .join("")}
+            </p>
+          </section>
+
+          <section className={styles.preview_commentsWrapper}>
+            <div className={styles.preview_comments}>
+              <h3 className={styles.preview_rulesTitle}>Отзывы</h3>
+              {comments.map((elem) => (
+                <div key={elem.userName} className={styles.preview_item}>
+                  <div className={styles.preview_info}>
+                    <img
+                      className={styles.preview_image}
+                      alt="user"
+                      src="images/user.png"
+                    />
+                    <p className={styles.preview_username}>{elem.userName}</p>
+                    <StarsView
+                      key={elem.userName}
+                      rating={elem.raiting}
+                      starSize={16}
+                    />
+                  </div>
+                  <p className={styles.preview_text}>{elem.text}</p>
+                  <p className={styles.preview_date}>
+                    {`${new Date(elem.date).toLocaleString()}`}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <Button
+              className={styles.preview__reviewBtn}
+              onClick={() => setShowModal(true)}
+            >
+              Оставить отзыв
+            </Button>
+          </section>
+        </>
+      )}
+
       {showModal && (
-        <Modal setModalClosed={() => setShowModal(false)} title="Комментарий">
+        <Modal setModalClosed={() => setShowModal(false)} title="Отзыв">
           <div className={styles.modal}>
+            <StarsView
+              canSet
+              rating={gameData?.raiting ? gameData?.raiting : 0}
+              starSize={32}
+              settedRating={myRaiting}
+              setCallback={(rate) => setRaiting(rate)}
+            />
             <textarea
-              placeholder="Текст комментария"
+              placeholder="Текст отзыва"
               className={styles.modal_area}
               onChange={(e) => setComment(e.target.value)}
             />

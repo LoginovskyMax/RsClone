@@ -1,19 +1,36 @@
 import type { FC } from "react";
+import { useNavigate } from "react-router-dom";
 
 import type { GameItem } from "../games.data";
+import StarsView from "../StarsView/StarsView";
+
+import "./Style.scss";
 
 interface GameCompProps {
   gameItem: GameItem;
 }
 
-const GameComp: FC<GameCompProps> = ({ gameItem }) => (
-  <div className="game-item">
-    <h3 className="game-item__name">{gameItem.name}</h3>
+const GameComp: FC<GameCompProps> = ({ gameItem }) => {
+  const navigate = useNavigate();
+
+  return (
     <div
-      className="game-item"
-      style={{ background: `url(${gameItem.image})` }}
-    />
-  </div>
-);
+      className={`game-item
+        ${gameItem.isComingSoon ? " game-item_coming-soon" : ""}`}
+      style={{ backgroundImage: `url(${gameItem.image})` }}
+      onClick={() => navigate(`/preview/${gameItem.name}`)}
+    >
+      <div className="game-item__wrapper">
+        <div className="game-item__name">
+          <h3>{gameItem.fullName}</h3>
+          <h4>Coming soon...</h4>
+        </div>
+        <div className="game-item__rating">
+          <StarsView rating={gameItem.raiting} starSize={20} />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default GameComp;

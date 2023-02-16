@@ -4,6 +4,7 @@ import jsonwebtoken from "jsonwebtoken";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from "uuid";
 
+import { showFormattedError } from "../data/show-error.js";
 import { UserStatus } from "../data/Status.mjs";
 import { User } from "../data/User.mjs";
 import { mailService } from "../mail/mail-service.js";
@@ -43,6 +44,7 @@ export async function resetpass(req, res) {
     });
   } catch (e) {
     res.status(400).json({ message: "Reset Error" });
+    showFormattedError(e);
   }
 }
 
@@ -67,8 +69,9 @@ export async function setNewPass(req, res) {
       password
     );
     res.json({ message: "Password has been changed!" });
-  } catch (e) {
+  } catch (err) {
     res.status(400).json({ message: "Password Reset Error" });
+    showFormattedError(err);
   }
 }
 
@@ -83,8 +86,9 @@ export async function getNameForNewPass(req, res) {
     }
 
     res.json({ userName: searchUser.userName });
-  } catch (e) {
+  } catch (err) {
     res.status(400).json({ message: "Error: Cannot get userName" });
+    showFormattedError(err);
   }
 }
 
@@ -129,6 +133,7 @@ export async function register(req, res) {
     res.json({ message: "New User has been successfully created!" });
   } catch (err) {
     res.status(400).json({ message: "Registration Error" });
+    showFormattedError(err);
   }
 }
 
@@ -161,6 +166,7 @@ export async function login(req, res) {
     res.json({ token });
   } catch (err) {
     res.status(400).json({ message: "Login Error" });
+    showFormattedError(err);
   }
 }
 
@@ -170,6 +176,7 @@ export async function getUsers(_req, res) {
     res.json(users);
   } catch (err) {
     res.status(400).json({ message: "Failed to get users" });
+    showFormattedError(err);
   }
 }
 
@@ -180,6 +187,7 @@ export async function getUser(req, res) {
     res.json({ userName, email, status, banned, date });
   } catch (err) {
     res.status(400).json({ message: "Failed to get user" });
+    showFormattedError(err);
   }
 }
 
@@ -201,6 +209,7 @@ export async function setUserStatus(req, res) {
     res.json({ message: "Status changed", user });
   } catch (err) {
     res.status(400).json({ message: "Failed to set new status" });
+    showFormattedError(err);
   }
 }
 
@@ -217,6 +226,7 @@ export async function deleteUser(req, res) {
     }
   } catch (err) {
     res.status(400).json({ message: "Failed to delete user" });
+    showFormattedError(err);
   }
 }
 
@@ -239,6 +249,7 @@ export function banUser(banned) {
       }
     } catch (err) {
       res.status(400).json({ message: "Failed to ban user" });
+      showFormattedError(err);
     }
   };
 }
@@ -255,6 +266,7 @@ export async function getUserByName(req, res) {
     }
   } catch (err) {
     res.status(400).json({ message: "Failed to get user" });
+    showFormattedError(err);
   }
 }
 

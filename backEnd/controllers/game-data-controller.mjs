@@ -1,5 +1,6 @@
 import { Comment } from "../data/comment.mjs";
 import { GameData } from "../data/game.mjs";
+import { showFormattedError } from "../data/show-error.js";
 import { User } from "../data/User.mjs";
 import { games } from "../games/data/games.mjs";
 import {
@@ -21,8 +22,16 @@ export async function getGamesList(_req, res) {
         const raiting = await getGameRaiting(game.name);
         const comments = await getCommentsForGame(game.name);
 
-        const { name, image, descriptionRu, descriptionEn, rulesRu, rulesEn } =
-          game;
+        const {
+          name,
+          image,
+          descriptionRu,
+          descriptionEn,
+          rulesRu,
+          rulesEn,
+          fullName,
+          isComingSoon,
+        } = game;
 
         return {
           name,
@@ -33,6 +42,8 @@ export async function getGamesList(_req, res) {
           rulesEn,
           raiting,
           comments,
+          fullName,
+          isComingSoon,
         };
       })
     );
@@ -40,6 +51,7 @@ export async function getGamesList(_req, res) {
     res.json(fullGamesList);
   } catch (err) {
     res.status(400).json({ message: "Failed to get games list" });
+    showFormattedError(err);
   }
 }
 
@@ -48,10 +60,27 @@ export async function getGameData(req, res) {
     const { name } = req.query;
     const game = await GameData.findOne({ name });
 
+    const raiting = await getGameRaiting(name);
+    const comments = await getCommentsForGame(name);
+
     if (!game) {
       res.status(404).json({ message: "Game not found!" });
     } else {
-      res.json(game);
+      const gameRes = {
+        // eslint-disable-next-line no-underscore-dangle
+        _id: game._id,
+        name: game.name,
+        image: game.image,
+        descriptionRu: game.descriptionRu,
+        descriptionEn: game.descriptionEn,
+        rulesRu: game.rulesRu,
+        rulesEn: game.rulesEn,
+        fullName: game.fullName,
+        isComingSoon: game.isComingSoon,
+        raiting,
+        comments,
+      };
+      res.json(gameRes);
     }
   } catch (err) {
     res.status(400).json({ message: "Failed to get game" });
@@ -66,6 +95,7 @@ export async function addNewGame(req, res) {
     res.json(gameData);
   } catch (err) {
     res.status(400).json({ message: "Failed to add game" });
+    showFormattedError(err);
   }
 }
 
@@ -87,11 +117,14 @@ export async function editGameData(req, res) {
     if (data.rulesRu) gameData.rulesRu = data.rulesRu;
     if (data.rulesEn) gameData.rulesEn = data.rulesEn;
     if (data.raiting) gameData.raiting = data.raiting;
+    if (data.fullName) gameData.fullName = data.fullName;
+    if (data.isComingSoon) gameData.isComingSoon = data.isComingSoon;
 
     await gameData.save();
     res.json(gameData);
   } catch (err) {
     res.status(400).json({ message: "Failed to edit game" });
+    showFormattedError(err);
   }
 }
 
@@ -120,6 +153,7 @@ export async function getGameList(req, res) {
     res
       .status(400)
       .json({ message: `Failed to get list of games for ${req.query.name}` });
+    showFormattedError(err);
   }
 }
 
@@ -182,7 +216,7 @@ export async function setComment(req, res) {
     }
   } catch (err) {
     res.status(400).json({ message: "Faild to save commet" });
-    console.error(err);
+    showFormattedError(err);
   }
 }
 
@@ -212,5 +246,6 @@ export async function removeComment(req, res) {
     res.status(204).json({ message: "" });
   } catch (err) {
     res.status(400).json({ message: "Faild to delete commet" });
+    showFormattedError(err);
   }
 }

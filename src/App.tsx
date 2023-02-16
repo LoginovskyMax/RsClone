@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 
 import "./App.scss";
 import Games from "./Pages/Games/Games";
-import StarsView from "./Pages/Games/StarsView/StarsView";
 import MainPage from "./Pages/MainPage";
 import MemoryGame from "./Pages/MemoryGame/MemoryGame";
 import NotFound from "./Pages/NotFound/NotFound";

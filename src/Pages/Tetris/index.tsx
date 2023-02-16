@@ -1,8 +1,9 @@
 import type { FC } from "react";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 
 import "./style.scss";
 
+import Button from "../../Components/common/Button";
 import FinishModal from "../../Components/Tetris/FinishModal";
 import Item from "../../Components/Tetris/Item";
 import { useControls } from "../../helpers/tetris/hooks/useControls";
@@ -17,24 +18,12 @@ const Tetris: FC = () => {
     moveBottom,
     rotateRight,
     rotateLeft,
-    points,
+    score,
     isGameActive,
     resetGame,
   } = useControls();
 
   const [isModalClosed, setModalClosed] = useState(true);
-
-  const movements: Movements = useMemo(
-    () => ({
-      [Keys.ArrowRight]: moveRight,
-      [Keys.ArrowLeft]: moveLeft,
-      [Keys.ArrowDown]: moveBottom,
-      [Keys.ArrowUp]: rotateRight,
-      [Keys.R]: rotateLeft,
-      [Keys.r]: rotateRight,
-    }),
-    [moveRight, moveLeft, moveBottom, rotateLeft, rotateRight]
-  );
 
   const onResetClick = () => {
     setModalClosed(true);
@@ -48,6 +37,13 @@ const Tetris: FC = () => {
   }, [isGameActive]);
 
   window.onkeydown = (ev: KeyboardEvent) => {
+    const movements: Movements = {
+      [Keys.ArrowRight]: moveRight,
+      [Keys.ArrowLeft]: moveLeft,
+      [Keys.ArrowDown]: moveBottom.current,
+      [Keys.R]: rotateLeft,
+      [Keys.r]: rotateRight,
+    };
     rotations(ev.key, movements)();
   };
 
@@ -56,16 +52,19 @@ const Tetris: FC = () => {
       <FinishModal
         isModalClosed={isModalClosed}
         setModalClosed={() => setModalClosed(true)}
-        points={points}
+        points={score}
         reset={onResetClick}
       />
+      <div className="tetris__points">
+        <p className="tetris__text">{`Your score: ${score}`}</p>
+      </div>
+      <Button className="tetris__reset" onClick={resetGame}>
+        Reset game
+      </Button>
       <div className="tetris__playzone">
         {figures.map((figure, id) => (
-          <Item key={id} coords={figure.getCoords()} color={figure.color} />
+          <Item key={id} coords={figure.coordinates} color={figure.color} />
         ))}
-      </div>
-      <div className="tetris__points">
-        <p className="tetris__text">{points}</p>
       </div>
     </div>
   );

@@ -1,7 +1,12 @@
-import { Matrix } from "ml-matrix"; 
+import { Matrix } from "ml-matrix";
 
 import { PLAY_ZONE_WIDTH, PLAY_ZONE_HEIGHT, ITEM_SIZE } from "../constants";
-import type { IFigureNewGetter } from "../figures/IFigureNewGetter";
+import type { Figure } from "../figures";
+import {
+  createFigure,
+  isFiguresCollided,
+  updateCoordinatesInNullishPoint,
+} from "../figures";
 
 export const rotationRightMatrix = new Matrix([
   [0, -1],
@@ -23,7 +28,6 @@ export enum Keys {
   ArrowRight = "ArrowRight",
   ArrowLeft = "ArrowLeft",
   ArrowDown = "ArrowDown",
-  ArrowUp = "ArrowUp",
   r = "r",
   R = "R",
 }
@@ -54,11 +58,15 @@ const checkBorder = (matrix: Matrix, moveTo: Moves, isWeak?: boolean) => {
   }
 };
 
-export const rotate = (figure: IFigureNewGetter, isClockwise?: boolean) => {
+export const rotate = (
+  figure: Figure,
+  staticFigures: Figure[],
+  isClockwise?: boolean
+): Figure => {
   const diff = new Matrix(figure.coordinates).add(
-    new Matrix(figure.initialCoordinates).neg()
+    new Matrix(figure.coordinatesInNullishPoint).neg()
   );
-  const oldOffset = new Matrix(new Matrix(figure.initialCoordinates));
+  const oldOffset = new Matrix(figure.coordinates).add(diff.clone().neg());
   const rotation = isClockwise ? rotationRightMatrix : rotationLeftMatrix;
 
   const newCoords = new Matrix(oldOffset).mmul(rotation).add(diff);
@@ -67,83 +75,75 @@ export const rotate = (figure: IFigureNewGetter, isClockwise?: boolean) => {
     checkBorder(newCoords.clone(), Moves.bottom, true) ||
     checkBorder(newCoords.clone(), Moves.left, true) ||
     checkBorder(newCoords.clone(), Moves.right, true) ||
-    figure.getNewFigure(newCoords.to2DArray()).isCollided();
-  // new figure.constructor(newCoords.to2DArray()).isCollided();
+    isFiguresCollided(staticFigures, figure);
 
   if (isCollided) {
-    return figure.coordinates;
+    return figure;
   }
 
-  figure.setInitialCoords(
-    new Matrix(figure.initialCoordinates).mmul(rotation).to2DArray()
-  );
+  const newCoordinatesInNullishPoint = new Matrix(
+    figure.coordinatesInNullishPoint
+  )
+    .mmul(rotation)
+    .to2DArray();
 
-  return newCoords.to2DArray();
+  const figureWithNewCoordinatesInNullishPoint =
+    updateCoordinatesInNullishPoint(newCoordinatesInNullishPoint, figure);
+
+  return {
+    ...figureWithNewCoordinatesInNullishPoint,
+    coordinates: newCoords.to2DArray(),
+  };
+};
+
+const coordinatesMapperByMoveType: Record<
+  Moves,
+  (figure: Coordinates) => Coordinates
+> = {
+  [Moves.bottom]: ([first, last]) => [first + ITEM_SIZE, last],
+  [Moves.right]: ([first, last]) => [first, last + ITEM_SIZE],
+  [Moves.left]: ([first, last]) => [first, last - ITEM_SIZE],
 };
 
 export const move = (
-  figure: IFigureNewGetter,
+  figure: Figure,
+  staticFigures: Figure[],
   moveTo: Moves,
   isEndCallback?: () => void
-) => {
+): Figure => {
   const coords = figure.coordinates;
   const matrix = new Matrix(coords);
   const isBorderCollided = checkBorder(matrix, moveTo);
-  let newCoords;
 
-  switch (moveTo) {
-    case Moves.right:
-      if (isBorderCollided) {
-        return coords;
-      }
+  if (isBorderCollided) {
+    if (isEndCallback) {
+      isEndCallback();
+    }
 
-      newCoords = coords.map(([first, last]) => [first, last + ITEM_SIZE]);
-
-      // getNewFigure(figure, newCoords.to2DArray()).isCollided();
-      // new figure.constructor(newCoords).isCollided()
-      if (figure.getNewFigure(newCoords).isCollided()) {
-        return coords;
-      }
-
-      return newCoords;
-
-    case Moves.left:
-      if (isBorderCollided) {
-        return coords;
-      }
-
-      newCoords = coords.map(([first, last]) => [first, last - ITEM_SIZE]);
-
-      if (figure.getNewFigure(newCoords).isCollided()) {
-        return coords;
-      }
-
-      return newCoords;
-
-    case Moves.bottom:
-      if (isBorderCollided) {
-        if (isEndCallback) {
-          isEndCallback();
-        }
-
-        return coords;
-      }
-
-      newCoords = coords.map(([first, last]) => [first + ITEM_SIZE, last]);
-
-      if (figure.getNewFigure(newCoords).isCollided()) {
-        if (isEndCallback) {
-          isEndCallback();
-        }
-
-        return coords;
-      }
-
-      return newCoords;
-
-    default:
-      return coords;
+    return figure;
   }
+
+  const newCoords = coords.map(coordinatesMapperByMoveType[moveTo]);
+
+  if (
+    isFiguresCollided(
+      staticFigures,
+      createFigure(figure.type, {
+        initialCoordinate: newCoords,
+      })
+    )
+  ) {
+    if (isEndCallback) {
+      isEndCallback();
+    }
+
+    return figure;
+  }
+
+  return {
+    ...figure,
+    coordinates: newCoords,
+  };
 };
 
 export const isValidKey = (key: string): key is Keys => {

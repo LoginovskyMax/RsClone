@@ -29,6 +29,35 @@
     }
   }
 }
+
+@media screen and (max-width: 480px) {
+  .footer {
+    padding: 20px 16px;
+    flex-direction: column;
+    align-items: start;
+    gap: 24px;
+    height: auto;
+
+    &__year {
+      order: 2;
+    }
+
+    &__content {
+      flex-direction: column;
+      align-items: start;
+      text-align: center;
+      p {
+        display: none;
+      }
+      order: 1;
+    }
+
+    &__logo {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+  }
+}
 .dark{
   background-color: black;
   .footer__content{

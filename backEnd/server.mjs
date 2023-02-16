@@ -10,9 +10,14 @@ import dotenv from "dotenv";
 import express from "express";
 import expressWs from "express-ws";
 import mongoose from "mongoose";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { WebSocketServer } from "ws";
 
 import { getGameData } from "./controllers/game-data-controller.mjs";
 import { capchaGenerator } from "./data/capcha.mjs";
+import { SEAWAR } from "./games/variables.mjs";
+// eslint-disable-next-line import/no-cycle
+import { seaWarSocket } from "./games/ws/ws-main.mjs";
 import { gameHttpRouter } from "./games.mjs";
 import { router } from "./router.mjs";
 
@@ -69,4 +74,13 @@ app.post("/capcha", jsonParser, (req, res) => {
     capchaValue
   );
   res.json({ isCorrect });
+});
+
+const WS_SEAWAR_PORT = 8001;
+const server = https.createServer(options);
+
+export const aWssSeaWar = new WebSocketServer({ server });
+aWssSeaWar.on("connection", seaWarSocket);
+server.listen(WS_SEAWAR_PORT, () => {
+  console.log(`${SEAWAR.NAME} web socket is runing at port ${WS_SEAWAR_PORT}`);
 });

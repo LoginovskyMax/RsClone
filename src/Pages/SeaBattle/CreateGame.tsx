@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams} from "react-router-dom";
+import { useEffect } from "react";
+import * as reactRouterDom from "react-router-dom";
 
 import Button from "../../Components/common/Button";
 import { CreateGamesList } from "../../Components/MultiGames/CreateGamesList";
@@ -9,12 +9,11 @@ import styles from "./SeaBattle.module.scss";
 import { webSocketController } from "./web-socket/WebSoket";
 
 export const CreateGame = () => {
-  const params = useParams();
-  const gameName = params.gameName;
-  const navigate = useNavigate();
-  const [inviteGame, setInviteGame] = useState(false);
+  const params = reactRouterDom.useParams();
+  const { gameName } = params;
+  const navigate = reactRouterDom.useNavigate();
   const user = useUserStore((state) => state.userName);
-  const location = useLocation();
+  const location = reactRouterDom.useLocation();
 
   const startGame = () => {
     if (webSocketController.getGameId() !== "") {
@@ -24,33 +23,32 @@ export const CreateGame = () => {
   };
 
   const createGame = () => {
-     const  request = {
-        type: "create",
-        data: null,
-      };
+    const request = {
+      type: "create",
+      data: null,
+    };
     webSocketController.send(JSON.stringify(request));
-    setTimeout(startGame,500)
- 
+    setTimeout(startGame, 500);
   };
 
-  const joinGame = (id:string) => {
-    if(inviteGame){
-      const request = {
-        type: "join",
-        data: { gameId:id },
-      };
-      webSocketController.send(JSON.stringify(request));
-    }
-    setTimeout(startGame,500)
-  }
+  const joinGame = (id: string) => {
+    const request = {
+      type: "join",
+      data: { gameId: id },
+    };
+    webSocketController.send(JSON.stringify(request));
+
+    setTimeout(startGame, 500);
+  };
 
   useEffect(() => {
-    
-    if(user!==null){
-      webSocketController.setUser(user)
+    if (user !== null) {
+      webSocketController.setUser(user);
       webSocketController.connect();
+    } else {
+      navigate("/");
     }
-   
+
     // подключаемся к игре, если есть квери параметры с id игры
     const queryParams = new URLSearchParams(location.search);
     const gameId = queryParams.get("gameId");
@@ -69,33 +67,9 @@ export const CreateGame = () => {
     <div className={styles.main_create}>
       <h2>{gameName}</h2>
       <h3>Создайте новую игру или присоединитесь к существующей</h3>
-      <div className={styles.main_radio}>
-        <label htmlFor="generate" className={styles.main_label}>Cоздать игру
-        <input
-          type="radio"
-          id="generate"
-          value="generate"
-          name="radio"
-          checked={!inviteGame}
-          onChange={() => setInviteGame(false)}
-        />
-        </label>
-       
-        <label htmlFor="invite" className={styles.main_label}>Присоединится к игре
-        <input
-          type="radio"
-          id="invite"
-          value="invite"
-          name="radio"
-          onChange={() => setInviteGame(true)}
-        />
-        </label>
-        
-      </div>
-      {!inviteGame ? (
-        <Button onClick={() => createGame()}>Создать игру</Button>
-      ) : <p className={styles.main_text}>Кликните по игре из списка ниже &darr;</p>}
-      <CreateGamesList gameName={gameName} joinGame={joinGame}></CreateGamesList>
+      <Button onClick={() => createGame()}>Создать игру</Button>
+      <p className={styles.main_text}>Кликните по игре из списка ниже &darr;</p>
+      <CreateGamesList gameName={gameName} joinGame={joinGame} />
     </div>
   );
 };
