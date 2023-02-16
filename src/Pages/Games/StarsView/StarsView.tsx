@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 
-import "./Style.scss";
+import "./style.scss";
 
 const NOT_SET_OPACITY = 0.6;
 
