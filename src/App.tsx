@@ -13,7 +13,7 @@ import Tetris from "./Pages/Tetris";
 import themeStore from "./store/theme";
 
 const App = () => {
-  const isDark = themeStore((state)=>state.isDark)
+  const isDark = themeStore((state) => state.isDark);
 
   return (
     <div className={isDark ? "darkApp" : "App"}>
@@ -26,21 +26,10 @@ const App = () => {
         <Route path="/room/:gameName" element={<CreateGame />} />
         <Route path="/SeaBattle/:id" element={<SeaBattle />} />
         <Route path="/games" element={<Games />} />
-        <Route
-          path="/qwe"
-          element={
-            <StarsView
-              rating={2.8}
-              canSet
-              getSettedRating={() => 8}
-              setCallback={(val) => alert(val)}
-            />
-          }
-        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
-}
+};
 
 export default App;

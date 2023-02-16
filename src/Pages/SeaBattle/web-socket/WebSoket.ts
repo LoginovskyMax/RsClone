@@ -54,6 +54,7 @@ class WebSocketController {
 
       const { type, data } = res;
       console.log(res);
+
       // eslint-disable-next-line default-case
       switch (type) {
         case "game-data":
@@ -70,7 +71,7 @@ class WebSocketController {
 
   private wsOpenHandler = () => {
     this.token = getUserToken();
-    
+
     if (this.token && this.user) {
       try {
         const request = {

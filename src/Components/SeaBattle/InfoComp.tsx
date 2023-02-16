@@ -8,7 +8,7 @@ interface IProps {
   start: string;
   count: number;
   winner?: Winner;
-  mainUser?:boolean
+  mainUser?: boolean;
 }
 
 export const InfoComp = ({
@@ -29,7 +29,7 @@ export const InfoComp = ({
   }
 
   if (start === "") {
-    return mainUser ? <p>Ожидание 2 игрока</p> : <p>Ожидание старта игры</p>
+    return mainUser ? <p>Ожидание 2 игрока</p> : <p>Ожидание старта игры</p>;
   }
 
   if (winner) {

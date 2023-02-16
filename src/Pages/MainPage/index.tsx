@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AuthenticationModal from "../../Components/Authentication";
 import Button from "../../Components/common/Button";
 import useUserStore from "../../store";
+import themeStore from "../../store/theme";
 
 import "./style.scss";
 
@@ -11,6 +12,7 @@ const MainPage = () => {
   const [isModalClosed, setModalClosed] = useState(true);
   const navigate = useNavigate();
   const user = useUserStore((state) => state.userName);
+  const theme = themeStore((state) => state.isDark);
 
   const handler = () => {
     if (user === null) {
@@ -21,10 +23,10 @@ const MainPage = () => {
   };
 
   return (
-    <div className="main-page">
+    <div className={theme ? "main-page dark-theme" : "main-page"}>
       <img
         alt="Online games players"
-        src="images/main.jpg"
+        src="images/main.png"
         className="main-page__photo"
       />
       <p className="main-page__main-text">Let`s play with Gaming Zone</p>
