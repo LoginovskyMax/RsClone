@@ -73,41 +73,57 @@ export default function PreviewPage() {
     <div className={styles.preview}>
       {!isLoading && (
         <>
-          <h2 className={styles.preview_header}>{gameName}</h2>
-          <p className={styles.preview_description}>
-            {gameData?.descriptionRu}
-          </p>
-          <p className={styles.preview_rules}>{gameData?.rulesRu}</p>
-          <StarsView
-            canSet
-            rating={gameData?.raiting ? gameData?.raiting : 0}
-            starSize={32}
-            settedRating={myRaiting}
-            setCallback={(rate) => {
-              setRaiting(rate);
-              setShowModal(true);
-            }}
-          />
+          <section
+            className={styles.preview__section}
+            style={{ backgroundImage: `url(${gameData?.image})` }}
+          >
+            <div className={styles.preview__wrapper}>
+              <h2 className={styles.preview_header}>{gameData?.fullName}</h2>
+              <p className={styles.preview_description}>
+                {gameData?.descriptionRu}
+              </p>
+              <StarsView
+                canSet
+                rating={gameData?.raiting ? gameData?.raiting : 0}
+                starSize={32}
+                settedRating={myRaiting}
+                setCallback={(rate) => {
+                  setRaiting(rate);
+                  setShowModal(true);
+                }}
+              />
+              <Button onClick={navigateHandler}>Играть!</Button>
+            </div>
+          </section>
 
-          <Button onClick={navigateHandler}>Играть!</Button>
-          <Button onClick={() => setShowModal(true)}>
-            Добавить комментарий
-          </Button>
-          <div className={styles.preview_comments}>
-            <p>Комментарии пользователей: </p>
-            {comments.map((elem) => (
-              <div key={elem.userName} className={styles.preview_item}>
-                <p>{elem.text}</p>
-                <p>{elem.userName}</p>
-                <StarsView
-                  key={elem.userName}
-                  rating={elem.raiting}
-                  starSize={24}
-                />
-                <p>{`${new Date(elem.date).toLocaleString()}`}</p>
-              </div>
-            ))}
-          </div>
+          <section className={styles.preview_rules}>
+            <h3 className={styles.preview_rulesTitle}>Правила Игры:</h3>
+            <p className={styles.preview_rulesText}>
+              {gameData?.rulesRu
+                .split("")
+                .map((ch) => (ch === "\n" ? "\n\n" : ch))
+                .join("")}
+            </p>
+          </section>
+
+          <section className={styles.preview_commentsWrapper}>
+            <Button onClick={() => setShowModal(true)}>Оставить отзыв</Button>
+            <div className={styles.preview_comments}>
+              <p>Комментарии пользователей: </p>
+              {comments.map((elem) => (
+                <div key={elem.userName} className={styles.preview_item}>
+                  <p>{elem.text}</p>
+                  <p>{elem.userName}</p>
+                  <StarsView
+                    key={elem.userName}
+                    rating={elem.raiting}
+                    starSize={24}
+                  />
+                  <p>{`${new Date(elem.date).toLocaleString()}`}</p>
+                </div>
+              ))}
+            </div>
+          </section>
         </>
       )}
       {showModal && (
