@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import type { MutableRefObject } from "react";
 
 import { WIDTH_CENTER } from "../constants";
-import { Figure } from "../figures";
-import { getRandomFigures } from "../figures/helpers";
-import type { Coordinates } from "../movement";
-
-import { useKeyBoardControls } from "./useKeyBoardControls";
+import type { Figure } from "../figures";
+import { isFiguresCollided, removeFilledLines } from "../figures";
+import { getRandomFigure } from "../figures/helpers";
+import { move, Moves, rotate } from "../movement";
 
 interface IUseControls {
   figures: Figure[];
@@ -13,62 +13,115 @@ interface IUseControls {
   rotateLeft: () => void;
   moveRight: () => void;
   moveLeft: () => void;
-  moveBottom: () => void;
+  moveBottom: MutableRefObject<() => void>;
   resetGame: () => void;
-  points: number;
+  score: number;
   isGameActive: boolean;
 }
 
-const getNewFigure = () => new (getRandomFigures())(WIDTH_CENTER);
+const getNewFigure = () =>
+  getRandomFigure({
+    offsetY: WIDTH_CENTER,
+  });
 
 export const useControls = (): IUseControls => {
-  const [points, setPoints] = useState<number>(0);
-  const [figures, setFigures] = useState<Figure[]>([]);
+  const [score, setScore] = useState<number>(0);
+  const [staticFigures, setStaticFigures] = useState<Figure[]>([]);
   const [isGameActive, setGameActive] = useState<boolean>(true);
   const [activeFigure, setActiveFigure] = useState<Figure>(getNewFigure);
-  const [, setActiveFigureCoords] = useState<Coordinates[]>(
-    activeFigure.getCoords()
-  );
   const intervalRef = useRef<ReturnType<typeof setInterval>>();
 
   const resetGame = useCallback(() => {
     const newFigure = getNewFigure();
 
-    setPoints(0);
-    setFigures([]);
+    setScore(0);
+    setStaticFigures([]);
+
     setGameActive(true);
 
     setActiveFigure(newFigure);
-    setActiveFigureCoords(newFigure.getCoords());
   }, []);
+
+  const moveBottomRef = useRef<() => void>(() => {});
+
+  const setMoveInterval = () => {
+    intervalRef.current = setInterval(() => {
+      moveBottomRef.current();
+    }, 1000);
+  };
 
   const stopFigure = () => {
     const newFigure = getNewFigure();
 
-    if (newFigure.isCollided()) {
+    if (isFiguresCollided(staticFigures, newFigure)) {
       setGameActive(false);
 
       return;
     }
 
     clearInterval(intervalRef.current);
+    setTimeout(() => {
+      setActiveFigure(newFigure);
+      setStaticFigures((oldFigures) => {
+        const newFigures = oldFigures.concat(activeFigure);
 
-    setActiveFigure(newFigure);
-    setActiveFigureCoords(newFigure.getCoords());
-    setFigures((state) => state.concat(activeFigure));
+        const { newStaticFigures, totalScore } = removeFilledLines(newFigures);
+
+        setScore((state) => state + totalScore);
+
+        return newStaticFigures;
+      });
+      setMoveInterval();
+    }, 0);
   };
 
-  const movements = useKeyBoardControls({
-    activeFigure,
-    setActiveFigureCoords,
-    stopFigure,
-    isGameActive,
-  });
+  const rotateRight = () => {
+    if (!isGameActive) {
+      return;
+    }
 
-  const setMoveInterval = () => {
-    intervalRef.current = setInterval(() => {
-      movements.moveBottom();
-    }, 1000);
+    setActiveFigure(rotate(activeFigure, staticFigures, true));
+  };
+
+  const rotateLeft = () => {
+    if (!isGameActive) {
+      return;
+    }
+
+    setActiveFigure(rotate(activeFigure, staticFigures));
+  };
+
+  const moveRight = () => {
+    if (!isGameActive) {
+      return;
+    }
+
+    setActiveFigure(move(activeFigure, staticFigures, Moves.right));
+  };
+
+  const moveLeft = () => {
+    if (!isGameActive) {
+      return;
+    }
+
+    setActiveFigure(move(activeFigure, staticFigures, Moves.left));
+  };
+
+  moveBottomRef.current = () => {
+    if (!isGameActive) {
+      return;
+    }
+
+    setActiveFigure(
+      move(activeFigure, staticFigures, Moves.bottom, stopFigure)
+    );
+  };
+
+  const movements = {
+    rotateRight,
+    rotateLeft,
+    moveRight,
+    moveLeft,
   };
 
   useEffect(() => {
@@ -77,21 +130,16 @@ export const useControls = (): IUseControls => {
     return () => {
       clearInterval(intervalRef.current);
     };
-  }, [activeFigure]);
+  }, []);
 
-  useEffect(() => {
-    Figure.allFigures = figures;
-
-    setPoints((state) => state + Figure.removeFilled());
-  }, [figures]);
-
-  const fullFigures = figures.concat(activeFigure);
+  const fullFigures = staticFigures.concat(activeFigure);
 
   return {
     figures: fullFigures,
-    points,
+    score,
     resetGame,
     isGameActive,
+    moveBottom: moveBottomRef,
     ...movements,
   };
 };
