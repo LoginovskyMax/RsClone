@@ -32,12 +32,14 @@ dd {
   min-height: calc(100vh - 160px);
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .darkApp{
   min-height: calc(100vh - 160px);
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: #373737;
   color: bisque;
 }
