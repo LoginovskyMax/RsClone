@@ -12,6 +12,7 @@ interface UsersState {
   status: Array<string>;
   banned: boolean;
   setUser: userSetter;
+  fetched: boolean;
 }
 
 const useUserStore = create<UsersState>((set) => ({
@@ -19,6 +20,7 @@ const useUserStore = create<UsersState>((set) => ({
   status: [],
   banned: false,
   email: null,
+  fetched: false,
   setUser: (newUser) => set(() => newUser),
 }));
 
@@ -27,6 +29,7 @@ export const nullUser = {
   status: [],
   banned: false,
   email: null,
+  fetched: true,
 };
 
 export default useUserStore;

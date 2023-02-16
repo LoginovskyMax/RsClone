@@ -18,7 +18,7 @@ export const TIMEOUT = 30000;
 
 // SeaWar
 export const SEAWAR = {
-  NAME: "SeaWar",
+  NAME: "SeaBattle",
   CLEAN: 1,
   SHIP: 2,
   MISS: 1,

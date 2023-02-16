@@ -18,7 +18,7 @@ const App = () => (
       <Route path="/" element={<MainPage />} />
       <Route path="/main" element={<StartPage />} />
       <Route path="/Memorygame" element={<MemoryGame />} />
-      <Route path="/tetris" element={<Tetris />} />
+      <Route path="/Tetris" element={<Tetris />} />
       <Route path="/preview/:game" element={<PreviewPage />} />
       <Route path="/room/:gameName" element={<CreateGame />} />
       <Route path="/SeaBattle/:id" element={<SeaBattle />} />

@@ -1,4 +1,4 @@
-import {
+import type {
   TokenData,
   UserData,
   Values,
@@ -6,9 +6,9 @@ import {
   ForgotUserData,
   MessageData,
   NewPassData,
-  FETCH_CORRECT_ERROR,
 } from "../data/authData";
 import {
+  FETCH_CORRECT_ERROR,
   BACKEND_URL,
   BACKEND_MYUSER_PATH,
   BACKEND_LOGIN_PATH,
@@ -28,7 +28,7 @@ export const getUserToken = (): string => {
 };
 
 export const logoutUser = () => {
-  document.cookie = `${COOKIE_TOKEN_VAL}=;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+  document.cookie = `name=${COOKIE_TOKEN_VAL}=;expires=Thu, 01 Jan 1970 00:00:01 GMT`;
 };
 
 const getUserDataByToken = async (): Promise<UserData> =>
@@ -41,7 +41,10 @@ const getUserDataByToken = async (): Promise<UserData> =>
       },
     }).then((response) => {
       if (response.ok) {
-        response.json().then((data) => resolve(data));
+        response.json().then((data) => {
+          data.fetched = true;
+          resolve(data);
+        });
       } else {
         response
           .json()

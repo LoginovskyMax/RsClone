@@ -1,7 +1,7 @@
 import { useEffect, useState, type FC } from "react";
 
 import { checkUserToken } from "../../controller/Auth";
-import useUserStore from "../../store";
+import useUserStore, { nullUser } from "../../store";
 import AuthenticationModal from "../Authentication";
 import Button from "../common/Button";
 
@@ -37,6 +37,7 @@ const Header: FC = () => {
         });
       })
       .catch((error) => {
+        setUser(nullUser);
         console.log(error);
       });
   }, []);

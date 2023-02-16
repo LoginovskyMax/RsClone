@@ -8,18 +8,22 @@ import useUserStore from "../../store";
 import styles from "./Preview.module.scss";
 
 interface IComment {
-  id: number;
   userName: string;
+  gameName: string;
   text: string;
-  data: string;
+  raiting: number;
+  date: Date;
 }
 interface IGameData {
-  comments: [IComment];
+  _id: string;
+  name: string;
+  image: string;
   descriptionRu: string;
   descriptionEn: string;
   rulesRu: string;
   rulesEn: string;
   rating: number;
+  comments: [IComment];
 }
 
 export default function PreviewPage() {
@@ -35,7 +39,12 @@ export default function PreviewPage() {
   const userName = useUserStore((state) => state.userName);
 
   const getGameData = () => {
-    fetch(`http://localhost:8888/gameData/${gameName}`)
+    fetch(
+      `https://rsgames.online:8888/games/data?name=${gameName
+        ?.split("")
+        .filter((ch) => ch !== " ")
+        .join("")}`
+    )
       .then<IGameData>((response) => response.json())
       .then((data) => {
         seComments(data.comments);
@@ -50,7 +59,7 @@ export default function PreviewPage() {
 
   const addComment = () => {
     const sendComment = { userName, comment };
-    fetch(`http://localhost:8888/`, {
+    fetch(`https://rsgames.online:8888/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -63,14 +72,13 @@ export default function PreviewPage() {
     setShowModal(false);
   };
 
-  const navigateHandler = ()=> {
-    if(gameName!=='SeaBattle'){
-      navigate(`/${gameName}`)
-    }else{
-      navigate(`/room/${gameName}`)
+  const navigateHandler = () => {
+    if (gameName !== "SeaBattle") {
+      navigate(`/${gameName}`);
+    } else {
+      navigate(`/room/${gameName}`);
     }
-   
-  }
+  };
 
   useEffect(() => {
     getGameData();
@@ -82,16 +90,16 @@ export default function PreviewPage() {
       <p className={styles.preview_description}>{description}</p>
       <p className={styles.preview_rules}>{rules}</p>
       <p>Рейтинг игры: {rating}</p>
-      
+
       <Button onClick={navigateHandler}>Играть!</Button>
       <Button onClick={() => setShowModal(true)}>Добавить комментарий</Button>
       <div className={styles.preview_comments}>
         <p>Комментарии пользователей: </p>
         {comments.map((elem) => (
-          <div key={elem.id} className={styles.preview_item}>
+          <div key={elem.userName} className={styles.preview_item}>
             <p>{elem.text}</p>
             <p>{elem.userName}</p>
-            <p>{elem.data}</p>
+            <p>{`${elem.date.toLocaleString()}`}</p>
           </div>
         ))}
       </div>

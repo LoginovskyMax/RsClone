@@ -2,6 +2,7 @@ import ReactDOM from "react-dom/client";
 import { HashRouter as Router } from "react-router-dom";
 
 import App from "./App";
+import { CheckForLogin } from "./Components/Authentication/utils";
 import Footer from "./Components/Footer";
 import Header from "./Components/Header";
 import Loading from "./Components/Loading/Lodaing";
@@ -15,5 +16,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Header />
     <App />
     <Footer />
+    <CheckForLogin />
   </Router>
 );
