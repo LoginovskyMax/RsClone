@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate, useParams} from "react-router-dom";
 
 import Button from "../../Components/common/Button";
@@ -32,13 +32,11 @@ export const CreateGame = () => {
   };
 
   const joinGame = (id: string) => {
-    if (inviteGame) {
-      const request = {
-        type: "join",
-        data: { gameId: id },
-      };
-      webSocketController.send(JSON.stringify(request));
-    }
+    const request = {
+      type: "join",
+      data: { gameId: id },
+    };
+    webSocketController.send(JSON.stringify(request));
 
     setTimeout(startGame, 500);
   };
