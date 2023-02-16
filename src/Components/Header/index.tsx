@@ -2,6 +2,7 @@ import { useEffect, useState, type FC } from "react";
 
 import { checkUserToken } from "../../controller/Auth";
 import useUserStore, { nullUser } from "../../store";
+import themeStore from "../../store/theme";
 import AuthenticationModal from "../Authentication";
 import Button from "../common/Button";
 
@@ -12,13 +13,22 @@ import "./style.scss";
 
 const Header: FC = () => {
   const [isModalClosed, setModalClosed] = useState(true);
-
+  const [rotate, setRotate] = useState(false);
   const userName = useUserStore((state) => state.userName);
   const setUser = useUserStore((state) => state.setUser);
+
+  const theme = themeStore((state) => state.isDark);
+  const changeTheme = themeStore((state) => state.setTheme);
 
   const resetToken = new URLSearchParams(window.location.search).get(
     "resetToken"
   );
+
+  const handler = () => {
+    changeTheme(!theme);
+    setRotate(true);
+    setTimeout(() => setRotate(false), 700);
+  };
 
   useEffect(() => {
     if (resetToken) {
@@ -43,9 +53,15 @@ const Header: FC = () => {
   }, []);
 
   return (
-    <header className="header">
+    <header className={theme ? "header dark" : "header"}>
       <Logo />
       <div className="header__content">
+        <img
+          src="images/day-and-night.png"
+          alt="theme"
+          className={rotate ? "header__rotate" : "header__theme"}
+          onClick={handler}
+        />
         {userName ? (
           <User username={userName} setUser={setUser} />
         ) : (
