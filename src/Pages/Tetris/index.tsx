@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import "./style.scss";
 
+import Button from "../../Components/common/Button";
 import FinishModal from "../../Components/Tetris/FinishModal";
 import Item from "../../Components/Tetris/Item";
 import { useControls } from "../../helpers/tetris/hooks/useControls";
@@ -54,13 +55,16 @@ const Tetris: FC = () => {
         points={score}
         reset={onResetClick}
       />
+      <div className="tetris__points">
+        <p className="tetris__text">{`Your score: ${score}`}</p>
+      </div>
+      <Button className="tetris__reset" onClick={resetGame}>
+        Reset game
+      </Button>
       <div className="tetris__playzone">
         {figures.map((figure, id) => (
           <Item key={id} coords={figure.coordinates} color={figure.color} />
         ))}
-      </div>
-      <div className="tetris__points">
-        <p className="tetris__text">{score}</p>
       </div>
     </div>
   );
