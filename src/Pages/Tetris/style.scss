@@ -1,14 +1,21 @@
 .tetris {
   width: 100vw;
   display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__reset {
+    max-width: 180px;
+    margin: 0 auto;
+  }
 
   &__playzone {
     overflow: hidden;
-    width: 600px;
-    height: 800px;
+    width: 450px;
+    height: 600px;
     position: relative;
-    top: calc((100% - 800px) / 2);
-    left: calc((100% - 600px) / 2);
+    top: calc((100% - 400px) / 2);
+    left: calc((100% - 450px) / 2);
     background-color: #f5f3ff;
   }
 

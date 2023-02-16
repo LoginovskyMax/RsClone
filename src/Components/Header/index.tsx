@@ -46,11 +46,6 @@ const Header: FC = () => {
     <header className="header">
       <Logo />
       <div className="header__content">
-        <img
-          src="images/day-and-night.png"
-          alt="theme"
-          className="header__theme"
-        />
         {userName ? (
           <User username={userName} setUser={setUser} />
         ) : (

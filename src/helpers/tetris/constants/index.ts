@@ -1,7 +1,7 @@
-export const ITEM_SIZE = 40;
+export const ITEM_SIZE = 30;
 
-export const WIDTH_CENTER = 280;
+export const WIDTH_CENTER = 210;
 
-export const PLAY_ZONE_WIDTH = 600;
+export const PLAY_ZONE_WIDTH = 450;
 
-export const PLAY_ZONE_HEIGHT = 800;
+export const PLAY_ZONE_HEIGHT = 600;

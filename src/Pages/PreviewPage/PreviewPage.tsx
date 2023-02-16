@@ -126,6 +126,28 @@ export default function PreviewPage() {
           </section>
         </>
       )}
+      {/* <Button onClick={navigateHandler}>Играть!</Button>
+      <div className={styles.preview_comments}>
+        <p className={styles.preview_title}>Комментарии пользователей: </p>
+        {comments.map((elem) => (
+          <div key={elem.userName} className={styles.preview_item}>
+            <div className={styles.preview_info}>
+              <img
+                className={styles.preview_image}
+                alt="user"
+                src="images/user.png"
+              />
+              <p className={styles.preview_username}>{elem.userName}</p>
+            </div>
+            <p className={styles.preview_text}>{elem.text}</p>
+            <p
+              className={styles.preview_date}
+            >{`${elem.date.toLocaleString()}`}</p>
+          </div>
+        ))}
+      </div>
+      <Button onClick={() => setShowModal(true)}>Добавить комментарий</Button> */}
+
       {showModal && (
         <Modal setModalClosed={() => setShowModal(false)} title="Комментарий">
           <div className={styles.modal}>
