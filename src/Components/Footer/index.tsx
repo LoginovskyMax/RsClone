@@ -2,6 +2,7 @@ import { type FC } from "react";
 
 import themeStore from "../../store/theme";
 
+
 import "./style.scss";
 
 const Footer: FC = () => {

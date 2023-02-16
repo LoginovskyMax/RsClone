@@ -5,6 +5,7 @@ import useUserStore, { nullUser } from "../../store";
 import themeStore from "../../store/theme";
 import AuthenticationModal from "../Authentication";
 import Button from "../common/Button";
+import { LangComp } from "./Lang/LangComp";
 
 import Logo from "./Logo";
 import User from "./User";
@@ -56,6 +57,7 @@ const Header: FC = () => {
     <header className={theme ? "header dark" : "header"}>
       <Logo />
       <div className="header__content">
+        <LangComp/>
         <img
           src="images/day-and-night.png"
           alt="theme"

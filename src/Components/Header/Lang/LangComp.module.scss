@@ -1,0 +1,67 @@
+@keyframes change1{
+    from{
+        transform: translate(0px);
+    }
+    to{
+        transform: translate(-30px);
+    }
+}
+@keyframes change2{
+    from{
+        transform: translate(0px);
+    }
+    to{
+        transform: translate(30px);
+    }
+}
+@keyframes change3{
+    from{
+        transform: translate(30px);
+    }
+    to{
+        transform: translate(0px);
+    }
+}
+@keyframes change4{
+    from{
+        transform: translate(-30px);
+    }
+    to{
+        transform: translate(0px);
+    }
+}
+.main{
+    display: flex;
+    gap: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid black;
+    color: black;
+    align-items: center;
+    &__icon{
+        width: 26px;
+        height: 26px;
+        animation: change3 0.4s ease-in-out ;
+        animation-fill-mode:forwards
+    }
+    &__text{
+        font-family: 'Ceviche One', cursive;
+        font-size: 25px;
+        z-index: -1;
+        animation: change4 0.4s ease-in-out ;
+        animation-fill-mode:forwards
+    }
+}
+.animate1{
+    font-family: 'Ceviche One', cursive;
+    font-size: 25px;
+    z-index: -1;
+    animation: change1 0.4s ease-in-out ;
+    animation-fill-mode:forwards
+}
+.animate2{
+    width: 26px;
+    height: 26px;
+    animation: change2 0.4s ease-in-out ;
+    animation-fill-mode:forwards
+}
