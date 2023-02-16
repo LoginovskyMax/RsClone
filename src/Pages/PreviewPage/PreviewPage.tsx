@@ -107,52 +107,52 @@ export default function PreviewPage() {
           </section>
 
           <section className={styles.preview_commentsWrapper}>
-            <Button onClick={() => setShowModal(true)}>Оставить отзыв</Button>
             <div className={styles.preview_comments}>
-              <p>Комментарии пользователей: </p>
+              <h3 className={styles.preview_rulesTitle}>Отзывы</h3>
               {comments.map((elem) => (
                 <div key={elem.userName} className={styles.preview_item}>
-                  <p>{elem.text}</p>
-                  <p>{elem.userName}</p>
-                  <StarsView
-                    key={elem.userName}
-                    rating={elem.raiting}
-                    starSize={24}
-                  />
-                  <p>{`${new Date(elem.date).toLocaleString()}`}</p>
+                  <div className={styles.preview_info}>
+                    <img
+                      className={styles.preview_image}
+                      alt="user"
+                      src="images/user.png"
+                    />
+                    <p className={styles.preview_username}>{elem.userName}</p>
+                    <StarsView
+                      key={elem.userName}
+                      rating={elem.raiting}
+                      starSize={16}
+                    />
+                  </div>
+                  <p className={styles.preview_text}>{elem.text}</p>
+                  <p className={styles.preview_date}>
+                    {`${new Date(elem.date).toLocaleString()}`}
+                  </p>
                 </div>
               ))}
             </div>
+            <Button
+              className={styles.preview__reviewBtn}
+              onClick={() => setShowModal(true)}
+            >
+              Оставить отзыв
+            </Button>
           </section>
         </>
       )}
-      {/* <Button onClick={navigateHandler}>Играть!</Button>
-      <div className={styles.preview_comments}>
-        <p className={styles.preview_title}>Комментарии пользователей: </p>
-        {comments.map((elem) => (
-          <div key={elem.userName} className={styles.preview_item}>
-            <div className={styles.preview_info}>
-              <img
-                className={styles.preview_image}
-                alt="user"
-                src="images/user.png"
-              />
-              <p className={styles.preview_username}>{elem.userName}</p>
-            </div>
-            <p className={styles.preview_text}>{elem.text}</p>
-            <p
-              className={styles.preview_date}
-            >{`${elem.date.toLocaleString()}`}</p>
-          </div>
-        ))}
-      </div>
-      <Button onClick={() => setShowModal(true)}>Добавить комментарий</Button> */}
 
       {showModal && (
-        <Modal setModalClosed={() => setShowModal(false)} title="Комментарий">
+        <Modal setModalClosed={() => setShowModal(false)} title="Отзыв">
           <div className={styles.modal}>
+            <StarsView
+              canSet
+              rating={gameData?.raiting ? gameData?.raiting : 0}
+              starSize={32}
+              settedRating={myRaiting}
+              setCallback={(rate) => setRaiting(rate)}
+            />
             <textarea
-              placeholder="Текст комментария"
+              placeholder="Текст отзыва"
               className={styles.modal_area}
               onChange={(e) => setComment(e.target.value)}
             />
