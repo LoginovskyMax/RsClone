@@ -47,6 +47,10 @@
     }
 
     &_rules{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
         padding: 80px 20px 60px;
     }
     &_rulesTitle {
@@ -57,6 +61,7 @@
         opacity: .9;
     }
     &_rulesText {
+        max-width: 1024px;
         text-align: left;
         opacity: .9;
         white-space: pre-wrap;
