@@ -17,15 +17,17 @@ interface IProps {
 
 export const CreateGamesList = ({gameName, joinGame}:IProps) => {
   const [gamesArr, setGamesArr] = useState<IGames[]>([])
+  const [rotate, setRotate] = useState(false)
 
   const getGames = () => {
- 
     fetch(`https://rsgames.online:8888/games/list?name=${gameName}`)
       .then<IGames[]>(response=>response.json())
       .then(data=>{
         setGamesArr(data)
       })
       .catch((err)=>console.log(err))
+      setRotate(true)
+      setTimeout(()=>{setRotate(false)},1000)
   }
 
   useEffect(()=>{
@@ -37,7 +39,7 @@ export const CreateGamesList = ({gameName, joinGame}:IProps) => {
         <FontAwesomeIcon
             icon={faRefresh}
             onClick={getGames}
-            className={styles.main_icon}
+            className={(rotate ? styles.main_rotate : styles.main_icon )}
          />
         </h2>
         {gamesArr.length!==0 ? gamesArr.map((game)=><div key={game.gameId} 

@@ -100,7 +100,7 @@ export const SeaBattle = () => {
       data:{gameId}
     }
     webSocketController.send(JSON.stringify(request))
-    navigate('/SeaBattle')
+    navigate('/room/SeaBattle')
   }
 
   useEffect(() => {
@@ -113,7 +113,7 @@ export const SeaBattle = () => {
           setShipsReady(false)
         break
         case "game-data":
-          const data   = gameData.data
+          const data = gameData.data
           setOtherData(data as GameData)
           const {enemyName, enemyField, yourField , player , winner} = (data as GameData)
           findCells(enemyField,enemyBoard,setEnemyBoard) 

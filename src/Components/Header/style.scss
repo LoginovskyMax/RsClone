@@ -1,3 +1,12 @@
+@keyframes rotate{
+  from{
+      transform: rotate(0deg);
+  }
+  to{
+      transform: rotate(-360deg);
+  }
+}
+
 .header {
   width: 100%;
   display: flex;
@@ -16,9 +25,19 @@
   &__theme {
     width: 40px;
     cursor: pointer;
-
     &:hover {
       opacity: 0.85;
     }
   }
+
+  &__rotate{
+    width: 40px;
+    cursor: pointer;
+    animation: rotate 0.7s ease-in-out;
+  }
+}
+
+.dark{
+  background-color: black;
+  color: wheat;
 }

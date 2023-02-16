@@ -2,6 +2,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { FC, ReactNode } from "react";
 import ReactDOM from "react-dom";
+import themeStore from "../../../store/theme";
 
 import "./style.scss";
 
@@ -11,8 +12,10 @@ interface ModalProps {
   setModalClosed: () => void;
 }
 
-const Modal: FC<ModalProps> = ({ children, title, setModalClosed }) =>
-  ReactDOM.createPortal(
+const Modal: FC<ModalProps> = ({ children, title, setModalClosed }) =>{
+  const theme = themeStore((state)=>state.isDark)
+
+  return  ReactDOM.createPortal(
     <div className="modal-background">
       <div className="modal-wrapper" onClick={setModalClosed} />
       <div className="modal">
@@ -24,10 +27,12 @@ const Modal: FC<ModalProps> = ({ children, title, setModalClosed }) =>
             onClick={setModalClosed}
           />
         </div>
-        <div className="modal__content">{children}</div>
+        <div className={theme ? "modal__content dark" : "modal__content"}>{children}</div>
       </div>
     </div>,
     document.body
   );
+}
+ 
 
 export default Modal;
