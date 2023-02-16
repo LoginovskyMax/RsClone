@@ -8,7 +8,6 @@ import NotFound from "./Pages/NotFound/NotFound";
 import PreviewPage from "./Pages/PreviewPage/PreviewPage";
 import { CreateGame } from "./Pages/SeaBattle/CreateGame";
 import { SeaBattle } from "./Pages/SeaBattle/SeaBattle";
-import StartPage from "./Pages/StartPage";
 import Tetris from "./Pages/Tetris";
 import themeStore from "./store/theme";
 
