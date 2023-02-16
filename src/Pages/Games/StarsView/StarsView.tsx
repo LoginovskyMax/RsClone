@@ -8,19 +8,19 @@ const NOT_SET_OPACITY = 0.6;
 interface SarsViewProps {
   rating: number; // рейтинг который вычислился
   canSet?: boolean; // может ли пользователь менять рейтинг
-  getSettedRating?: () => number; // автоматически вызывается и сетается возвр знач
+  settedRating?: number; // значение заданное как-бы пользователем
   setCallback?: (rating: number) => void; // вызывается когда пользователь задал рейтинг
   starSize?: number; // Размер звездочки
 }
 
 const StarsView: FC<SarsViewProps> = ({
-  rating: rat,
+  rating,
   canSet,
-  getSettedRating,
+  settedRating,
   setCallback,
   starSize = 30,
 }) => {
-  const [rating, setRating] = useState(rat);
+  const [newRating, setRating] = useState(-1);
   const [isSetted, userSetRating] = useState(false);
 
   const setNewRating = (value: number) => {
@@ -35,26 +35,31 @@ const StarsView: FC<SarsViewProps> = ({
   };
 
   useEffect(() => {
-    if (getSettedRating) {
-      const res = getSettedRating();
-
-      if (res >= 0 && res <= 5) {
-        setRating(res);
+    if (settedRating) {
+      if (settedRating > 0 && settedRating <= 5) {
+        setRating(settedRating);
         userSetRating(true);
       }
     }
-  }, []);
+  }, [settedRating]);
 
   const [starHovered, setStarHovered] = useState(0);
 
+  const getRate = () => (newRating >= 0 ? newRating : rating);
+
   // Calculating Percent of filling for every star
-  const ratingByStars = [
-    rating <= 0 ? 0 : rating >= 1 ? 100 : (rating - 0) * 100,
-    rating <= 1 ? 0 : rating >= 2 ? 100 : (rating - 1) * 100,
-    rating <= 2 ? 0 : rating >= 3 ? 100 : (rating - 2) * 100,
-    rating <= 3 ? 0 : rating >= 4 ? 100 : (rating - 3) * 100,
-    rating <= 4 ? 0 : rating >= 5 ? 100 : (rating - 4) * 100,
-  ];
+  const [ratingByStars, setRatingByStars] = useState([0, 0, 0, 0, 0]);
+
+  const renewrRatingByStars = () =>
+    setRatingByStars([
+      getRate() <= 0 ? 0 : getRate() >= 1 ? 100 : (getRate() - 0) * 100,
+      getRate() <= 1 ? 0 : getRate() >= 2 ? 100 : (getRate() - 1) * 100,
+      getRate() <= 2 ? 0 : getRate() >= 3 ? 100 : (getRate() - 2) * 100,
+      getRate() <= 3 ? 0 : getRate() >= 4 ? 100 : (getRate() - 3) * 100,
+      getRate() <= 4 ? 0 : getRate() >= 5 ? 100 : (getRate() - 4) * 100,
+    ]);
+
+  useEffect(() => renewrRatingByStars(), [newRating, rating]);
 
   return (
     <div className="rating-view">

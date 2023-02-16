@@ -22,3 +22,13 @@
     }
   }
 }
+
+@media screen and (max-width: 480px) {
+  .header {
+    padding: 10px 20px;
+
+    &__theme {
+      width: 20px;
+    }
+  }
+}

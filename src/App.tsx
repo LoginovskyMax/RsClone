@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 
 import "./App.scss";
 import Games from "./Pages/Games/Games";
-import StarsView from "./Pages/Games/StarsView/StarsView";
 import MainPage from "./Pages/MainPage";
 import MemoryGame from "./Pages/MemoryGame/MemoryGame";
 import NotFound from "./Pages/NotFound/NotFound";
@@ -23,17 +22,6 @@ const App = () => (
       <Route path="/room/:gameName" element={<CreateGame />} />
       <Route path="/SeaBattle/:id" element={<SeaBattle />} />
       <Route path="/games" element={<Games />} />
-      <Route
-        path="/qwe"
-        element={
-          <StarsView
-            rating={2.8}
-            canSet
-            getSettedRating={() => 8}
-            setCallback={(val) => alert(val)}
-          />
-        }
-      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   </div>
