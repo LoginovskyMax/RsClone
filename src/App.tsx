@@ -8,7 +8,6 @@ import NotFound from "./Pages/NotFound/NotFound";
 import PreviewPage from "./Pages/PreviewPage/PreviewPage";
 import { CreateGame } from "./Pages/SeaBattle/CreateGame";
 import { SeaBattle } from "./Pages/SeaBattle/SeaBattle";
-import StartPage from "./Pages/StartPage";
 import Tetris from "./Pages/Tetris";
 import themeStore from "./store/theme";
 
@@ -19,7 +18,7 @@ const App = () => {
     <div className={isDark ? "darkApp" : "App"}>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/main" element={<StartPage />} />
+        <Route path="/main" element={<Games />} />
         <Route path="/Memorygame" element={<MemoryGame />} />
         <Route path="/tetris" element={<Tetris />} />
         <Route path="/preview/:game" element={<PreviewPage />} />
