@@ -22,8 +22,16 @@ export async function getGamesList(_req, res) {
         const raiting = await getGameRaiting(game.name);
         const comments = await getCommentsForGame(game.name);
 
-        const { name, image, descriptionRu, descriptionEn, rulesRu, rulesEn } =
-          game;
+        const {
+          name,
+          image,
+          descriptionRu,
+          descriptionEn,
+          rulesRu,
+          rulesEn,
+          fullName,
+          isComingSoon,
+        } = game;
 
         return {
           name,
@@ -34,6 +42,8 @@ export async function getGamesList(_req, res) {
           rulesEn,
           raiting,
           comments,
+          fullName,
+          isComingSoon,
         };
       })
     );
@@ -65,6 +75,8 @@ export async function getGameData(req, res) {
         descriptionEn: game.descriptionEn,
         rulesRu: game.rulesRu,
         rulesEn: game.rulesEn,
+        fullName: game.fullName,
+        isComingSoon: game.isComingSoon,
         raiting,
         comments,
       };
@@ -105,6 +117,8 @@ export async function editGameData(req, res) {
     if (data.rulesRu) gameData.rulesRu = data.rulesRu;
     if (data.rulesEn) gameData.rulesEn = data.rulesEn;
     if (data.raiting) gameData.raiting = data.raiting;
+    if (data.fullName) gameData.fullName = data.fullName;
+    if (data.isComingSoon) gameData.isComingSoon = data.isComingSoon;
 
     await gameData.save();
     res.json(gameData);

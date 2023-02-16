@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
+.game-item {
+  width: 420px;
+  height: 240px;
+  max-width: calc(100vw - 32px);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  transition: all .2s;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  // .game-item__name
+  &__name {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
+    position: absolute;
+    justify-content: center;
+    border-radius: 12px;
+
+    h3 {
+      margin: auto;
+      color: #ffffff;
+      font-family: 'Black Ops One', cursive;
+      font-size: 3.8em;
+      line-height: 90%;
+      text-shadow: 20px 0 20px #00000039, 
+        0 20px 20px #00000039,
+        -20px 0 20px #00000039,
+        0 -20px 20px #00000039;
+    }
+  }
+
+  // .game-item__rating
+  &__rating {
+    margin-left: auto;
+    margin-top: auto;
+  }
+
+  // .game-item__wrapper
+  &__wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.5);
+    background: linear-gradient(
+      160deg, 
+      rgba(255, 255, 255, 0.109) 0%, 
+      rgba(255, 255, 255, 0.094) 73%, 
+      rgba(255, 255, 255, 0.59) 100%);
+
+    h4 {
+      display: none;
+    }
+  }
+
+  &_coming-soon {
+    cursor: default;
+
+    &:hover {
+      transform: none;
+    }
+
+    .game-item__wrapper {
+      background: linear-gradient(
+      160deg, 
+      rgba(91, 91, 91, 0.826) 0%, 
+      rgba(62, 62, 62, 0.781) 73%, 
+      rgba(122, 122, 122, 0.817) 100%);
+
+      h3 {
+        opacity: .4;
+      }
+
+      h4 {
+        display: flex;
+        color: #ffffffa4;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 1.2em;
+      }
+
+      .game-item__rating {
+        display: none;
+      }
+    }
+  }
+}

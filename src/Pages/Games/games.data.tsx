@@ -1,5 +1,6 @@
 export interface GameItem {
   name: string;
+  fullName: string;
   image: string;
   descriptionRu: string;
   descriptionEn: string;
@@ -7,6 +8,7 @@ export interface GameItem {
   rulesEn: string;
   raiting: number;
   comments: Array<CommentItem>;
+  isComingSoon: boolean;
 }
 
 export interface CommentItem {

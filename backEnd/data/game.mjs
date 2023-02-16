@@ -7,7 +7,8 @@ const gameData = new Schema({
   descriptionEn: { type: String, default: "No description" },
   rulesRu: { type: String, default: "Нет правил" },
   rulesEn: { type: String, default: "No rules" },
-  // raiting: { type: Number, default: 5 },
+  fullName: { type: String, default: "" },
+  isComingSoon: { type: Boolean, default: false },
 });
 
 export const GameData = model.gameData || model("GameData", gameData);

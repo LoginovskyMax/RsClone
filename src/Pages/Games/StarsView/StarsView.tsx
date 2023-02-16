@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 
-import "./style.scss";
+import "./Style.scss";
 
 const NOT_SET_OPACITY = 0.6;
 
@@ -10,6 +10,7 @@ interface SarsViewProps {
   canSet?: boolean; // может ли пользователь менять рейтинг
   getSettedRating?: () => number; // автоматически вызывается и сетается возвр знач
   setCallback?: (rating: number) => void; // вызывается когда пользователь задал рейтинг
+  starSize?: number; // Размер звездочки
 }
 
 const StarsView: FC<SarsViewProps> = ({
@@ -17,6 +18,7 @@ const StarsView: FC<SarsViewProps> = ({
   canSet,
   getSettedRating,
   setCallback,
+  starSize = 30,
 }) => {
   const [rating, setRating] = useState(rat);
   const [isSetted, userSetRating] = useState(false);
@@ -56,17 +58,11 @@ const StarsView: FC<SarsViewProps> = ({
 
   return (
     <div className="rating-view">
-      <div className="rating-view__back">
-        {ratingByStars.map(() => (
-          <div className="rating-view__star-wrapper">
-            <div className="rating-view__star-no" />
-          </div>
-        ))}
-      </div>
       <div className="rating-view__fill" onMouseLeave={() => setStarHovered(0)}>
         {ratingByStars.map((percent, i) => (
           <div
-            className="rating-view__star-wrapper star-1"
+            className="rating-view__star-wrapper"
+            style={{ width: `${starSize}px`, height: `${starSize}px` }}
             onMouseEnter={() => {
               if (canSet) setStarHovered(i + 1);
             }}
@@ -80,6 +76,16 @@ const StarsView: FC<SarsViewProps> = ({
                 opacity: isSetted || starHovered > i ? 1 : NOT_SET_OPACITY,
               }}
             />
+          </div>
+        ))}
+      </div>
+      <div className="rating-view__back">
+        {ratingByStars.map(() => (
+          <div
+            className="rating-view__star-wrapper"
+            style={{ width: `${starSize}px`, height: `${starSize}px` }}
+          >
+            <div className="rating-view__star-no" />
           </div>
         ))}
       </div>

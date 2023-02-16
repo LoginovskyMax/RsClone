@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate, useParams} from "react-router-dom";
+import * as reactRouterDom from "react-router-dom";
 
 import Button from "../../Components/common/Button";
 import { CreateGamesList } from "../../Components/MultiGames/CreateGamesList";
@@ -9,11 +9,11 @@ import styles from "./SeaBattle.module.scss";
 import { webSocketController } from "./web-socket/WebSoket";
 
 export const CreateGame = () => {
-  const params = useParams();
+  const params = reactRouterDom.useParams();
   const { gameName } = params;
-  const navigate = useNavigate();
+  const navigate = reactRouterDom.useNavigate();
   const user = useUserStore((state) => state.userName);
-  const location = useLocation();
+  const location = reactRouterDom.useLocation();
 
   const startGame = () => {
     if (webSocketController.getGameId() !== "") {

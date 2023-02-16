@@ -1,15 +1,17 @@
-/* eslint-disable */
 import { useEffect, useState } from "react";
 
 import { getAllGamesFromBackEnd } from "../../controller/GamesComments";
 import useStatusStore from "../../store/load-status";
-import GameComp from './GameComp/GameComp';
 
+import GameComp from "./GameComp/GameComp";
 import type { GameItem } from "./games.data";
+
+import "./Style.scss";
 
 const Games = () => {
   const [gamesArr, setGamesArr] = useState<Array<GameItem>>([]);
   const { setStatus } = useStatusStore();
+  const { isLoading } = useStatusStore();
 
   useEffect(() => {
     setStatus({ isLoading: true, message: "" });
@@ -25,14 +27,18 @@ const Games = () => {
 
   return (
     <div className="games">
-      <h2>Games</h2>
-      {
-        gamesArr ?
-        gamesArr.map((game) => <GameComp key={game.name} gameItem={game} />) : 
-        <div className="games__no-games">There is no games!</div>
-      }
+      <h2 className="games__title">Games</h2>
+      <div className="games__list">
+        {gamesArr.length > 0 &&
+          gamesArr.map((game) => <GameComp key={game.name} gameItem={game} />)}
+      </div>
+      {!isLoading && gamesArr.length === 0 && (
+        <div className="games__no-games">
+          <p>There is no games!</p>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Games;
