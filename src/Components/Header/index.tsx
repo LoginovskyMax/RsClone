@@ -1,8 +1,10 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { useEffect, useState, type FC } from "react";
 
 import { checkUserToken } from "../../controller/Auth";
 import useUserStore, { nullUser } from "../../store";
-import themeStore from "../../store/theme";
+// eslint-disable-next-line import/named
+import themeStore, { LS_THEME } from "../../store/theme";
 import AuthenticationModal from "../Authentication";
 import Button from "../common/Button";
 
@@ -25,6 +27,7 @@ const Header: FC = () => {
   );
 
   const handler = () => {
+    localStorage.setItem(LS_THEME, (!theme).toString());
     changeTheme(!theme);
     setRotate(true);
     setTimeout(() => setRotate(false), 700);

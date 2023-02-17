@@ -15,6 +15,7 @@
   padding: 10px 40px;
   box-shadow: 0 5px 5px -5px #f6e7ea;
   color: white;
+  background: #f3f3f3;
 
   &__content {
     display: flex;
@@ -38,6 +39,9 @@
 }
 
 .dark{
-  background-color: black;
-  color: wheat;
+  background-color: #0d0c10;
+  color: #bdd1f4;
+  .user__text {
+    color: #bdd1f4;
+  }
 }
