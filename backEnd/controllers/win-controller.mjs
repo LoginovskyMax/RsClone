@@ -10,13 +10,13 @@ export async function addWinner(req, res) {
     const data = req.body;
 
     if (!req.userName) {
-      return res.status(400).json({ message: "User not authorized" });
+      return res.status(405).json({ message: "User not authorized" });
     }
 
     const user = await User.findOne({ userName: req.userName });
 
     if (!user) {
-      return res.status(400).json({ message: "User not authorized" });
+      return res.status(405).json({ message: "User not authorized" });
     }
 
     data.user = user._id;
@@ -24,7 +24,7 @@ export async function addWinner(req, res) {
     const game = await GameData.findOne({ name: data.game });
 
     if (!game) {
-      return res.status(400).json({ message: "Game not found" });
+      return res.status(404).json({ message: "Game not found" });
     }
 
     data.game = game._id;
@@ -67,14 +67,14 @@ export async function getWinners(req, res) {
     const { game } = req.query;
 
     if (!req.userName) {
-      return res.status(400).json({ message: "User not authorized" });
+      return res.status(405).json({ message: "User not authorized" });
     }
 
     if (game) {
       const currentGame = await GameData.findOne({ name: game });
 
       if (!currentGame) {
-        return res.status(400).json({ message: "Game not found" });
+        return res.status(404).json({ message: "Game not found" });
       }
 
       const winners = await Winner.find({ game: currentGame._id });
@@ -105,7 +105,7 @@ export async function getWinners(req, res) {
       const user = await User.findOne({ userName: req.userName });
 
       if (!user) {
-        return res.status(400).json({ message: "User not authorized" });
+        return res.status(405).json({ message: "User not authorized" });
       }
 
       const wins = await Winner.find({ user: user._id });
