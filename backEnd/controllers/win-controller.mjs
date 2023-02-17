@@ -77,7 +77,7 @@ export async function getWinners(req, res) {
         return res.status(400).json({ message: "Game not found" });
       }
 
-      const winners = await Winner.find({ game: currentGame._id }).position;
+      const winners = await Winner.find({ game: currentGame._id });
 
       const fullList = (
         await Promise.all(
