@@ -40,22 +40,25 @@ export const CreateGamesList = ({ gameName, joinGame }: IProps) => {
           className={styles.main_icon}
         />
       </h2>
-      {gamesArr.length !== 0 ? (
-        gamesArr.map((game) => (
-          <div
-            key={game.gameId}
-            className={styles.main_item}
-            onClick={() => joinGame(game.gameId)}
-          >
-            <p>Создал : {game.player}</p>
-            <p>
-              В игре : {game.maxPlayers} / {game.playersInGame}
-            </p>
-          </div>
-        ))
-      ) : (
-        <p>Созданных игр пока нет</p>
-      )}
+      <div className={styles.main_gamesWrapper}>
+        {gamesArr.length !== 0 ? (
+          gamesArr.map((game) => (
+            <div
+              key={game.gameId}
+              className={styles.main_item}
+              onClick={() => joinGame(game.gameId)}
+            >
+              <p className={styles.main_userName}>{game.player}</p>
+              <div className={styles.main_usersCount}>
+                <div className={styles.main_usersIcon} />
+                {game.playersInGame} / {game.maxPlayers}
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className={styles.main_noGames}>Созданных игр пока нет</p>
+        )}
+      </div>
     </div>
   );
 };

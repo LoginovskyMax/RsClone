@@ -28,6 +28,8 @@ export default function PreviewPage() {
   const navigate = useNavigate();
 
   const navigateHandler = () => {
+    if (gameData?.isComingSoon) return;
+
     if (gameName !== "SeaBattle") {
       navigate(`/${gameName}`);
     } else {
@@ -83,16 +85,22 @@ export default function PreviewPage() {
                 {gameData?.descriptionRu}
               </p>
               <StarsView
-                canSet
+                canSet={!gameData?.isComingSoon}
                 rating={gameData?.raiting ? gameData?.raiting : 0}
                 starSize={32}
                 settedRating={myRaiting}
                 setCallback={(rate) => {
+                  if (gameData?.isComingSoon) return;
                   setRaiting(rate);
                   setShowModal(true);
                 }}
               />
-              <Button onClick={navigateHandler}>Играть!</Button>
+              <Button
+                onClick={navigateHandler}
+                disabled={gameData?.isComingSoon}
+              >
+                Играть!
+              </Button>
             </div>
           </section>
 
@@ -133,7 +141,8 @@ export default function PreviewPage() {
             </div>
             <Button
               className={styles.preview__reviewBtn}
-              onClick={() => setShowModal(true)}
+              onClick={() => !gameData?.isComingSoon && setShowModal(true)}
+              disabled={gameData?.isComingSoon}
             >
               Оставить отзыв
             </Button>
@@ -145,10 +154,10 @@ export default function PreviewPage() {
         <Modal setModalClosed={() => setShowModal(false)} title="Отзыв">
           <div className={styles.modal}>
             <StarsView
-              canSet
+              canSet={!gameData?.isComingSoon}
               rating={gameData?.raiting ? gameData?.raiting : 0}
               starSize={32}
-              settedRating={myRaiting}
+              settedRating={raiting}
               setCallback={(rate) => setRaiting(rate)}
             />
             <textarea
