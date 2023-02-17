@@ -115,7 +115,7 @@ export async function getWinners(req, res) {
           wins.map(async (winner) => ({
             _id: winner._id,
             userName: user.userName,
-            gameName: await GameData.findById(winner.game).name,
+            gameName: (await GameData.findById(winner.game)).name,
             points: winner.points,
             date: winner.date,
             position: (await getPositionForGame(winner.game, user)).position,
