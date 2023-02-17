@@ -18,6 +18,11 @@ export async function authorizedUser(req, res, next) {
     const data = jsonwebtoken.verify(token, process.env.KEY);
     req.user = data;
     const user = await User.findById(data.id);
+
+    if (!user) {
+      return res.status(403).json({ message: "User not authorized" });
+    }
+
     req.userName = user ? user.userName : null;
     req.banned = user ? user.banned : false;
     next();

@@ -89,7 +89,7 @@
 #### 6. Не готов к игре:
 ```JSON
 {
-	"type": "ready",
+	"type": "not-sready",
 	"data": {
 		"gameId": "{gameId}"
 	}
@@ -114,7 +114,7 @@
 #### 8. Ход (атаковать противника):
 ```JSON
 {
-	"type": "ready",
+	"type": "move",
 	"data": {
 		"gameId": "{gameId}",
 		"x": <координата-X>,

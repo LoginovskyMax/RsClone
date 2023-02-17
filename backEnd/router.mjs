@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import { Router } from "express";
+import { asyncMiddleware } from "middleware-async";
 
 import {
   deleteUser,
@@ -29,7 +30,7 @@ router.get("/setpass", jsonParser, getNameForNewPass); // {?resetToken=...}
 router.post("/registr", jsonParser, register); // { userName, email, password }
 router.post("/login", jsonParser, login); // { userName, password }
 router.get("/users", adminMiddleware(["admin", "moderator"]), getUsers);
-router.get("/myuser", authorizedUser, getUser);
+router.get("/myuser", asyncMiddleware(authorizedUser), getUser);
 router.get("/user", adminMiddleware(["admin", "moderator"]), getUserByName);
 router.put("/user", jsonParser, adminMiddleware(["admin"]), setUserStatus);
 router.delete("/user", jsonParser, adminMiddleware(["admin"]), deleteUser); // { userName }

@@ -20,6 +20,7 @@ import { SEAWAR } from "./games/variables.mjs";
 import { seaWarSocket } from "./games/ws/ws-main.mjs";
 import { gameHttpRouter } from "./games.mjs";
 import { router } from "./router.mjs";
+import { winRouter } from "./winners.mjs";
 
 dotenv.config();
 const app = express();
@@ -32,6 +33,7 @@ const sslKey = process.env.SSL_KEY || "backEnd/ssl/selfsigned.key";
 
 app.use("/auth", router);
 app.use("/games", gameHttpRouter);
+app.use("/win", winRouter);
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
