@@ -7,6 +7,7 @@ import { FieldComp } from "../../Components/SeaBattle/FieldComp";
 import { InfoComp } from "../../Components/SeaBattle/InfoComp";
 import { checkUserToken } from "../../controller/Auth";
 import useUserStore from "../../store";
+import useStatusStore from "../../store/load-status";
 
 import styles from "./SeaBattle.module.scss";
 import type { GameData } from "./web-socket/websocketData";
@@ -22,6 +23,7 @@ export const SeaBattle = () => {
   const [myBoard, setMyBoard] = useState(new Board());
   const [enemyBoard, setEnemyBoard] = useState(new Board());
   const user = useUserStore((state) => state.userName);
+  const { setStatus } = useStatusStore();
   const [enemyName, setEnemyName] = useState<string | null>("");
   const [shipsReady, setShipsReady] = useState(false);
   const [canShoot, setCanShoot] = useState(false);
@@ -151,7 +153,14 @@ export const SeaBattle = () => {
   useEffect(() => {
     setShipsReady(!!otherData?.player?.isReady);
     setStart(otherData?.isStarted && !otherData.winner ? "start" : "");
-    setCanShoot(!!otherData?.player?.isLead);
+    setCanShoot(!!otherData?.player?.isLead && !otherData?.winner);
+    setStatus({
+      isLoading: false,
+      message:
+        otherData?.winner.player.userName === user
+          ? "Вы победили!"
+          : "Вы проиграли",
+    });
     setTimeout(() => {
       setShootNow(!!otherData?.player?.isLead);
     }, SEABATTLE_MOBILE_MOVE_TIMEOUT);
