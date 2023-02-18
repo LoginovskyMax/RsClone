@@ -154,13 +154,17 @@ export const SeaBattle = () => {
     setShipsReady(!!otherData?.player?.isReady);
     setStart(otherData?.isStarted && !otherData.winner ? "start" : "");
     setCanShoot(!!otherData?.player?.isLead && !otherData?.winner);
-    setStatus({
-      isLoading: false,
-      message:
-        otherData?.winner.player.userName === user
-          ? "Вы победили!"
-          : "Вы проиграли",
-    });
+
+    if (otherData?.winner) {
+      setStatus({
+        isLoading: false,
+        message:
+          otherData?.winner.player.userName === user
+            ? "Вы победили!"
+            : "Вы проиграли",
+      });
+    }
+
     setTimeout(() => {
       setShootNow(!!otherData?.player?.isLead);
     }, SEABATTLE_MOBILE_MOVE_TIMEOUT);
