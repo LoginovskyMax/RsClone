@@ -6,7 +6,7 @@ import Modal from "../../Components/common/Modal";
 import CardComponent from "../../Components/MemoryGame/CardComponent";
 import { cardsArr } from "../../Components/MemoryGame/Data";
 import { type ICard } from "../../Components/MemoryGame/Interfaces";
-import { postWinner } from '../../controller/Winners';
+import { postWinner } from "../../controller/Winners";
 import { pointsData } from "../Games/pointsData";
 
 import styles from "./Memorygame.module.scss";
