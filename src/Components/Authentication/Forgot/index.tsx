@@ -11,6 +11,7 @@ import HelperText from "../HelperText";
 
 import "../style.scss";
 import { isEmail } from "./forgot.utils";
+import languageStore from "../../../store/language";
 
 const schema = yup.object().shape({
   userName: yup.string().min(3).max(30).required(),
@@ -19,8 +20,10 @@ const schema = yup.object().shape({
 const inputsProps = [
   {
     key: "userName",
-    label: "Name or Email",
-    placeholder: "Name or Email",
+    labelEn: "Name or Email",
+    labelRu: "Имя или Почта",
+    placeholderEn: "Name or Email",
+    placeholderRu: "Имя или почта",
     type: "text",
   },
 ] as const;
@@ -31,7 +34,7 @@ interface ForgotPassProps {
 
 const ForgotPass: FC<ForgotPassProps> = ({ setSignInModalOpened }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
+  const {isEn} = languageStore()
   const { setStatus } = useStatusStore();
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
@@ -60,15 +63,15 @@ const ForgotPass: FC<ForgotPassProps> = ({ setSignInModalOpened }) => {
 
   return (
     <div className="authentication">
-      <p className="authentication__title">Forgot password:</p>
+      <p className="authentication__title">{isEn ? "Забыли пароль :" : "Forgot password:"}</p>
       <form className="authentication__content" onSubmit={handleSubmit}>
-        {inputsProps.map(({ key, label, type, placeholder }) => (
+        {inputsProps.map(({ key, labelRu, labelEn, type, placeholderRu, placeholderEn }) => (
           <Input
             key={key}
             type={type}
-            label={label}
+            label={isEn ? labelRu : labelEn}
             name={key}
-            placeholder={placeholder}
+            placeholder={isEn ? placeholderRu : placeholderEn}
             value={values[key]}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -79,12 +82,13 @@ const ForgotPass: FC<ForgotPassProps> = ({ setSignInModalOpened }) => {
         ))}
         <p className="authentication__error">{errorMsg}</p>
         <HelperText
-          text="Remember you login and password?"
-          linkText="Go to login"
+          text={isEn ? "Забыли пароль или логин?:" : "Remember you login and password?"}
+          linkText={isEn ? "Перейти к авторизации" : "Go to login"}
           onClick={setSignInModalOpened}
         />
         <Button className="authentication__button" type="submit">
-          Send mail
+          {isEn ? "Выслать на почту" : "Send mail"}
+        
         </Button>
       </form>
     </div>

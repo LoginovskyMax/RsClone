@@ -9,6 +9,8 @@ import Item from "../../Components/Tetris/Item";
 import { useControls } from "../../helpers/tetris/hooks/useControls";
 import type { Movements } from "../../helpers/tetris/movement";
 import { rotations, Keys } from "../../helpers/tetris/movement";
+import languageStore from "../../store/language";
+import { is } from "immer/dist/internal";
 
 const Tetris: FC = () => {
   const {
@@ -24,6 +26,7 @@ const Tetris: FC = () => {
   } = useControls();
 
   const [isModalClosed, setModalClosed] = useState(true);
+  const { isEn } = languageStore()
 
   const onResetClick = () => {
     setModalClosed(true);
@@ -56,10 +59,10 @@ const Tetris: FC = () => {
         reset={onResetClick}
       />
       <div className="tetris__points">
-        <p className="tetris__text">{`Your score: ${score}`}</p>
+        <p className="tetris__text">{isEn ? "Ваш счет : " : `Your score : `}{score}</p>
       </div>
       <Button className="tetris__reset" onClick={resetGame}>
-        Reset game
+        {isEn ? "Рестарт" : "Reset game"}
       </Button>
       <div className="tetris__playzone">
         {figures.map((figure, id) => (

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 
 import styles from "./CreateGamesList.module.scss";
+import languageStore from "../../store/language";
 
 interface IGames {
   gameId: string;
@@ -18,6 +19,7 @@ interface IProps {
 
 export const CreateGamesList = ({ gameName, joinGame }: IProps) => {
   const [gamesArr, setGamesArr] = useState<IGames[]>([]);
+  const { isEn } = languageStore()
 
   const getGames = () => {
     fetch(`https://rsgames.online:8888/games/list?name=${gameName}`)
@@ -33,7 +35,7 @@ export const CreateGamesList = ({ gameName, joinGame }: IProps) => {
   return (
     <div className={styles.main}>
       <h2 className={styles.main_header}>
-        Список доступных игр
+       {isEn ? "Список доступных игр" : "List of create games"}
         <FontAwesomeIcon
           icon={faRefresh}
           onClick={getGames}
@@ -47,14 +49,14 @@ export const CreateGamesList = ({ gameName, joinGame }: IProps) => {
             className={styles.main_item}
             onClick={() => joinGame(game.gameId)}
           >
-            <p>Создал : {game.player}</p>
+            <p> {isEn ? "Создал : " : "Create by : "}{game.player}</p>
             <p>
-              В игре : {game.maxPlayers} / {game.playersInGame}
+            {isEn ? "В игре :" : "In game : "} {game.maxPlayers} / {game.playersInGame}
             </p>
           </div>
         ))
       ) : (
-        <p>Созданных игр пока нет</p>
+        <p>{isEn ? "Созданных игр пока нет " : "Not avalaible games "}</p>
       )}
     </div>
   );

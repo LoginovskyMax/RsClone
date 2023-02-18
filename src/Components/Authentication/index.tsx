@@ -8,7 +8,7 @@ import ForgotPass from "./Forgot";
 import ResetPass from "./Reset";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-
+import languageStore from "../../store/language";
 interface AuthenticationModalProps {
   setModalClosed: () => void;
 }
@@ -32,7 +32,7 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
   );
 
   const { message } = useStatusStore();
-
+  const {isEn} = languageStore()
   useEffect(() => {
     if (message) {
       setModalClosed();
@@ -44,7 +44,7 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
   }, [message]);
 
   return (
-    <Modal setModalClosed={setModalClosed} title="Authentication">
+    <Modal setModalClosed={setModalClosed} title={isEn ? "Аутентификаци" : "Authentication"}>
       {windowVisible === authWindow.login && (
         <SignIn
           setModalClosed={setModalClosed}

@@ -10,6 +10,7 @@ import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 import HelperText from "../HelperText";
+import languageStore from "../../../store/language";
 
 import "../style.scss";
 
@@ -21,14 +22,18 @@ const schema = yup.object().shape({
 const inputsProps = [
   {
     key: "userName",
-    label: "Name",
-    placeholder: "Username",
+    labelEn: "Name",
+    labelRu: "Имя",
+    placeholderEn: "Username",
+    placeholderRu: "Имя пользователя",
     type: "text",
   },
   {
     key: "password",
-    label: "Password",
-    placeholder: "Password",
+    labelEn: "Password",
+    labelRu: "Пароль",
+    placeholderEn: "Password",
+    placeholderRu: "Пароль",
     type: "password",
   },
 ] as const;
@@ -45,9 +50,8 @@ const SignIn: FC<SignInProps> = ({
   setForgotOpened,
 }) => {
   const setUser = useUserStore((state) => state.setUser);
-
+  const {isEn} = languageStore()
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
   const { setStatus } = useStatusStore();
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
@@ -80,15 +84,15 @@ const SignIn: FC<SignInProps> = ({
 
   return (
     <div className="authentication">
-      <p className="authentication__title">Sign In</p>
+      <p className="authentication__title">{isEn ? "Войти" : "Sign In"}</p>
       <form className="authentication__content" onSubmit={handleSubmit}>
-        {inputsProps.map(({ key, label, type, placeholder }) => (
+        {inputsProps.map(({ key, labelRu, labelEn, type, placeholderEn, placeholderRu }) => (
           <Input
             key={key}
             type={type}
-            label={label}
+            label={isEn ? labelRu : labelEn}
             name={key}
-            placeholder={placeholder}
+            placeholder={isEn ? placeholderRu : placeholderEn}
             value={values[key]}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -100,16 +104,16 @@ const SignIn: FC<SignInProps> = ({
         <p className="authentication__error">{errorMsg}</p>
         <HelperText
           text=""
-          linkText="Forgot password?"
+          linkText={isEn ? "Забыли пароль?" : "Forgot password?"}
           onClick={setForgotOpened}
         />
         <HelperText
-          text="Don't have an account?"
-          linkText="Sign up"
+          text={isEn ? "Нет аккаунта?" : "Don't have an account?"}
+          linkText={isEn ? "Войти" : "Sign In"}
           onClick={setSignInModalOpened}
         />
         <Button className="authentication__button" type="submit">
-          Sign In
+        {isEn ? "Войти" : "Sign In"}
         </Button>
       </form>
     </div>

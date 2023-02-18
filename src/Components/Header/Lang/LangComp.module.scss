@@ -11,7 +11,7 @@
         transform: translate(0px);
     }
     to{
-        transform: translate(30px);
+        transform: translate(25px);
     }
 }
 @keyframes change3{
@@ -33,29 +33,28 @@
 .main{
     display: flex;
     gap: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
     padding: 5px;
-    border-radius: 10px;
-    border: 1px solid black;
-    color: black;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
+    border-radius: 20px;
     align-items: center;
+    font-family: 'Ceviche One', cursive;
+    cursor: pointer;
     &__icon{
         width: 26px;
         height: 26px;
         animation: change3 0.4s ease-in-out ;
-        animation-fill-mode:forwards
+        animation-fill-mode:forwards;
+        z-index: 3;
     }
     &__text{
-        font-family: 'Ceviche One', cursive;
-        font-size: 25px;
-        z-index: -1;
         animation: change4 0.4s ease-in-out ;
-        animation-fill-mode:forwards
+        animation-fill-mode:forwards;
     }
 }
 .animate1{
-    font-family: 'Ceviche One', cursive;
-    font-size: 25px;
-    z-index: -1;
     animation: change1 0.4s ease-in-out ;
     animation-fill-mode:forwards
 }

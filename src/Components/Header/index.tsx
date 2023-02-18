@@ -8,6 +8,7 @@ import themeStore, { LS_THEME } from "../../store/theme";
 import AuthenticationModal from "../Authentication";
 import Button from "../common/Button";
 import { LangComp } from "./Lang/LangComp";
+import languageStore from "../../store/language";
 
 import Logo from "./Logo";
 import User from "./User";
@@ -19,7 +20,7 @@ const Header: FC = () => {
   const [rotate, setRotate] = useState(false);
   const userName = useUserStore((state) => state.userName);
   const setUser = useUserStore((state) => state.setUser);
-
+  const { isEn } = languageStore()
   const theme = themeStore((state) => state.isDark);
   const changeTheme = themeStore((state) => state.setTheme);
 
@@ -70,7 +71,7 @@ const Header: FC = () => {
         {userName ? (
           <User username={userName} setUser={setUser} />
         ) : (
-          <Button onClick={() => setModalClosed(false)}>Sign in</Button>
+          <Button onClick={() => setModalClosed(false)}>{isEn ? "Войти" : "Sign in"}</Button>
         )}
       </div>
       {!isModalClosed && (

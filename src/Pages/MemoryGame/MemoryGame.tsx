@@ -6,6 +6,7 @@ import Modal from "../../Components/common/Modal";
 import CardComponent from "../../Components/MemoryGame/CardComponent";
 import { cardsArr } from "../../Components/MemoryGame/Data";
 import { type ICard } from "../../Components/MemoryGame/Interfaces";
+import languageStore from "../../store/language";
 
 import styles from "./Memorygame.module.scss";
 
@@ -23,6 +24,7 @@ const MemoryGame = () => {
   const [level, setLevel] = useState(8);
   const pairs = useRef<ICard[]>([]);
   const openPairs = useRef(0);
+  const { isEn } = languageStore()
 
   const onPress = (id: number) => {
     setOpenCards(openCards + 1);
@@ -104,28 +106,28 @@ const MemoryGame = () => {
 
   return (
     <div className={styles.memory_main}>
-      <h2> Memory Game</h2>
+      <h2>Memory Game</h2>
       <div className={styles.memory_main__level}>
-        <p>Уровень: </p>
+        <p>{isEn ? "Уровень : " : "Level : "}</p>
         <select
           className={styles.memory_main__input}
           onChange={(e) => {
             setLevel(+e.target.value);
           }}
         >
-          <option value="8">Легкий</option>
-          <option value="12">Средний</option>
-          <option value="18">Сложный</option>
+          <option value="8">{isEn ? "Легкий" : "Easy"}</option>
+          <option value="12">{isEn ? "Средний" : "Medium"}</option>
+          <option value="18">{isEn ? "Тяжелый" : "Hard"}</option>
         </select>
       </div>
 
       <div className={styles.btns_conteiner}>
         <Button onClick={startGameFunc} disabled={!!inGame}>
-          Начать игру
+          {isEn ? "Начать игру" : "Start game"}
         </Button>
-        <Button onClick={restartGame}>Рестарт</Button>
+        <Button onClick={restartGame}>{isEn ? "Рестарт" : "Restart"}</Button>
       </div>
-      <p>Количество попыток: {countTry}</p>
+      <p>{isEn ? "Количество попыток :" : "Count of try : "} {countTry}</p>
       <div className={styles.cards_conteiner} style={{ width: `${width}px` }}>
         {cards.map((item) => (
           <CardComponent
@@ -144,7 +146,7 @@ const MemoryGame = () => {
         <Modal setModalClosed={() => setShowModal(false)} title="Победа!">
           <div className={styles.modal_window__main}>
             <p className={styles.modal_window__text}>
-              Ваш результат {countTry}
+              {isEn ? "Ваш результат : " : "Your result : "} {countTry}
             </p>
             <Button
               onClick={() => {
@@ -152,7 +154,7 @@ const MemoryGame = () => {
                 setShowModal(false);
               }}
             >
-              На главную
+              {isEn ? " На главную" : "On main"}
             </Button>
             <Button
               onClick={() => {
@@ -160,15 +162,10 @@ const MemoryGame = () => {
                 setShowModal(false);
               }}
             >
-              Начать заново
+               {isEn ? "Начать заново" : "Play again"}
             </Button>
           </div>
         </Modal>
-        // <div className={styles.modal_window}>
-        //   <div className={styles.modal_window__main}>
-
-        //   </div>
-        // </div>
       )}
     </div>
   );

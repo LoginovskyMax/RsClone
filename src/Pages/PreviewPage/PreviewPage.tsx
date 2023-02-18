@@ -8,13 +8,14 @@ import type { GameComment, GameData } from "../../data/gamesData";
 import useUserStore from "../../store";
 import useStatusStore from "../../store/load-status";
 import StarsView from "../Games/StarsView/StarsView";
+import languageStore from "../../store/language";
 
 import styles from "./Preview.module.scss";
 
 export default function PreviewPage() {
   const params = useParams();
   const gameName = params.game;
-
+  const { isEn } = languageStore()
   const { isLoading, setStatus } = useStatusStore();
   const { userName } = useUserStore();
 
@@ -80,7 +81,7 @@ export default function PreviewPage() {
             <div className={styles.preview__wrapper}>
               <h2 className={styles.preview_header}>{gameData?.fullName}</h2>
               <p className={styles.preview_description}>
-                {gameData?.descriptionRu}
+                {isEn ? gameData?.descriptionRu : gameData?.descriptionEn}
               </p>
               <StarsView
                 canSet
@@ -92,23 +93,28 @@ export default function PreviewPage() {
                   setShowModal(true);
                 }}
               />
-              <Button onClick={navigateHandler}>Играть!</Button>
+              <Button onClick={navigateHandler}>{isEn ? "Играть!" : "Start play!"}</Button>
             </div>
           </section>
 
           <section className={styles.preview_rules}>
-            <h3 className={styles.preview_rulesTitle}>Правила Игры:</h3>
+            <h3 className={styles.preview_rulesTitle}>{isEn ? "Правила игры : " : "Game rules : "}</h3>
             <p className={styles.preview_rulesText}>
-              {gameData?.rulesRu
+              {isEn 
+                ? gameData?.rulesRu
                 .split("")
                 .map((ch) => (ch === "\n" ? "\n\n" : ch))
-                .join("")}
+                .join("") 
+                : gameData?.rulesEn
+                  .split("")
+                  .map((ch) => (ch === "\n" ? "\n\n" : ch))
+                  .join("")}
             </p>
           </section>
 
           <section className={styles.preview_commentsWrapper}>
             <div className={styles.preview_comments}>
-              <h3 className={styles.preview_rulesTitle}>Отзывы</h3>
+              <h3 className={styles.preview_rulesTitle}>{isEn ? "Отзывы" : "Feedback"}</h3>
               {comments.map((elem) => (
                 <div key={elem.userName} className={styles.preview_item}>
                   <div className={styles.preview_info}>
@@ -135,14 +141,14 @@ export default function PreviewPage() {
               className={styles.preview__reviewBtn}
               onClick={() => setShowModal(true)}
             >
-              Оставить отзыв
+              {isEn ? "Оставить отзыв" : "Leave feedback"}
             </Button>
           </section>
         </>
       )}
 
       {showModal && (
-        <Modal setModalClosed={() => setShowModal(false)} title="Отзыв">
+        <Modal setModalClosed={() => setShowModal(false)} title={isEn ? "Отзыв" : "Feedback"}>
           <div className={styles.modal}>
             <StarsView
               canSet
@@ -156,7 +162,7 @@ export default function PreviewPage() {
               className={styles.modal_area}
               onChange={(e) => setComment(e.target.value)}
             />
-            <Button onClick={addComment}>Добавить</Button>
+            <Button onClick={addComment}>{isEn ? "Добавить" : "Add"}</Button>
           </div>
         </Modal>
       )}

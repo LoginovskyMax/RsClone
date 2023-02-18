@@ -5,6 +5,7 @@ import "./style.scss";
 
 import Button from "../../common/Button";
 import Modal from "../../common/Modal";
+import languageStore from "../../../store/language";
 
 interface IFinishModalProps {
   points: number;
@@ -18,14 +19,17 @@ const FinishModal: FC<IFinishModalProps> = ({
   setModalClosed,
   points,
   reset,
-}) =>
-  !isModalClosed ? (
-    <Modal setModalClosed={setModalClosed} title="Finished">
+}) => {
+  const { isEn } = languageStore()
+  if (!isModalClosed) {
+    return <Modal setModalClosed={setModalClosed} title="Finished">
       <div className="finish">
-        <p className="finish__title">Score: {points}</p>
+        <p className="finish__title">{isEn ? "Cчет : " : "Score : "} {points}</p>
         <Button onClick={reset}>Reset</Button>
       </div>
     </Modal>
-  ) : null;
+  }  else return null
+}
+ 
 
 export default memo(FinishModal);
