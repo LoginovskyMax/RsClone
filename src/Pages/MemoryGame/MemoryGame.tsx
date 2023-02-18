@@ -90,10 +90,10 @@ const MemoryGame = () => {
         setWidth(650);
         break;
       case 12:
-        setWidth(950);
+        setWidth(990);
         break;
       case 18:
-        setWidth(950);
+        setWidth(990);
         break;
 
       default:
@@ -126,7 +126,10 @@ const MemoryGame = () => {
         <Button onClick={restartGame}>Рестарт</Button>
       </div>
       <p>Количество попыток: {countTry}</p>
-      <div className={styles.cards_conteiner} style={{ width: `${width}px` }}>
+      <div
+        className={styles.cards_conteiner}
+        style={{ maxWidth: `${width}px` }}
+      >
         {cards.map((item) => (
           <CardComponent
             key={item.id}
