@@ -95,3 +95,13 @@
     }
   }
 }
+
+@media screen and (max-width: 890px) {
+  .game-item {
+      min-width: 92vw;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+  }
+}

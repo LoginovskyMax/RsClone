@@ -46,9 +46,18 @@ dd {
 
 @media screen and (max-width: 640px) {
   .App {
-    min-height: calc(100vh - 660px);
+    min-height: calc(100vh - 150px);
   }
   .darkApp {
-    min-height: calc(100vh - 660px);
+    min-height: calc(100vh - 150px);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .App {
+    min-height: calc(100vh - 316px);
+  }
+  .darkApp {
+    min-height: calc(100vh - 316px);
   }
 }
