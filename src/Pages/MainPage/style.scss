@@ -43,7 +43,13 @@
 }
 
 @media screen and (max-width: 480px) {
-  .main-page__main-text {
-    font-size: 3em;
+  .main-page {
+    &__main-text {
+      font-size: 3em;
+    }
+
+    &__secondary-text {
+      max-width: 90%;
+    }
   }
 }

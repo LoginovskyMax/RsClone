@@ -43,3 +43,12 @@ dd {
   background-color: #141227;
   color: #fffef0;;
 }
+
+@media screen and (max-width: 640px) {
+  .App {
+    min-height: calc(100vh - 660px);
+  }
+  .darkApp {
+    min-height: calc(100vh - 660px);
+  }
+}

@@ -14,6 +14,8 @@ import themeStore from "./store/theme";
 const App = () => {
   const isDark = themeStore((state) => state.isDark);
 
+  document.addEventListener("pinch-zoom", (e) => e.preventDefault());
+
   return (
     <div className={isDark ? "darkApp" : "App"}>
       <Routes>
