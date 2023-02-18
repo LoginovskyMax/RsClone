@@ -1,5 +1,5 @@
 import type { Winner } from "../../Pages/SeaBattle/web-socket/websocketData";
-import useUserStore from '../../store';
+import useUserStore from "../../store";
 import Button from "../common/Button";
 
 interface IProps {
@@ -21,7 +21,7 @@ export const InfoComp = ({
 }: IProps) => {
   const { userName } = useUserStore();
 
-  if (!shipsReady) {
+  if (!shipsReady && !mainUser) {
     return (
       <Button onClick={() => ready()} disabled={shipsReady}>
         Корабли готовы
@@ -40,21 +40,13 @@ export const InfoComp = ({
       console.log(winner);
       message =
         winner.player.userName === userName ? (
-          <p>Вы победили!</p>
+          <p>Вы победили! Ходов: {winner.moves}</p>
         ) : (
           <p>Вы проиграли :(</p>
         );
     }
 
-    return message
-  }
-
-  if (winner) {
-    return (
-      <p>
-        Победил : {winner.userName} Ходов: {winner.moves}
-      </p>
-    );
+    return message;
   }
 
   return <div>{canShoot ? <p>Стреляй</p> : <p>Выстрел соперника </p>}</div>;

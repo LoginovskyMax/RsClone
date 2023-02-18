@@ -127,7 +127,7 @@ export default function PreviewPage() {
                     />
                     <p className={styles.preview_username}>{elem.userName}</p>
                     <StarsView
-                      key={elem.userName}
+                      key={`star${elem.userName}`}
                       rating={elem.raiting}
                       starSize={16}
                     />

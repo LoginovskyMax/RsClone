@@ -27,7 +27,6 @@ export const SeaBattle = () => {
   const [gameData, setGameData] = useState<wsGameData>();
   const [otherData, setOtherData] = useState<GameData>();
   const [serverError, setServerError] = useState("");
-  let count = 0;
 
   const restart = () => {
     const newBoard = new Board();
@@ -47,7 +46,6 @@ export const SeaBattle = () => {
   };
 
   const setShip = (x: number, y: number) => {
-    count += 1;
     const request = {
       type: "set",
       data: { gameId, x, y },
@@ -97,7 +95,6 @@ export const SeaBattle = () => {
       data: { gameId },
     };
     webSocketController.send(JSON.stringify(request));
-    setCanShoot(true);
   };
 
   const joinGame = () => {
@@ -151,6 +148,7 @@ export const SeaBattle = () => {
   useEffect(() => {
     setShipsReady(!!otherData?.player?.isReady);
     setStart(otherData?.isStarted && !otherData.winner ? "start" : "");
+    setCanShoot(!!otherData?.player?.isLead);
   }, [otherData]);
 
   useEffect(() => {

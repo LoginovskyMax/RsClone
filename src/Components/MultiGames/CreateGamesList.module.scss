@@ -89,9 +89,11 @@
         animation: rotate 1s ease-in-out;
     }
     &_noGames {
+        width: 100%;
         padding: 30px;
-        font-size: 1.6em;
         opacity: .6;
+        font-size: 1.6em;
+        text-align: center;
     }
 }
 
