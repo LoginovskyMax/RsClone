@@ -1,8 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { GameData } from "../../data/game.mjs";
-import { User } from "../../data/User.mjs";
-import { Winner } from "../../data/winner.mjs";
 import { Game, games } from "../data/games.mjs";
 import { pointsData } from "../data/points-data.mjs";
 import { SeaWarPlayer } from "../data/seawar-player.mjs";
@@ -13,6 +10,7 @@ import { checkMatrix } from "./checker.mjs";
 import {
   checkForKill,
   checkPlayerForJoining,
+  createWinner,
   fillShips,
   isGameEnded,
   makeAnswer,
@@ -209,14 +207,6 @@ export function getSeaWarGameData(data, ws) {
   return sendDataForPlayers(gameId);
 }
 
-async function newWinner(player) {
-  new Winner({
-    points: player.points,
-    game: await GameData.findOne({ name: SEAWAR.NAME }),
-    user: await User.findOne({ userName: player.userName }),
-  }).save();
-}
-
 export function nextSeaWarStep(data, ws) {
   const { gameId, x, y } = data;
   const userName = ws.id.split(":")[0];
@@ -258,7 +248,7 @@ export function nextSeaWarStep(data, ws) {
         };
         game.isStarted = false;
         game.isLead = false;
-        newWinner(player);
+        createWinner(player);
       }
     }
 

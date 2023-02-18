@@ -2,8 +2,7 @@ import { getUserToken } from "../../../controller/Auth";
 
 import type { GameData } from "./websocketData";
 
-// const WS_SEABATTLE_URL = "wss://rsgames.online:8001/";
-const WS_SEABATTLE_URL = "wss://localhost:8001/";
+const WS_SEABATTLE_URL = "wss://rsgames.online:8001/";
 
 export interface wsGameData {
   type: string;
