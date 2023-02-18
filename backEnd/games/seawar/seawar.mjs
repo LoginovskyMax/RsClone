@@ -1,6 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 
+import { GameData } from "../../data/game.mjs";
+import { User } from "../../data/User.mjs";
+import { Winner } from "../../data/winner.mjs";
 import { Game, games } from "../data/games.mjs";
+import { pointsData } from "../data/points-data.mjs";
 import { SeaWarPlayer } from "../data/seawar-player.mjs";
 import { GAME, SEAWAR } from "../variables.mjs";
 
@@ -49,8 +53,6 @@ export function leaveSeaWarGame(data, ws) {
 
 export function createSeaWarGame(_data, ws) {
   // Dissconnect player from other games
-  console.log(ws.id);
-
   if (ws.id.split(":")[1] !== "") {
     leaveSeaWarGame({ gameId: ws.id.split(":")[1] }, ws);
   }
@@ -207,6 +209,14 @@ export function getSeaWarGameData(data, ws) {
   return sendDataForPlayers(gameId);
 }
 
+async function newWinner(player) {
+  new Winner({
+    points: player.points,
+    game: await GameData.findOne({ name: SEAWAR.NAME }),
+    user: await User.findOne({ userName: player.userName }),
+  }).save();
+}
+
 export function nextSeaWarStep(data, ws) {
   const { gameId, x, y } = data;
   const userName = ws.id.split(":")[0];
@@ -230,7 +240,14 @@ export function nextSeaWarStep(data, ws) {
     if (enemyCell === SEAWAR.CLEAN) {
       player.isLead = false;
       enemy.isLead = true;
+      player.misMoves += 1;
     } else {
+      if (player.misMoves < pointsData.length) {
+        player.points += pointsData[player.misMoves];
+        enemy.points -= pointsData[enemy.misMoves + 2];
+      }
+
+      player.misMoves = 0;
       checkForKill(enemy);
 
       if (isGameEnded(enemy.gameMatrix)) {
@@ -241,6 +258,7 @@ export function nextSeaWarStep(data, ws) {
         };
         game.isStarted = false;
         game.isLead = false;
+        newWinner(player);
       }
     }
 

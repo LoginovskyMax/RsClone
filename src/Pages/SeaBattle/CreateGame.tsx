@@ -65,8 +65,10 @@ export const CreateGame = () => {
 
   return (
     <div className={styles.main_create}>
-      <h2>{gameName}</h2>
-      <h3>Создайте новую игру или присоединитесь к существующей</h3>
+      <h2 className={styles.main_gameName}>{gameName}</h2>
+      <h3 className={styles.main_score}>
+        Создайте новую игру или присоединитесь к существующей
+      </h3>
       <Button onClick={() => createGame()}>Создать игру</Button>
       <CreateGamesList gameName={gameName} joinGame={joinGame} />
     </div>

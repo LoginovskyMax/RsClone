@@ -11,4 +11,4 @@ const gameData = new Schema({
   isComingSoon: { type: Boolean, default: false },
 });
 
-export const GameData = model.gameData || model("GameData", gameData);
+export const GameData = model("GameData", gameData);
