@@ -119,7 +119,7 @@ export async function register(req, res) {
     }
 
     const hashPass = bcrypt.hashSync(password, 7);
-    const userStatus = await UserStatus.findOne({ value: "admin" });
+    const userStatus = await UserStatus.findOne({ value: "user" });
     const resetToken = uuidv4();
     const user = new User({
       userName,
