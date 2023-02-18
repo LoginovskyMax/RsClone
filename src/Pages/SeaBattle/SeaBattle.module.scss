@@ -47,3 +47,56 @@
     font-family: 'Ceviche One', cursive;
     margin: 0 auto;
 }
+
+@media screen and (max-width: 730px) {
+    .main {
+        position: relative;
+        max-width: 335px;
+        min-height: 385px;
+        overflow: hidden;
+        transition: all .5s;
+        justify-content: center;
+        p {
+            position: absolute;
+        }
+        & > div > div {
+            padding-top: 20px;
+        }
+    }
+
+    .main_forView {
+        padding: 0 0 0 375px;
+        .main_enemyName {
+            right: 0px;
+            &::before {
+                margin-right: 4px;
+                content: '<<';
+            }
+        }
+        .main_myName {
+            left: auto;
+            &::after {
+                margin-right: 0;
+                content: '';
+            }
+        }
+    }
+
+    .main_forShoot {
+        padding: 0 375px 0 0;
+        .main_myName {
+            left: 30px;
+            &::after {
+                margin-left: 4px;
+                content: '>>';
+            }
+        }
+        .main_enemyName {
+            right: auto;
+            &::before {
+                margin-right: 0;
+                content: '';
+            }
+        }
+    }
+}

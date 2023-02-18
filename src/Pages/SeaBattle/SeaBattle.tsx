@@ -13,6 +13,8 @@ import type { GameData } from "./web-socket/websocketData";
 import type { wsGameData } from "./web-socket/WebSoket";
 import { webSocketController } from "./web-socket/WebSoket";
 
+const SEABATTLE_MOBILE_MOVE_TIMEOUT = 1500;
+
 export const SeaBattle = () => {
   const params = useParams();
   const gameId = params.id;
@@ -27,6 +29,7 @@ export const SeaBattle = () => {
   const [gameData, setGameData] = useState<wsGameData>();
   const [otherData, setOtherData] = useState<GameData>();
   const [serverError, setServerError] = useState("");
+  const [shootNow, setShootNow] = useState(false);
 
   const restart = () => {
     const newBoard = new Board();
@@ -149,6 +152,9 @@ export const SeaBattle = () => {
     setShipsReady(!!otherData?.player?.isReady);
     setStart(otherData?.isStarted && !otherData.winner ? "start" : "");
     setCanShoot(!!otherData?.player?.isLead);
+    setTimeout(() => {
+      setShootNow(!!otherData?.player?.isLead);
+    }, SEABATTLE_MOBILE_MOVE_TIMEOUT);
   }, [otherData]);
 
   useEffect(() => {
@@ -173,9 +179,13 @@ export const SeaBattle = () => {
   return (
     <div className={styles.global}>
       <h2> SeaBattle </h2>
-      <div className={styles.main}>
+      <div
+        className={`${styles.main} ${
+          shootNow ? styles.main_forShoot : styles.main_forView
+        }`}
+      >
         <div className={styles.main_conteiner}>
-          <p>{user || "User"}</p>
+          <p className={styles.main_myName}>{user || "User"}</p>
           <FieldComp
             board={myBoard}
             isEnemy={false}
@@ -186,7 +196,7 @@ export const SeaBattle = () => {
           />
         </div>
         <div className={styles.main_conteiner}>
-          <p>{enemyName || "Enemy"}</p>
+          <p className={styles.main_enemyName}>{enemyName || "Enemy"}</p>
           <FieldComp
             board={enemyBoard}
             isEnemy
