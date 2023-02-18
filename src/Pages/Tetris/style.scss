@@ -103,10 +103,12 @@
   }
 }
 
-@media screen and ((max-width: 500px) or (max-height: 820px)) {
+@media screen and (max-width: 500px), (max-height: 820px) {
   .tetris__playzone {
     top: 0;
-    transform: scale(.9);
+    -webkit-transform: scale(0.9);
+    -ms-transform: scale(0.9);
+    transform: scale(0.9);
   }
 
   .tetris__points {
@@ -114,11 +116,13 @@
   }
 }
 
-@media screen and ((max-width: 460px) or (max-height: 700px)) {
+@media screen and (max-width: 460px), (max-height: 700px) {
   .tetris__playzone {
     top: -40px;
     margin-bottom: -80px;
-    transform: scale(.8);
+    -webkit-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    transform: scale(0.8);
   }
 
   .tetris__points {
@@ -126,11 +130,13 @@
   }
 }
 
-@media screen and ((max-width: 400px) or (max-height: 640px)) {
+@media screen and (max-width: 400px), (max-height: 640px) {
   .tetris__playzone {
     top: -80px;
     margin-bottom: -150px;
-    transform: scale(.7);
+    -webkit-transform: scale(0.7);
+    -ms-transform: scale(0.7);
+    transform: scale(0.7);
   }
 
   .tetris__points {
@@ -147,11 +153,13 @@
   }
 }
 
-@media screen and ((max-width: 360px) or (max-height: 575px)) {
+@media screen and (max-width: 360px), (max-height: 575px) {
   .tetris__playzone {
     top: -110px;
     margin-bottom: -220px;
-    transform: scale(.57);
+    -webkit-transform: scale(0.57);
+    -ms-transform: scale(0.57);
+    transform: scale(0.57);
   }
 
   .tetris__points {

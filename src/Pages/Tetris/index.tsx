@@ -32,12 +32,6 @@ const Tetris: FC = () => {
     resetGame();
   };
 
-  useEffect(() => {
-    if (!isGameActive) {
-      setModalClosed(false);
-    }
-  }, [isGameActive]);
-
   const onkeydownHandler = (key: string) => {
     const movements: Movements = {
       [Keys.ArrowRight]: moveRight,
@@ -50,10 +44,22 @@ const Tetris: FC = () => {
     rotations(key, movements)();
   };
 
-  window.onkeydown = (ev: KeyboardEvent) => {
-    ev.preventDefault();
-    onkeydownHandler(ev.key);
-  };
+  useEffect(() => {
+    window.onkeydown = (ev: KeyboardEvent) => {
+      ev.preventDefault();
+      onkeydownHandler(ev.key);
+    };
+
+    return () => {
+      window.onkeydown = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isGameActive) {
+      setModalClosed(false);
+    }
+  }, [isGameActive]);
 
   return (
     <div className="tetris">
