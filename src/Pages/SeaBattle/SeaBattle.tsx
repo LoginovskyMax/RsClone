@@ -1,30 +1,33 @@
-/* eslint-disable */
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import Button from "../../Components/common/Button";
 import { Board } from "../../Components/SeaBattle/Board";
 import { FieldComp } from "../../Components/SeaBattle/FieldComp";
 import { InfoComp } from "../../Components/SeaBattle/InfoComp";
+import { checkUserToken } from "../../controller/Auth";
 import useUserStore from "../../store";
+
 import styles from "./SeaBattle.module.scss";
-import { webSocketController, wsGameData  } from './web-socket/WebSoket';
-import { GameData } from "./web-socket/websocketData";
+import type { GameData } from "./web-socket/websocketData";
+import type { wsGameData } from "./web-socket/WebSoket";
+import { webSocketController } from "./web-socket/WebSoket";
 
 export const SeaBattle = () => {
   const params = useParams();
   const gameId = params.id;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [myBoard, setMyBoard] = useState(new Board());
   const [enemyBoard, setEnemyBoard] = useState(new Board());
   const user = useUserStore((state) => state.userName);
-  const [enemyName, setEnemyName] = useState<string|null>("");
+  const [enemyName, setEnemyName] = useState<string | null>("");
   const [shipsReady, setShipsReady] = useState(false);
   const [canShoot, setCanShoot] = useState(false);
-  const [start, setStar] = useState('')
+  const [start, setStart] = useState("");
   const [gameData, setGameData] = useState<wsGameData>();
-  const [otherData, setOtherData] = useState<GameData>()
-  let [count, setCount] = useState(0)
-  const [serverError, setServerError] = useState('')
+  const [otherData, setOtherData] = useState<GameData>();
+  const [serverError, setServerError] = useState("");
+  let count = 0;
 
   const restart = () => {
     const newBoard = new Board();
@@ -37,98 +40,135 @@ export const SeaBattle = () => {
 
   const shoot = (x: number, y: number) => {
     const request = {
-      type:"move",
-      data:{
-        gameId,x,y,
-      }
-    }
-    webSocketController.send(JSON.stringify(request))
+      type: "move",
+      data: { gameId, x, y },
+    };
+    webSocketController.send(JSON.stringify(request));
   };
 
   const setShip = (x: number, y: number) => {
-    setCount(count += 1)
+    count += 1;
     const request = {
-      type:"set",
-      data:{
-        gameId,x,y,
-      }
-    }
-    webSocketController.send(JSON.stringify(request))
+      type: "set",
+      data: { gameId, x, y },
+    };
+    webSocketController.send(JSON.stringify(request));
   };
 
   const findCells = (
-     data:number[][],
-     board:Board,
-     setBoard:React.Dispatch<React.SetStateAction<Board>>
-    ) => {
-    data.forEach((arr,x)=>{
-      arr.forEach((number,y)=>{
-          if(number===-1){
-            board.miss(x,y)
-          }
-          if(number===-2){
-            board.damage(x,y)
-          }
-      })
-    })
-    const newBoard = board.getCopy()
-    setBoard(newBoard)
-  }
+    data: number[][],
+    board: Board,
+    setBoard: React.Dispatch<React.SetStateAction<Board>>
+  ) => {
+    data.forEach((arr, x) => {
+      arr.forEach((number, y) => {
+        if (number === -1) {
+          board.miss(x, y);
+        }
+
+        if (number === -2) {
+          board.damage(x, y);
+        }
+
+        if (number === 2) {
+          board.createShip(x, y);
+        }
+
+        if (number === 1) {
+          board.empty(x, y);
+        }
+      });
+    });
+    const newBoard = board.getCopy();
+    setBoard(newBoard);
+  };
 
   const ready = () => {
     const request = {
-      type:"ready",
-      data:{gameId}
-    }
-    webSocketController.send(JSON.stringify(request))
-    setShipsReady(true)
-  }
+      type: "ready",
+      data: { gameId },
+    };
+    webSocketController.send(JSON.stringify(request));
+  };
 
-  const startGame = ()=>{
+  const startGame = () => {
     const request = {
-      type:"start",
-      data:{gameId}
-    }
-    webSocketController.send(JSON.stringify(request))
-    setStar('start')
-    setCanShoot(true)
-  }
+      type: "start",
+      data: { gameId },
+    };
+    webSocketController.send(JSON.stringify(request));
+    setCanShoot(true);
+  };
+
+  const joinGame = () => {
+    const request = {
+      type: "join",
+      data: { gameId },
+    };
+    webSocketController.send(JSON.stringify(request));
+  };
 
   const exitGame = () => {
     const request = {
-      type:"leave",
-      data:{gameId}
-    }
-    webSocketController.send(JSON.stringify(request))
-    navigate('/room/SeaBattle')
-  }
+      type: "leave",
+      data: { gameId },
+    };
+    webSocketController.send(JSON.stringify(request));
+    navigate("/room/SeaBattle");
+  };
 
   useEffect(() => {
-    if(gameData){
-      const  type  = gameData.type
+    if (gameData) {
+      const { type } = gameData;
+
       switch (type) {
-        case "message": 
-          const message = gameData.message
-          setServerError(message as string)
-          setShipsReady(false)
-        break
+        case "message":
+          setServerError(gameData.message as string);
+          break;
         case "game-data":
-          const data = gameData.data
-          setOtherData(data as GameData)
-          const {enemyName, enemyField, yourField , player , winner} = (data as GameData)
-          findCells(enemyField,enemyBoard,setEnemyBoard) 
-          findCells(yourField,myBoard,setMyBoard) 
-          setEnemyName(enemyName as string)
-          if(player && !winner)setCanShoot(player?.isLead)
-          setServerError('')
-        break 
+          setOtherData(gameData.data as GameData);
+          findCells(
+            (gameData.data as GameData).enemyField,
+            enemyBoard,
+            setEnemyBoard
+          );
+          findCells((gameData.data as GameData).yourField, myBoard, setMyBoard);
+          setEnemyName((gameData.data as GameData).enemyName as string);
+          if (
+            (gameData.data as GameData).player &&
+            !(gameData.data as GameData).winner
+          )
+            setCanShoot(!!(gameData.data as GameData).player?.isLead);
+          setServerError("");
+          break;
+
+        default:
+          setServerError("");
       }
     }
-}, [gameData])
+  }, [gameData]);
 
   useEffect(() => {
-    webSocketController.addMessageListener(setGameData)
-    restart();
+    setShipsReady(!!otherData?.player?.isReady);
+    setStart(otherData?.isStarted && !otherData.winner ? "start" : "");
+  }, [otherData]);
+
+  useEffect(() => {
+    webSocketController.addMessageListener(setGameData);
+    checkUserToken().then((userData) => {
+      if (userData.userName) {
+        webSocketController.setUser(userData.userName);
+        webSocketController.setGameId(gameId || "");
+        webSocketController.connect().then(() => {
+          restart();
+          joinGame();
+          webSocketController.addMessageListener(setGameData);
+        });
+      } else {
+        navigate("/");
+      }
+    });
+
     return () => webSocketController.deleteAllCallbacks();
   }, []);
 
@@ -148,10 +188,10 @@ export const SeaBattle = () => {
           />
         </div>
         <div className={styles.main_conteiner}>
-          <p>{enemyName || 'Enemy'}</p>
+          <p>{enemyName || "Enemy"}</p>
           <FieldComp
             board={enemyBoard}
-            isEnemy={true}
+            isEnemy
             setBoard={setEnemyBoard}
             canShoot={canShoot}
             shipsReady={shipsReady}
@@ -159,16 +199,25 @@ export const SeaBattle = () => {
           />
         </div>
       </div>
-      <InfoComp ready={ready} 
-                canShoot={canShoot} 
-                shipsReady={shipsReady} 
-                start={start} 
-                count={count} 
-                winner={otherData?.winner}
-                mainUser={otherData?.isMainUser}/>
-      {serverError!=='' && <p>{serverError}</p>}
-      {otherData && ((otherData.isMainUser && !start) && <Button onClick={startGame} 
-                                                     disabled={!otherData.isEnemyReady}>Старт</Button>)}
+      <InfoComp
+        ready={ready}
+        canShoot={canShoot}
+        shipsReady={shipsReady}
+        start={start}
+        winner={otherData?.winner}
+        mainUser={otherData?.isMainUser}
+      />
+      {serverError !== "" && <p>{serverError}</p>}
+      {otherData && otherData.isMainUser && !otherData.winner && !start && (
+        <Button
+          onClick={() => {
+            if (otherData.isEnemyReady) startGame();
+          }}
+          disabled={!otherData.isEnemyReady}
+        >
+          Старт
+        </Button>
+      )}
       <Button onClick={exitGame}>Выйти</Button>
     </div>
   );
