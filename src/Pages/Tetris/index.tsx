@@ -10,6 +10,8 @@ import { useControls } from "../../helpers/tetris/hooks/useControls";
 import type { Movements } from "../../helpers/tetris/movement";
 import { rotations, Keys } from "../../helpers/tetris/movement";
 
+import { FakePlayZone } from "./fake-zone";
+
 const Tetris: FC = () => {
   const {
     figures,
@@ -36,15 +38,21 @@ const Tetris: FC = () => {
     }
   }, [isGameActive]);
 
-  window.onkeydown = (ev: KeyboardEvent) => {
+  const onkeydownHandler = (key: string) => {
     const movements: Movements = {
       [Keys.ArrowRight]: moveRight,
       [Keys.ArrowLeft]: moveLeft,
       [Keys.ArrowDown]: moveBottom.current,
+      [Keys.ArrowUp]: rotateRight,
       [Keys.R]: rotateLeft,
       [Keys.r]: rotateRight,
     };
-    rotations(ev.key, movements)();
+    rotations(key, movements)();
+  };
+
+  window.onkeydown = (ev: KeyboardEvent) => {
+    ev.preventDefault();
+    onkeydownHandler(ev.key);
   };
 
   return (
@@ -57,11 +65,12 @@ const Tetris: FC = () => {
       />
       <div className="tetris__points">
         <p className="tetris__text">{`Your score: ${score}`}</p>
+        <Button className="tetris__reset" onClick={resetGame}>
+          Reset game
+        </Button>
       </div>
-      <Button className="tetris__reset" onClick={resetGame}>
-        Reset game
-      </Button>
       <div className="tetris__playzone">
+        <FakePlayZone keyPresser={onkeydownHandler} />
         {figures.map((figure, id) => (
           <Item key={id} coords={figure.coordinates} color={figure.color} />
         ))}

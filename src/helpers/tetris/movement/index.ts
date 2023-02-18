@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Matrix } from "ml-matrix";
 
 import { PLAY_ZONE_WIDTH, PLAY_ZONE_HEIGHT, ITEM_SIZE } from "../constants";
@@ -28,6 +29,7 @@ export enum Keys {
   ArrowRight = "ArrowRight",
   ArrowLeft = "ArrowLeft",
   ArrowDown = "ArrowDown",
+  ArrowUp = "ArrowUp",
   r = "r",
   R = "R",
 }

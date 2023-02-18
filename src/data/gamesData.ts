@@ -19,4 +19,5 @@ export interface GameData {
   rulesEn: string;
   raiting: number;
   comments: [GameComment];
+  isComingSoon: boolean;
 }

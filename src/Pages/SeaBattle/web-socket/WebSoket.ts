@@ -29,8 +29,9 @@ class WebSocketController {
     this.gameId = gameId;
   }
 
-  connect() {
+  async connect() {
     if (!this.webSocket) {
+      console.log("new WebSocket");
       this.webSocket = new WebSocket("wss://rsgames.online:8001/");
 
       if (this.webSocket) {
@@ -52,7 +53,7 @@ class WebSocketController {
         });
       }
 
-      const { type, data } = res;
+      const { type, data, message } = res;
       console.log(res);
 
       // eslint-disable-next-line default-case
@@ -62,12 +63,35 @@ class WebSocketController {
           const { gameId } = data as GameData;
           this.gameId = gameId;
           break;
+
+        default:
+          if (message === "You are connected") {
+            if (this.gameId) {
+              console.log(this.gameId);
+              this.joinToTheGame();
+            }
+          }
       }
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
     }
   };
+
+  joinToTheGame() {
+    try {
+      const request = {
+        type: "join",
+        data: { gameId: this.gameId },
+      };
+      console.log("joinToTheGame", request);
+
+      this.webSocket?.send(JSON.stringify(request));
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+    }
+  }
 
   private wsOpenHandler = () => {
     this.token = getUserToken();
@@ -81,6 +105,7 @@ class WebSocketController {
             token: this.token,
           },
         };
+        console.log("wsOpenHandler", JSON.stringify(request));
 
         this.webSocket?.send(JSON.stringify(request));
       } catch (err) {
@@ -102,6 +127,8 @@ class WebSocketController {
 
   send(data: string) {
     try {
+      console.log("send: ", data);
+
       if (this.webSocket) {
         this.webSocket.send(data);
       }

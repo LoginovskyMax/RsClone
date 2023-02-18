@@ -1,5 +1,5 @@
 export interface Winner {
-  userName: string;
+  player: SeaWarPLayer;
   moves: number;
 }
 

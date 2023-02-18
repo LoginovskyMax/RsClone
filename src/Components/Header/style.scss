@@ -45,3 +45,9 @@
     color: #bdd1f4;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .header {
+    padding: 10px 8px;
+  }
+}

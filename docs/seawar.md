@@ -2,7 +2,7 @@
 
 Нужно установить WebSocket соединение по адресу: 
 
-- глобально: `ws://rsgames.online:8001/game/SeaWar` или локально: `ws://localhost:8001/game/SeaWar`
+- глобально: `wss://rsgames.online:8001/` или локально: `wss://localhost:8001/`
 - отправить сообщение со своим `token`'ом (см. авторизацию), которы при правильной авторизации хранится в cookie, он должен `userName` пользователя:
 ```JSON
 {
@@ -89,7 +89,7 @@
 #### 6. Не готов к игре:
 ```JSON
 {
-	"type": "not-sready",
+	"type": "not-ready",
 	"data": {
 		"gameId": "{gameId}"
 	}
