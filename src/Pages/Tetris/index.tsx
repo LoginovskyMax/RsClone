@@ -10,6 +10,7 @@ import { postWinner } from "../../controller/Winners";
 import { useControls } from "../../helpers/tetris/hooks/useControls";
 import type { Movements } from "../../helpers/tetris/movement";
 import { rotations, Keys } from "../../helpers/tetris/movement";
+import useStatusStore from "../../store/load-status";
 
 import { FakePlayZone } from "./fake-zone";
 
@@ -28,6 +29,7 @@ const Tetris: FC = () => {
   } = useControls();
 
   const [isModalClosed, setModalClosed] = useState(true);
+  const { setStatus } = useStatusStore();
 
   const onResetClick = () => {
     setModalClosed(true);
@@ -62,9 +64,9 @@ const Tetris: FC = () => {
     if (!isGameActive) {
       setModalClosed(false);
       if (score > 0)
-        postWinner(gameName, score)
-          .then((data) => console.log(data))
-          .catch(({ message }) => console.log(message));
+        postWinner(gameName, score).catch(({ message }) =>
+          setStatus({ isLoading: false, message })
+        );
     }
   }, [isGameActive]);
 
