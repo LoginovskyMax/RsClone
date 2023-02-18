@@ -1,4 +1,7 @@
 // eslint-disable-next-line import/no-cycle
+import { GameData } from "../../data/game.mjs";
+import { User } from "../../data/User.mjs";
+import { Winner } from "../../data/winner.mjs";
 import { SeaWarGameData } from "../data/game-data.mjs";
 import { games } from "../data/games.mjs";
 import { SEAWAR } from "../variables.mjs";
@@ -16,7 +19,7 @@ export function getGameData(gameId, player) {
   const index = players.findIndex((plr) => plr === player);
   const yourField = players[index].gameMatrix;
   const enemyIndex = index === 0 ? 1 : 0;
-  const enemyField = players[enemyIndex]
+  let enemyField = players[enemyIndex]
     ? hideEnemyMatrix(players[enemyIndex].gameMatrix)
     : new Array(10).fill(new Array(10).fill(SEAWAR.CLEAN));
   const enemyName = players[enemyIndex] ? players[enemyIndex].userName : null;
@@ -24,6 +27,10 @@ export function getGameData(gameId, player) {
     ? players[enemyIndex].isReady
     : false;
   const isMainUser = index === 0;
+
+  if (winner) {
+    enemyField = players[enemyIndex].gameMatrix;
+  }
 
   return new SeaWarGameData(
     gameId,
@@ -145,6 +152,14 @@ export function checkForKill(player) {
     }
   });
 }
+
+export const createWinner = async (player) => {
+  new Winner({
+    points: player.points,
+    game: await GameData.findOne({ name: SEAWAR.NAME }),
+    user: await User.findOne({ userName: player.userName }),
+  }).save();
+};
 
 export const isGameEnded = (matrix) =>
   matrix.flat().filter((cell) => cell === SEAWAR.SHIP).length === 0;

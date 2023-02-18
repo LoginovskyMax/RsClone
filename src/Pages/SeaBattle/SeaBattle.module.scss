@@ -1,7 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
 .main{
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 30px;
+    &_gameName {
+        margin-top: 10px;
+        // font-family: 'Righteous', cursive;
+        font-family: "Black Ops One", cursive;
+        font-size: 2.3em;
+    }
+    &_score {
+        margin: -8px 8px 8px;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    }
     &_create{
         display: flex;
         min-height: calc(100vh - 160px);
@@ -38,29 +50,40 @@
             background-image: linear-gradient(to right, #667eea, #764ba2);
         }
     }
+    &_myName {
+        font-size: 1.5em;
+    }
+    &_enemyName {
+        font-size: 1.5em;
+    }
+    button {
+        margin: 8px 0;
+    }
 }
 .global{
     display: flex;
+    gap: 12px;
+    margin: 0 auto 20px;
     align-items: center;
     flex-direction: column;
-    gap: 20px;
     font-family: 'Ceviche One', cursive;
-    margin: 0 auto;
 }
 
 @media screen and (max-width: 730px) {
     .main {
         position: relative;
         max-width: 335px;
-        min-height: 385px;
         overflow: hidden;
         transition: all .5s;
         justify-content: center;
+        &_enemyName {
+            font-size: 1.1em;
+        }
         p {
             position: absolute;
         }
         & > div > div {
-            padding-top: 20px;
+            padding-top: 30px;
         }
     }
 
@@ -68,6 +91,7 @@
         padding: 0 0 0 375px;
         .main_enemyName {
             right: 0px;
+            font-size: 1.1em;
             &::before {
                 margin-right: 4px;
                 content: '<<';
@@ -75,6 +99,7 @@
         }
         .main_myName {
             left: auto;
+            font-size: 1.5em;
             &::after {
                 margin-right: 0;
                 content: '';
@@ -86,6 +111,7 @@
         padding: 0 375px 0 0;
         .main_myName {
             left: 30px;
+            font-size: 1.1em;
             &::after {
                 margin-left: 4px;
                 content: '>>';
@@ -93,6 +119,7 @@
         }
         .main_enemyName {
             right: auto;
+            font-size: 1.5em;
             &::before {
                 margin-right: 0;
                 content: '';

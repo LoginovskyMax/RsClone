@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 
 import { Game, games } from "../data/games.mjs";
+import { pointsData } from "../data/points-data.mjs";
 import { SeaWarPlayer } from "../data/seawar-player.mjs";
 import { GAME, SEAWAR } from "../variables.mjs";
 
@@ -9,6 +10,7 @@ import { checkMatrix } from "./checker.mjs";
 import {
   checkForKill,
   checkPlayerForJoining,
+  createWinner,
   fillShips,
   isGameEnded,
   makeAnswer,
@@ -49,8 +51,6 @@ export function leaveSeaWarGame(data, ws) {
 
 export function createSeaWarGame(_data, ws) {
   // Dissconnect player from other games
-  console.log(ws.id);
-
   if (ws.id.split(":")[1] !== "") {
     leaveSeaWarGame({ gameId: ws.id.split(":")[1] }, ws);
   }
@@ -230,7 +230,14 @@ export function nextSeaWarStep(data, ws) {
     if (enemyCell === SEAWAR.CLEAN) {
       player.isLead = false;
       enemy.isLead = true;
+      player.misMoves += 1;
     } else {
+      if (player.misMoves < pointsData.length) {
+        player.points += pointsData[player.misMoves];
+        enemy.points -= pointsData[enemy.misMoves + 2];
+      }
+
+      player.misMoves = 0;
       checkForKill(enemy);
 
       if (isGameEnded(enemy.gameMatrix)) {
@@ -241,6 +248,7 @@ export function nextSeaWarStep(data, ws) {
         };
         game.isStarted = false;
         game.isLead = false;
+        createWinner(player);
       }
     }
 

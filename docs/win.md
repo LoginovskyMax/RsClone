@@ -10,7 +10,7 @@
 ## Запросы на сервер :
 
 ### 1. Получить список всех побед текущего пользователя:
--  *address:*  **/wins/data/**
+-  *address:*  **/win/data/**
 -  *method:*  `GET`
 -  *header:*  `Authorization` with token
 -  *successful response:* code: **200**
@@ -48,7 +48,7 @@
 ```
 
 ### 2. Получить список всех победителей игры (по рейтингу):
--  *address:*  **/wins/data?game={gameName}**
+-  *address:*  **/win/data?game={gameName}**
 -  *method:*  `GET`
 -  *header:*  `Authorization` with token
 -  *successful response:* code: **200**
@@ -97,7 +97,7 @@
 ```
 
 ### 3. Создать нового победителя:
--  *address:*  **/wins/data/**
+-  *address:*  **/win/data/**
 -  *method:*  `POST`
 -  *header:*  `Authorization` with token
 -  *body:*

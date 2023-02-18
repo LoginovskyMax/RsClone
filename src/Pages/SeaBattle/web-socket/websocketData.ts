@@ -14,6 +14,8 @@ export interface SeaWarPLayer {
   moves: number;
   ships: Array<Ship>;
   userName: string;
+  points: number;
+  misMoves: number;
 }
 
 export interface GameData {

@@ -6,6 +6,8 @@ import Modal from "../../Components/common/Modal";
 import CardComponent from "../../Components/MemoryGame/CardComponent";
 import { cardsArr } from "../../Components/MemoryGame/Data";
 import { type ICard } from "../../Components/MemoryGame/Interfaces";
+import { postWinner } from "../../controller/Winners";
+import { pointsData } from "../Games/pointsData";
 
 import styles from "./Memorygame.module.scss";
 
@@ -17,12 +19,16 @@ const MemoryGame = () => {
   const [inGame, setInGame] = useState(false);
   const [startGame, setStartGame] = useState(false);
   const [countTry, setCountTry] = useState(0);
+  const [points, setPoints] = useState(0);
   const [openCards, setOpenCards] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [width, setWidth] = useState(650);
   const [level, setLevel] = useState(8);
   const pairs = useRef<ICard[]>([]);
   const openPairs = useRef(0);
+
+  const gameName = "Memorygame";
+  let misData = 0;
 
   const onPress = (id: number) => {
     setOpenCards(openCards + 1);
@@ -36,21 +42,30 @@ const MemoryGame = () => {
       if (pairs.current[0].name === pairs.current[1].name) {
         pairs.current[0].hasPair = true;
         pairs.current[1].hasPair = true;
+
+        if (misData < pointsData.length)
+          setPoints((prev) => prev + pointsData[misData]);
+        misData = 0;
+
         const arr = [...cards];
         arr.splice(cards.indexOf(pairs.current[0]), 1, pairs.current[0]);
         arr.splice(cards.indexOf(pairs.current[1]), 1, pairs.current[1]);
         setCards(arr);
         openPairs.current += 1;
+      } else {
+        misData += 1;
       }
 
       pairs.current = [];
-      setCountTry(countTry + 1);
+      setCountTry((prev) => prev + 1);
     }
   };
 
   const startGameFunc = () => {
     setInGame(true);
     setStartGame(true);
+    misData = 0;
+    setPoints(0);
     setTimeout(() => {
       setStartGame(false);
     }, 3000);
@@ -64,6 +79,8 @@ const MemoryGame = () => {
     });
     setCards(arr);
     setCountTry(0);
+    misData = 0;
+    setPoints(0);
     pairs.current = [];
     openPairs.current = 0;
     setOpenCards(0);
@@ -76,6 +93,7 @@ const MemoryGame = () => {
   useEffect(() => {
     if (openPairs.current === level / 2) {
       setShowModal(true);
+      if (countTry !== 0) postWinner(gameName, countTry);
     }
   }, [openPairs.current]);
 
@@ -125,7 +143,7 @@ const MemoryGame = () => {
         </Button>
         <Button onClick={restartGame}>Рестарт</Button>
       </div>
-      <p>Количество попыток: {countTry}</p>
+      <p>Количество очков: {points}</p>
       <div
         className={styles.cards_conteiner}
         style={{ maxWidth: `${width}px` }}
@@ -146,9 +164,7 @@ const MemoryGame = () => {
       {showModal && (
         <Modal setModalClosed={() => setShowModal(false)} title="Победа!">
           <div className={styles.modal_window__main}>
-            <p className={styles.modal_window__text}>
-              Ваш результат {countTry}
-            </p>
+            <p className={styles.modal_window__text}>Ваш результат {points}</p>
             <Button
               onClick={() => {
                 navigate("/main");

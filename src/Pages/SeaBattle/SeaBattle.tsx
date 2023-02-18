@@ -191,7 +191,10 @@ export const SeaBattle = () => {
 
   return (
     <div className={styles.global}>
-      <h2> SeaBattle </h2>
+      <h2 className={styles.main_gameName}>SeaBattle</h2>
+      <h3 className={styles.main_score}>
+        Score: <strong>{otherData?.player?.points}</strong>
+      </h3>
       <div
         className={`${styles.main} ${
           shootNow ? styles.main_forShoot : styles.main_forView
