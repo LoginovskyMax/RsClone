@@ -44,16 +44,17 @@ const Tetris: FC = () => {
     rotations(key, movements)();
   };
 
-  useEffect(() => {
-    window.onkeydown = (ev: KeyboardEvent) => {
-      ev.preventDefault();
-      onkeydownHandler(ev.key);
-    };
+  window.onkeydown = (ev: KeyboardEvent) => {
+    ev.preventDefault();
+    onkeydownHandler(ev.key);
+  };
 
-    return () => {
+  useEffect(
+    () => () => {
       window.onkeydown = null;
-    };
-  }, []);
+    },
+    []
+  );
 
   useEffect(() => {
     if (!isGameActive) {
