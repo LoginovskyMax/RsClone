@@ -43,8 +43,12 @@ const MemoryGame = () => {
         pairs.current[0].hasPair = true;
         pairs.current[1].hasPair = true;
 
-        if (misData < pointsData.length)
+        if (misData < pointsData.length && level === 18)
           setPoints((prev) => prev + pointsData[misData]);
+        if (misData < pointsData.length - 2 && level === 12)
+          setPoints((prev) => prev + pointsData[misData + 2]);
+        if (misData < pointsData.length - 4 && level === 8)
+          setPoints((prev) => prev + pointsData[misData + 4]);
         misData = 0;
 
         const arr = [...cards];
