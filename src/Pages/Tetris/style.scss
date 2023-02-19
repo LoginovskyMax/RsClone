@@ -49,6 +49,7 @@
 .tetris__fake-playzone {
   transition: all .5s;
   opacity: 0;
+  user-select: none;
 
   @media screen and (max-width: 840px) {
     opacity: .8;
@@ -57,12 +58,14 @@
   .tetris__rot-up {
     height: 25%;
     background-color: #302ea042;
+    user-select: none;
   }
 
   .tetris__middle {
     display: flex;
     height: 60%;
     width: 100%;
+    user-select: none;
   }
 
   .tetris__left {
@@ -71,6 +74,7 @@
     background: url(../../assets/tetris-mobile/left.svg) no-repeat right;
     background-size: 100px;
     background-color: rgba(49, 169, 85, 0.4);
+    user-select: none;
   }
 
   .tetris__rot-middle {
@@ -79,6 +83,7 @@
     background: url(../../assets/tetris-mobile/rotate.svg) no-repeat center;
     background-size: 100px;
     background-color: #302ea042;
+    user-select: none;
   }
 
   .tetris__right {
@@ -87,6 +92,7 @@
     background: url(../../assets/tetris-mobile/right.svg) no-repeat center;
     background-size: 100px;
     background-color: rgba(210, 168, 41, 0.4);
+    user-select: none;
   }
 
   .tetris__down {
@@ -95,6 +101,7 @@
     background: url(../../assets/tetris-mobile/down.svg) no-repeat top;
     background-size: 100px;
     background-color: rgba(145, 38, 136, 0.4);
+    user-select: none;
   }
 
   // .tetris__fake-playzone_hide

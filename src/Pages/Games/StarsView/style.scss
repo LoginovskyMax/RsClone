@@ -1,5 +1,6 @@
 .rating-view {
   position: relative;
+  user-select: none;
 
   // .rating-view__back
   &__back {
@@ -20,10 +21,9 @@
   &__star-wrapper {
     width: 30px;
     height: 30px;
-    // &:hover div {
-      
-    //   width: 100% !important;
-    // }
+    &input:focus {
+      background-color: transparent;
+    }
   }
   
   // .rating-view__star-no

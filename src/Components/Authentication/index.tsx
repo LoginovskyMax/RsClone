@@ -1,9 +1,11 @@
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 
+import useUserStore from "../../store";
 import useStatusStore from "../../store/load-status";
 import Modal from "../common/Modal";
 
+import ChangePass from "./ChangePass";
 import ForgotPass from "./Forgot";
 import ResetPass from "./Reset";
 import SignIn from "./SignIn";
@@ -18,30 +20,50 @@ enum authWindow {
   registr,
   forgot,
   reset,
+  setPass,
 }
 
 const AuthenticationModal: FC<AuthenticationModalProps> = ({
   setModalClosed,
 }) => {
-  const resetToken = new URLSearchParams(window.location.search).get(
-    "resetToken"
-  );
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const resetToken = urlSearchParams.get("resetToken");
+  const setPass = urlSearchParams.get("setPass");
 
   const [windowVisible, setWindowVisible] = useState<authWindow>(
-    resetToken ? authWindow.reset : authWindow.login
+    resetToken
+      ? authWindow.reset
+      : setPass
+      ? authWindow.setPass
+      : authWindow.login
   );
 
   const { message } = useStatusStore();
+
+  const { userName } = useUserStore();
 
   useEffect(() => {
     if (message) {
       setModalClosed();
 
-      if (windowVisible === authWindow.reset) {
+      if (
+        windowVisible === authWindow.reset ||
+        windowVisible === authWindow.setPass
+      ) {
         window.location.search = "";
       }
     }
   }, [message]);
+
+  useEffect(() => {
+    if (userName === "") {
+      setModalClosed();
+
+      if (windowVisible === authWindow.setPass) {
+        window.location.search = "";
+      }
+    }
+  }, [userName]);
 
   return (
     <Modal setModalClosed={setModalClosed} title="Authentication">
@@ -77,6 +99,7 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
       {windowVisible === authWindow.reset && (
         <ResetPass resetToken={resetToken ?? ""} />
       )}
+      {windowVisible === authWindow.setPass && <ChangePass />}
     </Modal>
   );
 };
