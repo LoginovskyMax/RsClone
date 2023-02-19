@@ -102,9 +102,9 @@ export async function changePass(req, res) {
     mailService.sendRegistrEmail(user.email, userName, password);
     user.save();
 
-    res.json(user);
+    res.json({ message: "Password has been changed!" });
   } catch (err) {
-    res.status(400).json({ message: "Password Reset Error" });
+    res.status(400).json({ message: "Password Changing Error" });
     showFormattedError(err);
   }
 }
