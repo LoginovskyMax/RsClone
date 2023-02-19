@@ -153,9 +153,9 @@
     &_winnersWrapper {
         width: 100vw;
         background: linear-gradient(
-            rgb(119 42 199 / 64%) 0%,
-            rgb(130 35 229 / 51%) 50%,
-            rgb(65 63 211 / 56%) 100%);
+            rgb(154, 92, 220) 0%,
+            rgb(89, 24, 159) 50%,
+            rgb(47, 45, 150) 100%);
         padding: 30px 20px 50px;
         margin-bottom: 30px;
     }
@@ -205,7 +205,7 @@
     &_winnerPoints {
         font-family: "Ceviche One", cursive;
         font-size: 1.9em;
-        color: rgb(53 46 102 / 95%)
+        color: rgba(167, 159, 221, 0.95)
     }
     &_noWinners {
         width: 100%;
