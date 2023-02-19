@@ -24,7 +24,7 @@ export const postWinner = (gameName: string, points: number) =>
   });
 
 export const getGameWinsList = (gameName: string) =>
-  new Promise<WinnerRes>((resolve, reject) => {
+  new Promise<Array<WinnerRes>>((resolve, reject) => {
     fetch(`https://rsgames.online:8888/win/data?game=${gameName}`, {
       method: "GET",
       headers: {
@@ -44,7 +44,7 @@ export const getGameWinsList = (gameName: string) =>
   });
 
 export const getUserWinsList = () =>
-  new Promise<WinnerRes>((resolve, reject) => {
+  new Promise<Array<WinnerRes>>((resolve, reject) => {
     fetch(`https://rsgames.online:8888/win/data`, {
       method: "GET",
       headers: {
