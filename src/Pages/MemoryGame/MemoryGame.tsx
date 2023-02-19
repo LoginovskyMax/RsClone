@@ -93,7 +93,7 @@ const MemoryGame = () => {
   useEffect(() => {
     if (openPairs.current === level / 2) {
       setShowModal(true);
-      if (countTry !== 0) postWinner(gameName, countTry);
+      if (points !== 0) postWinner(gameName, points);
     }
   }, [openPairs.current]);
 
