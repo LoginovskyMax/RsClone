@@ -76,6 +76,40 @@ export async function setNewPass(req, res) {
 }
 
 // eslint-disable-next-line consistent-return
+export async function changePass(req, res) {
+  try {
+    const { password, newPassword } = req.body;
+    const { userName } = req;
+    console.log(userName);
+    const user = await User.findOne({ userName });
+
+    if (!user) {
+      return res.status(404).json({ message: `User ${userName} not found` });
+    }
+
+    const validPass = bcrypt.compareSync(password, user.password);
+
+    if (!validPass) {
+      return res
+        .status(405)
+        .json({ message: `Incorrect password for ${userName}` });
+    }
+
+    const hashPass = bcrypt.hashSync(newPassword, 7);
+    user.password = hashPass;
+    user.resetToken = uuidv4();
+
+    mailService.sendRegistrEmail(user.email, userName, password);
+    user.save();
+
+    res.json(user);
+  } catch (err) {
+    res.status(400).json({ message: "Password Reset Error" });
+    showFormattedError(err);
+  }
+}
+
+// eslint-disable-next-line consistent-return
 export async function getNameForNewPass(req, res) {
   try {
     const { resetToken } = req.query;
@@ -128,7 +162,7 @@ export async function register(req, res) {
       status: [userStatus.value],
       resetToken,
     });
-    await mailService.sendRegistrEmail(email, userName, password);
+    mailService.sendRegistrEmail(email, userName, password);
     user.save();
     res.json({ message: "New User has been successfully created!" });
   } catch (err) {

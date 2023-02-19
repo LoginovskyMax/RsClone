@@ -166,7 +166,6 @@ export async function getAllComments(req, res) {
     res.json(comments);
   } catch (err) {
     res.status(400).json({ message: "Faild to get commets" });
-    console.error(err);
   }
 }
 
