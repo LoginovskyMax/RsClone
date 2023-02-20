@@ -149,6 +149,74 @@
                 #667eea41;
         }
     }
+
+    &_winnersWrapper {
+        width: 100vw;
+        background: linear-gradient(
+            rgb(154, 92, 220) 0%,
+            rgb(89, 24, 159) 50%,
+            rgb(47, 45, 150) 100%);
+        padding: 30px 20px 50px;
+        margin-bottom: 30px;
+    }
+    &_winners {
+        margin: 20px 0;
+        width: 96vw;
+        margin: 0 auto;
+        max-width: 480px;
+        display: grid;
+        grid-template-columns: 1fr 6fr 2fr;
+        gap: 12px;
+        align-items: baseline;
+    }
+    &_winnersTittle {
+        margin-bottom: 40px;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        text-align: center;
+        font-size: 1.8em;
+        opacity: 0.9;
+        color: #fffffff2;
+    }
+    &_winnerPositionHead {
+        color: #fffffff2;
+    }
+    &_winnerPlayerHead {
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        font-size: 1.2em;
+        opacity: 0.9;
+        color: #130f5bc1;
+    }
+    &_winnerPointsHead {
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        font-size: 1.2em;
+        opacity: 0.9;
+        color: #130f5bc1;
+    }
+    &_winnerPosition {
+        font-family: "Ceviche One", cursive;
+        font-size: 2em;
+        color: rgb(136 89 203 / 87%);
+    }
+    &_winnerPlayer {
+        font-family: "Ceviche One", cursive;
+        font-size: 2.1em;
+        color: #ffffffcb;
+    }
+    &_winnerPoints {
+        font-family: "Ceviche One", cursive;
+        font-size: 1.9em;
+        color: rgba(167, 159, 221, 0.95)
+    }
+    &_noWinners {
+        width: 100%;
+        margin: 50px auto 70px;
+        grid-column: 1 / 4;
+        text-align: center;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        font-size: 1.2em;
+        opacity: 0.9;
+        color: #130f5b4a;
+    }
 }
 .modal{
     display: flex;

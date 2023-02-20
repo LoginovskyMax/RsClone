@@ -27,7 +27,7 @@
   - *unsuccessful response:* code: **400**
 ``` JSON
 {
-	"message": "User is allredy registred"
+	"message": "Password Changing Error"
 }
 ```
 
@@ -296,6 +296,44 @@
     "message": "User Vasya has been unbanned"
 }
 ```
+
+#### 12. Регистрация (registration)
+  - *address:* **/auth/setpass/**
+  - *method:* `PUT`, 
+  - *header:* `Authorization` with token
+  - *body:*
+
+``` JSON
+{
+	"password": "123456",
+  "newPassword": "654321",
+}
+```
+  - *successful response:* code: **200**
+``` JSON
+{
+	"message": "Password has been changed!"
+}
+```
+  - *unsuccessful response:* code: **404**
+``` JSON
+{
+	"message": "User {userName} not found"
+}
+```
+  - *unsuccessful response:* code: **405**
+``` JSON
+{
+	"message": "Incorrect password for ${userName}"
+}
+```
+  - *unsuccessful response:* code: **400**
+``` JSON
+{
+	"message": "Incorrect password for ${userName}"
+}
+```
+
 
 ## Токен пользователя
 Для авторизированного пользователя, чтобы сообщить серверу, какой пользователь отправляет запросы, нужно отправлять на сервер запросы с заголовком __"Authorization"__ тогда сервер сможет корректно обрабатывать запросы:

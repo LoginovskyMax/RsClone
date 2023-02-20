@@ -6,6 +6,7 @@ import type {
   ForgotUserData,
   MessageData,
   NewPassData,
+  ChangePassData,
 } from "../data/authData";
 import {
   FETCH_CORRECT_ERROR,
@@ -159,6 +160,27 @@ export const setNewPassword = async (data: NewPassData) =>
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      if (response.ok) {
+        resolve(response.json());
+      } else {
+        response
+          .json()
+          .then((errorMessage) => reject(errorMessage))
+          .catch((err) => reject(err.message));
+      }
+    });
+  });
+
+export const changePassword = async (data: ChangePassData) =>
+  new Promise<MessageData>((resolve, reject) => {
+    fetch(`${BACKEND_URL}${BACKEND_SETPASS_PATH}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getUserToken()}`,
       },
       body: JSON.stringify(data),
     }).then((response) => {

@@ -24,9 +24,9 @@ const Header: FC = () => {
   const theme = themeStore((state) => state.isDark);
   const changeTheme = themeStore((state) => state.setTheme);
 
-  const resetToken = new URLSearchParams(window.location.search).get(
-    "resetToken"
-  );
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const resetToken = urlSearchParams.get("resetToken");
+  const setPass = urlSearchParams.get("setPass");
 
   const handler = () => {
     localStorage.setItem(LS_THEME, (!theme).toString());
@@ -36,7 +36,7 @@ const Header: FC = () => {
   };
 
   useEffect(() => {
-    if (resetToken) {
+    if (resetToken || setPass) {
       setModalClosed(false);
     }
   }, []);
@@ -75,7 +75,12 @@ const Header: FC = () => {
         )}
       </div>
       {!isModalClosed && (
-        <AuthenticationModal setModalClosed={() => setModalClosed(true)} />
+        <AuthenticationModal
+          setModalClosed={() => {
+            setModalClosed(true);
+            window.location.search = "";
+          }}
+        />
       )}
     </header>
   );

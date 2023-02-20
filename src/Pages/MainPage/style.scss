@@ -41,3 +41,15 @@
     color: #fffef0;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .main-page {
+    &__main-text {
+      font-size: 3em;
+    }
+
+    &__secondary-text {
+      max-width: 90%;
+    }
+  }
+}

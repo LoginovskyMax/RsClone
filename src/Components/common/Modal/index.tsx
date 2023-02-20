@@ -19,7 +19,7 @@ const Modal: FC<ModalProps> = ({ children, title, setModalClosed }) => {
   return ReactDOM.createPortal(
     <div className="modal-background">
       <div className="modal-wrapper" onClick={setModalClosed} />
-      <div className="modal">
+      <div className={`modal ${theme ? "modal__dark" : ""}`}>
         <div className="modal__header">
           <p className="modal__title">{title}</p>
           <FontAwesomeIcon

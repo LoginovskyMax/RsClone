@@ -31,20 +31,26 @@
 
 @media screen and (max-width: 480px) {
   .user {
-    gap: 4px;
+    flex-direction: column;
+    gap: 2px;
+
     &__image {
-      width: 24px;
-      height: 24px;
+      display: none;
+      width: 18px;
+      height: 18px;
+      margin-bottom: -8px;
     }
   
     &__text {
       font-size: 26px;
-      margin-right: 8px;
+      margin: 0;
     }
 
     button {
-      padding-left: 18px;
-      padding-right: 18px;
+      padding: 2px 12px;
+      font-size: .9em;
+      background: none;
+      color: #4f4496;
     }
   }
 }

@@ -6,9 +6,10 @@
     border: 1px solid teal;
     background-image: url('../../assets/seaBattle/sea.jfif');
     background-size: cover;
+    user-select: none;
 }
 .can_shoot{
-    box-shadow: 0 0 5px 6px green;
+    box-shadow: 0 0 16px 4px rgba(12, 155, 17, 0.902);
 }
 .letters{
     font-family: 'Ceviche One', cursive;
@@ -21,9 +22,11 @@
         justify-content: center;
         align-items: center;
     }
+    user-select: none;
 }
 .horizontal{
     display: flex;
+    user-select: none;
 }
 .numbers{
     font-family: 'Ceviche One', cursive;
@@ -34,4 +37,5 @@
         justify-content: center;
         align-items: center;
     }
+    user-select: none;
 }

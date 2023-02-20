@@ -52,3 +52,8 @@ export interface NewPassData {
   resetToken: string;
   password: string;
 }
+
+export interface ChangePassData {
+  password: string;
+  newPassword: string;
+}

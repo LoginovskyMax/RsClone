@@ -26,8 +26,16 @@ a:hover {
 
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: 300px;
   min-height: 100vh;
+  overflow-x: hidden;
+  background-color: #fbfbfb;
+  color: #1a1a1a;
+}
+
+input {
+  background-color: #fbfbfb;
+  color: #1a1a1a;
 }
 
 h1 {
@@ -49,6 +57,10 @@ button {
 
 button:hover {
   border-color: #7e6dd1;
+}
+
+button:disabled {
+  border-color: transparent;
 }
 
 button:focus,
