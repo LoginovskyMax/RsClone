@@ -1,4 +1,10 @@
-export const BACKEND_URL = "https://rsgames.online:8888";
+export const BACKEND_URL =
+  import.meta.env.VITE_BACK_SOURCE || "https://rsgames.online:8888";
+
+console.log(
+  "import.meta.env.VITE_BACK_SOURCE =",
+  import.meta.env.VITE_BACK_SOURCE
+);
 
 export const BACKEND_LOGIN_PATH = "/auth/login/";
 
@@ -15,6 +21,8 @@ export const COOKIE_TOKEN_VAL = "userToken";
 export const FETCH_ERROR = "Failed to fetch";
 
 export const FETCH_CORRECT_ERROR = "Too frequent requests";
+
+export const WIN_DATA = "/win/data";
 
 export interface Values {
   userName: string;
