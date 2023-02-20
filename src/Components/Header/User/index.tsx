@@ -16,7 +16,7 @@ const User: FC<UserProps> = ({ username, setUser }) => {
  const navigate = useNavigate()
   return (
     <div className="user">
-      <div onClick={()=>navigate('/user/'+ username )}>  
+      <div onClick={()=>navigate('/user/'+ username )} className="user__click">  
         <img className="user__image" alt="user" src="images/user.png" />
         <p className="user__text">{username}</p>
       </div>

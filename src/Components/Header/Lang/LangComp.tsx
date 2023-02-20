@@ -8,8 +8,8 @@ export const LangComp = () => {
 
   const changeLang = () => {
     setLang(!isEn)
-    console.log(isEn);
   }
+  
   return (
     <div className={styles.main} onClick={changeLang}>
        <img src={isEn ? ruIcon : enIcon } 

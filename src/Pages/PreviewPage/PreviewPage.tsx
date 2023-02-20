@@ -13,6 +13,7 @@ import { ReviewComment } from "./Components/ReviewComment";
 import { Rules } from "./Components/Rules";
 import { Winners } from "./Components/Winners";
 import styles from "./Preview.module.scss";
+import languageStore from "../../store/language";
 
 export default function PreviewPage() {
   const params = useParams();
@@ -59,8 +60,8 @@ export default function PreviewPage() {
             setRaiting={setRaiting}
             setShowModal={setShowModal}
           />
-          <Rules gameData={gameData} />
-          <Winners gameName={gameName} />
+          <Rules gameData={gameData} isEn={isEn}/>
+          <Winners gameName={gameName} isEn={isEn}/>
           <CommentsList
             comments={comments}
             gameData={gameData}
@@ -69,7 +70,7 @@ export default function PreviewPage() {
         </>
       )}
       {showModal && (
-        <Modal setModalClosed={() => setShowModal(false)} title="Отзыв">
+        <Modal setModalClosed={() => setShowModal(false)} title={isEn ? "Отзыв" : "Feedback"}>
           <ReviewComment
             gameData={gameData}
             raiting={raiting}

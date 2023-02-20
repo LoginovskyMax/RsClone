@@ -7,6 +7,7 @@ import type { GameData } from "../../../data/gamesData";
 import useStatusStore from "../../../store/load-status";
 import StarsView from "../../Games/StarsView/StarsView";
 import styles from "../Preview.module.scss";
+import languageStore from "../../../store/language";
 
 interface ReviewCommentProps {
   gameData: GameData | null;
@@ -22,7 +23,7 @@ export const ReviewComment: FC<ReviewCommentProps> = ({
   hideModal,
 }) => {
   const { setStatus } = useStatusStore();
-
+ const { isEn } = languageStore()
   const [comment, setComment] = useState("");
 
   const addComment = () => {
@@ -47,11 +48,11 @@ export const ReviewComment: FC<ReviewCommentProps> = ({
         setCallback={(rate) => setRaiting(rate)}
       />
       <textarea
-        placeholder="Текст отзыва"
+        placeholder={isEn ? "Текст отзыва" : "Feedback text"}
         className={styles.modal_area}
         onChange={(e) => setComment(e.target.value)}
       />
-      <Button onClick={addComment}>Добавить</Button>
+      <Button onClick={addComment}>{isEn ? "Добавить" : "Add"}</Button>
     </div>
   );
 };

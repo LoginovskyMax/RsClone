@@ -22,6 +22,7 @@ interface IProps {
 export const CreateGamesList = ({ gameName, joinGame }: IProps) => {
   const [gamesArr, setGamesArr] = useState<IGames[]>([]);
   const { setStatus } = useStatusStore();
+  const { isEn } = languageStore()
 
   const getGames = () => {
     fetch(`https://rsgames.online:8888/games/list?name=${gameName}`)
@@ -60,7 +61,7 @@ export const CreateGamesList = ({ gameName, joinGame }: IProps) => {
             </div>
           ))
         ) : (
-          <p className={styles.main_noGames}>Созданных игр пока нет</p>
+          <p className={styles.main_noGames}>{isEn ? "Созданных игр пока нет" : "Not avalaible games"}</p>
         )}
       </div>
     </div>

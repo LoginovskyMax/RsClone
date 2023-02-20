@@ -11,10 +11,9 @@ import { useControls } from "../../helpers/tetris/hooks/useControls";
 import type { Movements } from "../../helpers/tetris/movement";
 import { rotations, Keys } from "../../helpers/tetris/movement";
 import useStatusStore from "../../store/load-status";
-
+import { is } from "immer/dist/internal";
 import { FakePlayZone } from "./fake-zone";
 import languageStore from "../../store/language";
-import { is } from "immer/dist/internal";
 
 const Tetris: FC = () => {
   const gameName = "Tetris";
@@ -83,10 +82,6 @@ const Tetris: FC = () => {
       />
       <div className="tetris__points">
         <p className="tetris__text">{`Your score: ${score}`}</p>
-        <Button className="tetris__reset" onClick={resetGame}>
-          Reset game
-        </Button>
-      </div>
         <p className="tetris__text">{isEn ? "Ваш счет : " : `Your score : `}{score}</p>
       </div>
       <Button className="tetris__reset" onClick={resetGame}>
