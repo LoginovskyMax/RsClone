@@ -8,6 +8,7 @@ import CardComponent from "../../Components/MemoryGame/CardComponent";
 import { cardsArr } from "../../Components/MemoryGame/Data";
 import { type ICard } from "../../Components/MemoryGame/Interfaces";
 import { postWinner } from "../../controller/Winners";
+import languageStore from "../../store/language";
 import { pointsData } from "../Games/pointsData";
 
 import styles from "./Memorygame.module.scss";
@@ -28,6 +29,8 @@ const MemoryGame = () => {
   const pairs = useRef<ICard[]>([]);
   const openPairs = useRef(0);
   const {isEn} = languageStore()
+
+  const { isEn } = languageStore();
 
   const gameName = "Memorygame";
   let misData = 0;
