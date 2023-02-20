@@ -1,11 +1,13 @@
 import { type FC } from "react";
+
+import languageStore from "../../store/language";
 import themeStore from "../../store/theme";
 import "./style.scss";
-import languageStore from "../../store/language";
 
 const Footer: FC = () => {
   const theme = themeStore((state) => state.isDark);
-  const { isEn } = languageStore()
+  const { isEn } = languageStore();
+
   return (
     <footer className={theme ? "footer dark" : "footer"}>
       <p className="footer__year">© 2023</p>
@@ -23,7 +25,7 @@ const Footer: FC = () => {
           target="_blank"
           rel="noreferrer"
         >
-         {isEn ? "Максим Логиновский" : "Maxim Loginovsky"}
+          {isEn ? "Максим Логиновский" : "Maxim Loginovsky"}
         </a>
       </div>
       <a href="https://rs.school/js/" target="_blank" rel="noreferrer">

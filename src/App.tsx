@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/room/:gameName" element={<CreateGame />} />
         <Route path="/SeaBattle/:id" element={<SeaBattle />} />
         <Route path="/games" element={<Games />} />
-        <Route path="/user/:name" element={<UserPage/>} />
+        <Route path="/user/:name" element={<UserPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

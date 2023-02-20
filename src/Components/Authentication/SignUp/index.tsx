@@ -9,11 +9,11 @@ import {
   createUser,
 } from "../../../controller/Auth";
 import useUserStore from "../../../store";
+import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 import HelperText from "../HelperText";
-import languageStore from "../../../store/language";
 
 import "../style.scss";
 
@@ -75,7 +75,7 @@ const SignUp: FC<SignUpProps> = ({
   const setUser = useUserStore((state) => state.setUser);
 
   const [errorMsg, setErrorMsg] = useState("");
-  const {isEn } = languageStore()
+  const { isEn } = languageStore();
   const { setStatus } = useStatusStore();
 
   const { values, handleChange, handleBlur, handleSubmit, touched, errors } =
@@ -96,7 +96,9 @@ const SignUp: FC<SignUpProps> = ({
           .then((userDetails) => {
             setStatus({
               isLoading: false,
-              message: isEn ? "Вы успешно зарегистрированны!" : "You have successfully registered!",
+              message: isEn
+                ? "Вы успешно зарегистрированны!"
+                : "You have successfully registered!",
             });
             setUser(userDetails);
             setModalClosed();
@@ -117,21 +119,23 @@ const SignUp: FC<SignUpProps> = ({
     <div className="authentication">
       <p className="authentication__title">{isEn ? "Войти" : "Sign Up"}</p>
       <form onSubmit={handleSubmit} className="authentication__content">
-        {inputsProps.map(({ key, labelRu, labelEn, type, placeholderRu, placeholderEn }) => (
-          <Input
-            key={key}
-            type={type}
-            label={isEn ? labelRu : labelEn}
-            name={key}
-            placeholder={isEn ? placeholderRu : placeholderEn}
-            value={values[key]}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            errorsMessage={
-              errors[key] && touched[key] ? errors[key] : undefined
-            }
-          />
-        ))}
+        {inputsProps.map(
+          ({ key, labelRu, labelEn, type, placeholderRu, placeholderEn }) => (
+            <Input
+              key={key}
+              type={type}
+              label={isEn ? labelRu : labelEn}
+              name={key}
+              placeholder={isEn ? placeholderRu : placeholderEn}
+              value={values[key]}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errorsMessage={
+                errors[key] && touched[key] ? errors[key] : undefined
+              }
+            />
+          )
+        )}
         <div className="authentication__error">{errorMsg}</div>
         <HelperText
           text=""

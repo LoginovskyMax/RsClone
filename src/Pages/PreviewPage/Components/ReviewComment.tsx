@@ -4,10 +4,10 @@ import { useState } from "react";
 import Button from "../../../Components/common/Button";
 import { postComment } from "../../../controller/GamesComments";
 import type { GameData } from "../../../data/gamesData";
+import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
 import StarsView from "../../Games/StarsView/StarsView";
 import styles from "../Preview.module.scss";
-import languageStore from "../../../store/language";
 
 interface ReviewCommentProps {
   gameData: GameData | null;
@@ -23,7 +23,7 @@ export const ReviewComment: FC<ReviewCommentProps> = ({
   hideModal,
 }) => {
   const { setStatus } = useStatusStore();
- const { isEn } = languageStore()
+  const { isEn } = languageStore();
   const [comment, setComment] = useState("");
 
   const addComment = () => {

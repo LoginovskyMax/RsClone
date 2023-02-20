@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 
 import useUserStore from "../../store";
+import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
 import Modal from "../common/Modal";
 
@@ -10,7 +11,7 @@ import ForgotPass from "./Forgot";
 import ResetPass from "./Reset";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-import languageStore from "../../store/language";
+
 interface AuthenticationModalProps {
   setModalClosed: () => void;
 }
@@ -42,7 +43,7 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
 
   const { userName } = useUserStore();
 
-  const {isEn} = languageStore()
+  const { isEn } = languageStore();
   useEffect(() => {
     if (message) {
       setModalClosed();
@@ -67,7 +68,10 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
   }, [userName]);
 
   return (
-    <Modal setModalClosed={setModalClosed} title={isEn ? "Аутентификаци" : "Authentication"}>
+    <Modal
+      setModalClosed={setModalClosed}
+      title={isEn ? "Аутентификаци" : "Authentication"}
+    >
       {windowVisible === authWindow.login && (
         <SignIn
           setModalClosed={setModalClosed}

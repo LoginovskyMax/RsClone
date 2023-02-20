@@ -4,6 +4,7 @@ import { useState } from "react";
 import * as yup from "yup";
 
 import { forgotPassword } from "../../../controller/Auth";
+import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
@@ -11,7 +12,6 @@ import HelperText from "../HelperText";
 
 import "../style.scss";
 import { isEmail } from "./forgot.utils";
-import languageStore from "../../../store/language";
 
 const schema = yup.object().shape({
   userName: yup.string().min(3).max(30).required(),
@@ -34,7 +34,7 @@ interface ForgotPassProps {
 
 const ForgotPass: FC<ForgotPassProps> = ({ setSignInModalOpened }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const {isEn} = languageStore()
+  const { isEn } = languageStore();
   const { setStatus } = useStatusStore();
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
@@ -63,32 +63,39 @@ const ForgotPass: FC<ForgotPassProps> = ({ setSignInModalOpened }) => {
 
   return (
     <div className="authentication">
-      <p className="authentication__title">{isEn ? "Забыли пароль :" : "Forgot password:"}</p>
+      <p className="authentication__title">
+        {isEn ? "Забыли пароль :" : "Forgot password:"}
+      </p>
       <form className="authentication__content" onSubmit={handleSubmit}>
-        {inputsProps.map(({ key, labelRu, labelEn, type, placeholderRu, placeholderEn }) => (
-          <Input
-            key={key}
-            type={type}
-            label={isEn ? labelRu : labelEn}
-            name={key}
-            placeholder={isEn ? placeholderRu : placeholderEn}
-            value={values[key]}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            errorsMessage={
-              errors[key] && touched[key] ? errors[key] : undefined
-            }
-          />
-        ))}
+        {inputsProps.map(
+          ({ key, labelRu, labelEn, type, placeholderRu, placeholderEn }) => (
+            <Input
+              key={key}
+              type={type}
+              label={isEn ? labelRu : labelEn}
+              name={key}
+              placeholder={isEn ? placeholderRu : placeholderEn}
+              value={values[key]}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errorsMessage={
+                errors[key] && touched[key] ? errors[key] : undefined
+              }
+            />
+          )
+        )}
         <p className="authentication__error">{errorMsg}</p>
         <HelperText
-          text={isEn ? "Забыли пароль или логин?:" : "Remember you login and password?"}
+          text={
+            isEn
+              ? "Забыли пароль или логин?:"
+              : "Remember you login and password?"
+          }
           linkText={isEn ? "Перейти к авторизации" : "Go to login"}
           onClick={setSignInModalOpened}
         />
         <Button className="authentication__button" type="submit">
           {isEn ? "Выслать на почту" : "Send mail"}
-        
         </Button>
       </form>
     </div>

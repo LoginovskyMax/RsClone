@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 import { getAllGamesFromBackEnd } from "../../controller/GamesComments";
+import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
 
 import GameComp from "./GameComp/GameComp";
 import type { GameItem } from "./games.data";
-import languageStore from "../../store/language";
 
 import "./Style.scss";
 
@@ -13,7 +13,7 @@ const Games = () => {
   const [gamesArr, setGamesArr] = useState<Array<GameItem>>([]);
   const { setStatus } = useStatusStore();
   const { isLoading } = useStatusStore();
-  const { isEn } = languageStore()
+  const { isEn } = languageStore();
 
   useEffect(() => {
     setStatus({ isLoading: true, message: "" });

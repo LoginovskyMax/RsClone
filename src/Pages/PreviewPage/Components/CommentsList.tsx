@@ -2,9 +2,9 @@ import type { FC } from "react";
 
 import Button from "../../../Components/common/Button";
 import type { GameComment, GameData } from "../../../data/gamesData";
+import languageStore from "../../../store/language";
 import StarsView from "../../Games/StarsView/StarsView";
 import styles from "../Preview.module.scss";
-import languageStore from "../../../store/language";
 
 interface CommentsListProps {
   comments: Array<GameComment>;
@@ -17,11 +17,14 @@ export const CommentsList: FC<CommentsListProps> = ({
   gameData,
   setShowModal,
 }) => {
-  const { isEn } = languageStore()
+  const { isEn } = languageStore();
+
   return (
     <section className={styles.preview_commentsWrapper}>
       <div className={styles.preview_comments}>
-        <h3 className={styles.preview_rulesTitle}>{isEn ? "Отзывы" : "Feedback"}</h3>
+        <h3 className={styles.preview_rulesTitle}>
+          {isEn ? "Отзывы" : "Feedback"}
+        </h3>
         {comments.map((elem) => (
           <div key={elem.userName} className={styles.preview_item}>
             <div className={styles.preview_info}>
@@ -49,8 +52,8 @@ export const CommentsList: FC<CommentsListProps> = ({
         onClick={() => !gameData?.isComingSoon && setShowModal(true)}
         disabled={gameData?.isComingSoon}
       >
-       {isEn ? " Оставить отзыв" : "Leave feedback"}
+        {isEn ? " Оставить отзыв" : "Leave feedback"}
       </Button>
     </section>
   );
-}
+};

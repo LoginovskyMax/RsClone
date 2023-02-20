@@ -1,9 +1,9 @@
 import type { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
+import languageStore from "../../../store/language";
 import type { GameItem } from "../games.data";
 import StarsView from "../StarsView/StarsView";
-import languageStore from "../../../store/language";
 
 import "./Style.scss";
 
@@ -13,7 +13,8 @@ interface GameCompProps {
 
 const GameComp: FC<GameCompProps> = ({ gameItem }) => {
   const navigate = useNavigate();
-  const { isEn } = languageStore()
+  const { isEn } = languageStore();
+
   return (
     <div
       className={`game-item

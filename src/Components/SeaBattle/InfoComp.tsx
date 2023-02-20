@@ -1,7 +1,7 @@
 import type { Winner } from "../../Pages/SeaBattle/web-socket/websocketData";
 import useUserStore from "../../store";
-import Button from "../common/Button";
 import languageStore from "../../store/language";
+import Button from "../common/Button";
 
 interface IProps {
   shipsReady: boolean;
@@ -21,12 +21,12 @@ export const InfoComp = ({
   mainUser,
 }: IProps) => {
   const { userName } = useUserStore();
-  const { isEn } = languageStore()
+  const { isEn } = languageStore();
 
   if (!shipsReady && !mainUser) {
     return (
       <Button onClick={() => ready()} disabled={shipsReady}>
-       {isEn ? " Корабли готовы" : "Ships are ready"}
+        {isEn ? " Корабли готовы" : "Ships are ready"}
       </Button>
     );
   }
@@ -41,7 +41,9 @@ export const InfoComp = ({
     if (winner) {
       message =
         winner.player.userName === userName ? (
-          <p>{isEn ? "Вы победили! Ходов:" : "You win! Moves:}"} {winner.moves}</p>
+          <p>
+            {isEn ? "Вы победили! Ходов:" : "You win! Moves:}"} {winner.moves}
+          </p>
         ) : (
           <p>{isEn ? "Вы проиграли :(" : "You lose("}</p>
         );
@@ -50,7 +52,13 @@ export const InfoComp = ({
     return message;
   }
 
-  return <div>{canShoot 
-    ? <p>{isEn ? "Ваш выстрел" : "Your shoot"}</p> 
-    : <p>{isEn ? "Выстрел соперника" : "Enemy shoot"}</p>}</div>;
+  return (
+    <div>
+      {canShoot ? (
+        <p>{isEn ? "Ваш выстрел" : "Your shoot"}</p>
+      ) : (
+        <p>{isEn ? "Выстрел соперника" : "Enemy shoot"}</p>
+      )}
+    </div>
+  );
 };

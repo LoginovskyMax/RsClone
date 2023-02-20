@@ -6,8 +6,8 @@ interface ILangState {
 }
 
 const languageStore = create<ILangState>((set) => ({
-    isEn: false,
-    setLang: (newLang) => set({ isEn: newLang }),
+  isEn: false,
+  setLang: (newLang) => set({ isEn: newLang }),
 }));
 
 export default languageStore;

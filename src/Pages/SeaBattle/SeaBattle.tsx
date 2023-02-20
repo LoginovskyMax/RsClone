@@ -7,8 +7,8 @@ import { FieldComp } from "../../Components/SeaBattle/FieldComp";
 import { InfoComp } from "../../Components/SeaBattle/InfoComp";
 import { checkUserToken } from "../../controller/Auth";
 import useUserStore from "../../store";
-import useStatusStore from "../../store/load-status";
 import languageStore from "../../store/language";
+import useStatusStore from "../../store/load-status";
 
 import styles from "./SeaBattle.module.scss";
 import type { GameData } from "./web-socket/websocketData";
@@ -33,7 +33,7 @@ export const SeaBattle = () => {
   const [otherData, setOtherData] = useState<GameData>();
   const [serverError, setServerError] = useState("");
   const [shootNow, setShootNow] = useState(false);
-  const {isEn } = languageStore()
+  const { isEn } = languageStore();
 
   const restart = () => {
     const newBoard = new Board();
@@ -162,8 +162,12 @@ export const SeaBattle = () => {
         isLoading: false,
         message:
           otherData?.winner.player.userName === user
-            ? isEn ? "Вы победили!" : "You won!"
-            : isEn ? "Вы проиграли" : "You lose",
+            ? isEn
+              ? "Вы победили!"
+              : "You won!"
+            : isEn
+            ? "Вы проиграли"
+            : "You lose",
       });
     }
 
@@ -195,7 +199,8 @@ export const SeaBattle = () => {
     <div className={styles.global}>
       <h2 className={styles.main_gameName}>SeaBattle</h2>
       <h3 className={styles.main_score}>
-       {isEn ? "Счет:" : " Score:"} <strong>{otherData?.player?.points}</strong>
+        {isEn ? "Счет:" : " Score:"}{" "}
+        <strong>{otherData?.player?.points}</strong>
       </h3>
       <div
         className={`${styles.main} ${
@@ -241,7 +246,7 @@ export const SeaBattle = () => {
           }}
           disabled={!otherData.isEnemyReady}
         >
-           {isEn ? "Старт" : " Start"}
+          {isEn ? "Старт" : " Start"}
         </Button>
       )}
       <Button onClick={exitGame}>{isEn ? "Выйти" : "Quit the game"}</Button>

@@ -183,7 +183,7 @@ const MemoryGame = () => {
                 setShowModal(false);
               }}
             >
-               {isEn ? "Начать заново" : "Play again"}
+              {isEn ? "Начать заново" : "Play again"}
             </Button>
           </div>
         </Modal>

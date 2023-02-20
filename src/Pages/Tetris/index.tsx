@@ -10,10 +10,10 @@ import { postWinner } from "../../controller/Winners";
 import { useControls } from "../../helpers/tetris/hooks/useControls";
 import type { Movements } from "../../helpers/tetris/movement";
 import { rotations, Keys } from "../../helpers/tetris/movement";
-import useStatusStore from "../../store/load-status";
-import { is } from "immer/dist/internal";
-import { FakePlayZone } from "./fake-zone";
 import languageStore from "../../store/language";
+import useStatusStore from "../../store/load-status";
+
+import { FakePlayZone } from "./fake-zone";
 
 const Tetris: FC = () => {
   const gameName = "Tetris";
@@ -31,7 +31,7 @@ const Tetris: FC = () => {
 
   const [isModalClosed, setModalClosed] = useState(true);
   const { setStatus } = useStatusStore();
-  const { isEn } = languageStore()
+  const { isEn } = languageStore();
 
   const onResetClick = () => {
     setModalClosed(true);
@@ -81,12 +81,15 @@ const Tetris: FC = () => {
         reset={onResetClick}
       />
       <div className="tetris__points">
-        <p className="tetris__text">{`Your score: ${score}`}</p>
-        <p className="tetris__text">{isEn ? "Ваш счет : " : `Your score : `}{score}</p>
+        <Button className="tetris__reset" onClick={resetGame}>
+          {isEn ? "Рестарт" : "Reset game"}
+        </Button>
+        <p className="tetris__text">
+          {isEn ? "Ваш счет : " : `Your score : `}
+          {score}
+        </p>
       </div>
-      <Button className="tetris__reset" onClick={resetGame}>
-        {isEn ? "Рестарт" : "Reset game"}
-      </Button>
+
       <div className="tetris__playzone">
         <FakePlayZone keyPresser={onkeydownHandler} />
         {figures.map((figure, id) => (

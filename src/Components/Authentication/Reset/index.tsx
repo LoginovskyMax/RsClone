@@ -7,10 +7,10 @@ import {
   getUserNameByResetToken,
   setNewPassword,
 } from "../../../controller/Auth";
+import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
-import languageStore from "../../../store/language";
 
 import "../style.scss";
 
@@ -47,7 +47,7 @@ interface ResetPassProps {
 const ResetPass: FC<ResetPassProps> = ({ resetToken }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [userName, setUserName] = useState("");
-  const {isEn} = languageStore()
+  const { isEn } = languageStore();
   const { setStatus } = useStatusStore();
 
   useEffect(() => {
@@ -87,26 +87,30 @@ const ResetPass: FC<ResetPassProps> = ({ resetToken }) => {
 
   return (
     <div className="authentication">
-      <p className="authentication__title">{isEn ? "Пароль для" : "Set password for"} {userName}:</p>
+      <p className="authentication__title">
+        {isEn ? "Пароль для" : "Set password for"} {userName}:
+      </p>
       <form className="authentication__content" onSubmit={handleSubmit}>
-        {inputsProps.map(({ key, labelRu, labelEn, type, placeholderRu, placeholderEn }) => (
-          <Input
-            key={key}
-            type={type}
-            label={isEn ? labelRu : labelEn}
-            name={key}
-            placeholder={isEn ? placeholderRu : placeholderEn }
-            value={values[key]}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            errorsMessage={
-              errors[key] && touched[key] ? errors[key] : undefined
-            }
-          />
-        ))}
+        {inputsProps.map(
+          ({ key, labelRu, labelEn, type, placeholderRu, placeholderEn }) => (
+            <Input
+              key={key}
+              type={type}
+              label={isEn ? labelRu : labelEn}
+              name={key}
+              placeholder={isEn ? placeholderRu : placeholderEn}
+              value={values[key]}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errorsMessage={
+                errors[key] && touched[key] ? errors[key] : undefined
+              }
+            />
+          )
+        )}
         <p className="authentication__error">{errorMsg}</p>
         <Button className="authentication__button" type="submit">
-        {isEn ? "Установить пароль" : " Set Password"}
+          {isEn ? "Установить пароль" : " Set Password"}
         </Button>
       </form>
     </div>

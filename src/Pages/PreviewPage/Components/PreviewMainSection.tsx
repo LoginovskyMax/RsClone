@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "../../../Components/common/Button";
 import type { GameData } from "../../../data/gamesData";
+import languageStore from "../../../store/language";
 import StarsView from "../../Games/StarsView/StarsView";
 import styles from "../Preview.module.scss";
-import languageStore from "../../../store/language";
 
 interface PreviewMainSectionProps {
   gameData: GameData | null;
@@ -23,7 +23,7 @@ export const PreviewMainSection: FC<PreviewMainSectionProps> = ({
   gameName,
 }) => {
   const navigate = useNavigate();
- const { isEn } = languageStore()
+  const { isEn } = languageStore();
 
   const navigateHandler = () => {
     if (gameData?.isComingSoon) return;
@@ -42,7 +42,9 @@ export const PreviewMainSection: FC<PreviewMainSectionProps> = ({
     >
       <div className={styles.preview__wrapper}>
         <h2 className={styles.preview_header}>{gameData?.fullName}</h2>
-        <p className={styles.preview_description}>{isEn ? gameData?.descriptionRu :  gameData?.descriptionEn}</p>
+        <p className={styles.preview_description}>
+          {isEn ? gameData?.descriptionRu : gameData?.descriptionEn}
+        </p>
         <StarsView
           canSet={!gameData?.isComingSoon}
           rating={gameData?.raiting ? gameData?.raiting : 0}

@@ -6,11 +6,11 @@ import * as yup from "yup";
 import { authLogin, checkUserToken } from "../../../controller/Auth";
 import type { Values } from "../../../data/authData";
 import useUserStore from "../../../store";
+import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 import HelperText from "../HelperText";
-import languageStore from "../../../store/language";
 
 import "../style.scss";
 
@@ -50,7 +50,7 @@ const SignIn: FC<SignInProps> = ({
   setForgotOpened,
 }) => {
   const setUser = useUserStore((state) => state.setUser);
-  const {isEn} = languageStore()
+  const { isEn } = languageStore();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const { setStatus } = useStatusStore();
 
@@ -86,21 +86,23 @@ const SignIn: FC<SignInProps> = ({
     <div className="authentication">
       <p className="authentication__title">{isEn ? "Войти" : "Sign In"}</p>
       <form className="authentication__content" onSubmit={handleSubmit}>
-        {inputsProps.map(({ key, labelRu, labelEn, type, placeholderEn, placeholderRu }) => (
-          <Input
-            key={key}
-            type={type}
-            label={isEn ? labelRu : labelEn}
-            name={key}
-            placeholder={isEn ? placeholderRu : placeholderEn}
-            value={values[key]}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            errorsMessage={
-              errors[key] && touched[key] ? errors[key] : undefined
-            }
-          />
-        ))}
+        {inputsProps.map(
+          ({ key, labelRu, labelEn, type, placeholderEn, placeholderRu }) => (
+            <Input
+              key={key}
+              type={type}
+              label={isEn ? labelRu : labelEn}
+              name={key}
+              placeholder={isEn ? placeholderRu : placeholderEn}
+              value={values[key]}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errorsMessage={
+                errors[key] && touched[key] ? errors[key] : undefined
+              }
+            />
+          )
+        )}
         <p className="authentication__error">{errorMsg}</p>
         <HelperText
           text=""
@@ -113,7 +115,7 @@ const SignIn: FC<SignInProps> = ({
           onClick={setSignInModalOpened}
         />
         <Button className="authentication__button" type="submit">
-        {isEn ? "Войти" : "Sign In"}
+          {isEn ? "Войти" : "Sign In"}
         </Button>
       </form>
     </div>
