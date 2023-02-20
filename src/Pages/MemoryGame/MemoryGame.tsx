@@ -28,7 +28,6 @@ const MemoryGame = () => {
   const [level, setLevel] = useState(8);
   const pairs = useRef<ICard[]>([]);
   const openPairs = useRef(0);
-  const {isEn} = languageStore()
 
   const { isEn } = languageStore();
 
