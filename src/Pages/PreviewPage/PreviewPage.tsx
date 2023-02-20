@@ -5,6 +5,7 @@ import Modal from "../../Components/common/Modal";
 import { getGameData } from "../../controller/GamesComments";
 import type { GameComment, GameData } from "../../data/gamesData";
 import useUserStore from "../../store";
+import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
 
 import { CommentsList } from "./Components/CommentsList";
@@ -17,7 +18,7 @@ import styles from "./Preview.module.scss";
 export default function PreviewPage() {
   const params = useParams();
   const gameName = params.game;
-
+  const { isEn } = languageStore();
   const { isLoading, setStatus } = useStatusStore();
   const { userName } = useUserStore();
 
@@ -59,8 +60,8 @@ export default function PreviewPage() {
             setRaiting={setRaiting}
             setShowModal={setShowModal}
           />
-          <Rules gameData={gameData} />
-          <Winners gameName={gameName} />
+          <Rules gameData={gameData} isEn={isEn} />
+          <Winners gameName={gameName} isEn={isEn} />
           <CommentsList
             comments={comments}
             gameData={gameData}
@@ -69,7 +70,10 @@ export default function PreviewPage() {
         </>
       )}
       {showModal && (
-        <Modal setModalClosed={() => setShowModal(false)} title="Отзыв">
+        <Modal
+          setModalClosed={() => setShowModal(false)}
+          title={isEn ? "Отзыв" : "Feedback"}
+        >
           <ReviewComment
             gameData={gameData}
             raiting={raiting}

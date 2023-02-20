@@ -9,6 +9,7 @@ import {
   createUser,
 } from "../../../controller/Auth";
 import useUserStore from "../../../store";
+import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
@@ -28,27 +29,35 @@ const schema = yup.object().shape({
 const inputsProps = [
   {
     key: "userName",
-    label: "Name",
+    labelEn: "Name",
+    labelRu: "Имя",
     type: "text",
-    placeholder: "Username",
+    placeholderEn: "Username",
+    placeholderRu: "Имя пользователя",
   },
   {
     key: "email",
-    label: "Email",
+    labelEn: "Email",
+    labelRu: "Почта",
     type: "email",
-    placeholder: "Email",
+    placeholderEn: "Email",
+    placeholderRu: "Почта",
   },
   {
     key: "password",
-    label: "Password",
+    labelEn: "Password",
+    labelRu: "Пароль",
     type: "password",
-    placeholder: "Password",
+    placeholderEn: "Password",
+    placeholderRu: "Пароль",
   },
   {
     key: "confirmPassword",
-    label: "Confirm password",
+    labelEn: "Confirm password",
+    labelRu: "Подтвердить пароль",
     type: "password",
-    placeholder: "Confirm password",
+    placeholderEn: "Confirm password",
+    placeholderRu: "Подтвердить пароль",
   },
 ] as const;
 
@@ -66,7 +75,7 @@ const SignUp: FC<SignUpProps> = ({
   const setUser = useUserStore((state) => state.setUser);
 
   const [errorMsg, setErrorMsg] = useState("");
-
+  const { isEn } = languageStore();
   const { setStatus } = useStatusStore();
 
   const { values, handleChange, handleBlur, handleSubmit, touched, errors } =
@@ -87,7 +96,9 @@ const SignUp: FC<SignUpProps> = ({
           .then((userDetails) => {
             setStatus({
               isLoading: false,
-              message: "You have successfully registered!",
+              message: isEn
+                ? "Вы успешно зарегистрированны!"
+                : "You have successfully registered!",
             });
             setUser(userDetails);
             setModalClosed();
@@ -106,36 +117,38 @@ const SignUp: FC<SignUpProps> = ({
 
   return (
     <div className="authentication">
-      <p className="authentication__title">Sign Up</p>
+      <p className="authentication__title">{isEn ? "Войти" : "Sign Up"}</p>
       <form onSubmit={handleSubmit} className="authentication__content">
-        {inputsProps.map(({ key, label, type, placeholder }) => (
-          <Input
-            key={key}
-            type={type}
-            label={label}
-            name={key}
-            placeholder={placeholder}
-            value={values[key]}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            errorsMessage={
-              errors[key] && touched[key] ? errors[key] : undefined
-            }
-          />
-        ))}
+        {inputsProps.map(
+          ({ key, labelRu, labelEn, type, placeholderRu, placeholderEn }) => (
+            <Input
+              key={key}
+              type={type}
+              label={isEn ? labelRu : labelEn}
+              name={key}
+              placeholder={isEn ? placeholderRu : placeholderEn}
+              value={values[key]}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errorsMessage={
+                errors[key] && touched[key] ? errors[key] : undefined
+              }
+            />
+          )
+        )}
         <div className="authentication__error">{errorMsg}</div>
         <HelperText
           text=""
-          linkText="Forgot password?"
+          linkText={isEn ? "Забыли пароль?" : "Forgot password?"}
           onClick={setForgotOpened}
         />
         <HelperText
-          text="Already signed up?"
-          linkText="Go to login"
+          text={isEn ? "Уже зарегистрированны?" : "Already signed up?"}
+          linkText={isEn ? "Перейти к авторизации" : "Go to login"}
           onClick={setSignInModalOpened}
         />
         <Button className="authentication__button" type="submit">
-          Sign Up
+          {isEn ? "Войти" : "Sign Up"}
         </Button>
       </form>
     </div>

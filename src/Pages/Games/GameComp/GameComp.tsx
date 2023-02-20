@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
+import languageStore from "../../../store/language";
 import type { GameItem } from "../games.data";
 import StarsView from "../StarsView/StarsView";
 
@@ -12,6 +13,7 @@ interface GameCompProps {
 
 const GameComp: FC<GameCompProps> = ({ gameItem }) => {
   const navigate = useNavigate();
+  const { isEn } = languageStore();
 
   return (
     <div
@@ -23,7 +25,7 @@ const GameComp: FC<GameCompProps> = ({ gameItem }) => {
       <div className="game-item__wrapper">
         <div className="game-item__name">
           <h3>{gameItem.fullName}</h3>
-          <h4>Coming soon...</h4>
+          <h4>{isEn ? "Совсем скоро..." : "Coming soon..."}</h4>
         </div>
         <div className="game-item__rating">
           <StarsView rating={gameItem.raiting} starSize={20} />

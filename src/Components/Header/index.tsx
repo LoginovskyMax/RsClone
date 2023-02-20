@@ -4,10 +4,12 @@ import { useEffect, useState, type FC } from "react";
 import { checkUserToken } from "../../controller/Auth";
 import useUserStore, { nullUser } from "../../store";
 // eslint-disable-next-line import/named
+import languageStore from "../../store/language";
 import themeStore, { LS_THEME } from "../../store/theme";
 import AuthenticationModal from "../Authentication";
 import Button from "../common/Button";
 
+import { LangComp } from "./Lang/LangComp";
 import Logo from "./Logo";
 import User from "./User";
 
@@ -18,7 +20,7 @@ const Header: FC = () => {
   const [rotate, setRotate] = useState(false);
   const userName = useUserStore((state) => state.userName);
   const setUser = useUserStore((state) => state.setUser);
-
+  const { isEn } = languageStore();
   const theme = themeStore((state) => state.isDark);
   const changeTheme = themeStore((state) => state.setTheme);
 
@@ -59,6 +61,7 @@ const Header: FC = () => {
     <header className={theme ? "header dark" : "header"}>
       <Logo />
       <div className="header__content">
+        <LangComp />
         <img
           src="images/day-and-night.png"
           alt="theme"
@@ -68,7 +71,9 @@ const Header: FC = () => {
         {userName ? (
           <User username={userName} setUser={setUser} />
         ) : (
-          <Button onClick={() => setModalClosed(false)}>Sign in</Button>
+          <Button onClick={() => setModalClosed(false)}>
+            {isEn ? "Войти" : "Sign in"}
+          </Button>
         )}
       </div>
       {!isModalClosed && (

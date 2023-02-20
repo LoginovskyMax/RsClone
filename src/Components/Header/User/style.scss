@@ -14,6 +14,16 @@
     font-weight: 600;
     color: #4f4c6b;
   }
+  &__click{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    border-radius: 20px;
+    &:hover{
+      box-shadow: 0 0 5px 0 #764ba2 inset, 0 0 5px 2px #667eea;
+    }
+  }
 }
 
 @media screen and (max-width: 640px) {

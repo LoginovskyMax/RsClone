@@ -9,6 +9,7 @@ import PreviewPage from "./Pages/PreviewPage/PreviewPage";
 import { CreateGame } from "./Pages/SeaBattle/CreateGame";
 import { SeaBattle } from "./Pages/SeaBattle/SeaBattle";
 import Tetris from "./Pages/Tetris";
+import UserPage from "./Pages/UserPage/UserPage";
 import themeStore from "./store/theme";
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/room/:gameName" element={<CreateGame />} />
         <Route path="/SeaBattle/:id" element={<SeaBattle />} />
         <Route path="/games" element={<Games />} />
+        <Route path="/user/:name" element={<UserPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

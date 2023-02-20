@@ -126,26 +126,26 @@ const MemoryGame = () => {
 
   return (
     <div className={styles.memory_main}>
-      <h2> Memory Game</h2>
+      <h2>Memory Game</h2>
       <div className={styles.memory_main__level}>
-        <p>Уровень: </p>
+        <p>{isEn ? "Уровень : " : "Level : "}</p>
         <select
           className={styles.memory_main__input}
           onChange={(e) => {
             setLevel(+e.target.value);
           }}
         >
-          <option value="8">Легкий</option>
-          <option value="12">Средний</option>
-          <option value="18">Сложный</option>
+          <option value="8">{isEn ? "Легкий" : "Easy"}</option>
+          <option value="12">{isEn ? "Средний" : "Medium"}</option>
+          <option value="18">{isEn ? "Тяжелый" : "Hard"}</option>
         </select>
       </div>
 
       <div className={styles.btns_conteiner}>
         <Button onClick={startGameFunc} disabled={!!inGame}>
-          Начать игру
+          {isEn ? "Начать игру" : "Start game"}
         </Button>
-        <Button onClick={restartGame}>Рестарт</Button>
+        <Button onClick={restartGame}>{isEn ? "Рестарт" : "Restart"}</Button>
       </div>
       <p>Количество очков: {points}</p>
       <div
@@ -175,7 +175,7 @@ const MemoryGame = () => {
                 setShowModal(false);
               }}
             >
-              На главную
+              {isEn ? " На главную" : "On main"}
             </Button>
             <Button
               onClick={() => {
@@ -183,15 +183,10 @@ const MemoryGame = () => {
                 setShowModal(false);
               }}
             >
-              Начать заново
+              {isEn ? "Начать заново" : "Play again"}
             </Button>
           </div>
         </Modal>
-        // <div className={styles.modal_window}>
-        //   <div className={styles.modal_window__main}>
-
-        //   </div>
-        // </div>
       )}
     </div>
   );

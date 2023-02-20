@@ -4,6 +4,7 @@ import * as reactRouterDom from "react-router-dom";
 import Button from "../../Components/common/Button";
 import { CreateGamesList } from "../../Components/MultiGames/CreateGamesList";
 import useUserStore from "../../store";
+import languageStore from "../../store/language";
 
 import styles from "./SeaBattle.module.scss";
 import { webSocketController } from "./web-socket/WebSoket";
@@ -14,6 +15,7 @@ export const CreateGame = () => {
   const navigate = reactRouterDom.useNavigate();
   const user = useUserStore((state) => state.userName);
   const location = reactRouterDom.useLocation();
+  const { isEn } = languageStore();
 
   const startGame = () => {
     if (webSocketController.getGameId() !== "") {
@@ -67,9 +69,13 @@ export const CreateGame = () => {
     <div className={styles.main_create}>
       <h2 className={styles.main_gameName}>{gameName}</h2>
       <h3 className={styles.main_score}>
-        Создайте новую игру или присоединитесь к существующей
+        {isEn
+          ? "Создайте новую игру или присоединитесь к существующей"
+          : "Create a new game or join an existing one"}
       </h3>
-      <Button onClick={() => createGame()}>Создать игру</Button>
+      <Button onClick={() => createGame()}>
+        {isEn ? "Создать игру" : "Create game"}
+      </Button>
       <CreateGamesList gameName={gameName} joinGame={joinGame} />
     </div>
   );

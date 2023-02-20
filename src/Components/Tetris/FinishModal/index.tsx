@@ -3,6 +3,7 @@ import { memo } from "react";
 
 import "./style.scss";
 
+import languageStore from "../../../store/language";
 import Button from "../../common/Button";
 import Modal from "../../common/Modal";
 
@@ -18,14 +19,23 @@ const FinishModal: FC<IFinishModalProps> = ({
   setModalClosed,
   points,
   reset,
-}) =>
-  !isModalClosed ? (
-    <Modal setModalClosed={setModalClosed} title="Finished">
-      <div className="finish">
-        <p className="finish__title">Score: {points}</p>
-        <Button onClick={reset}>Reset</Button>
-      </div>
-    </Modal>
-  ) : null;
+}) => {
+  const { isEn } = languageStore();
+
+  if (!isModalClosed) {
+    return (
+      <Modal setModalClosed={setModalClosed} title="Finished">
+        <div className="finish">
+          <p className="finish__title">
+            {isEn ? "Cчет : " : "Score : "} {points}
+          </p>
+          <Button onClick={reset}>Reset</Button>
+        </div>
+      </Modal>
+    );
+  }
+
+  return null;
+};
 
 export default memo(FinishModal);
