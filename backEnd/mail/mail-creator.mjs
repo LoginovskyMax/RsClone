@@ -44,11 +44,11 @@ export const createMail = (isUserData, message, username, passwordOrURL) => {
           ${contentData}
         </div>
       </div>
-      <div class="rsgames__mail-footer" style="height: 80px;padding: 10px 40px;display: flex;align-items: center;justify-content: space-between;box-shadow: 0 -5px 5px -5px #f6e7ea;background: #180428;">
+      <div class="rsgames__mail-footer" style="height: auto;padding: 20px 16px;display: flex;flex-direction: column;gap: 24px;align-items: flex-start;justify-content: space-between;box-shadow: 0 -5px 5px -5px #f6e7ea;background: #180428;">
         <a href="https://rs.school/js/" target="_blank" rel="noreferrer">
           <img src="https://rsgames.online/images/logo.png" alt="logo" class="rsgames__mail-footer-logo" style="width: 80px;margin-bottom: 10px;">
         </a>
-        <div class="rsgames__mail-footer-content" style="display: flex;gap: 16px;color: #7e6dd1;font-weight: 700;">
+        <div class="rsgames__mail-footer-content" style="display: flex;flex-direction: column;align-items: flex-start;gap: 16px;color: #7e6dd1;font-weight: 700;">
           <a href="https://github.com/jerubrin" target="_blank" rel="noreferrer" style="font-family: Roboto,sans-serif;cursor: pointer;text-align: center;color: #7e6dd1;text-decoration: inherit;">Alexey Kuptsov</a>
           <a href="https://github.com/Kunitsa3" target="_blank" rel="noreferrer" style="font-family: Roboto,sans-serif;cursor: pointer;text-align: center;color: #7e6dd1;text-decoration: inherit;">Olya Kunitsa</a>
           <a href="https://github.com/LoginovskyMax" target="_blank" rel="noreferrer" style="font-family: Roboto,sans-serif;cursor: pointer;text-align: center;color: #7e6dd1;text-decoration: inherit;">Maxim Loginovsky</a>
