@@ -44,6 +44,7 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
   const { userName } = useUserStore();
 
   const { isEn } = languageStore();
+
   useEffect(() => {
     if (message) {
       setModalClosed();
@@ -70,7 +71,7 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
   return (
     <Modal
       setModalClosed={setModalClosed}
-      title={isEn ? "Аутентификаци" : "Authentication"}
+      title={isEn ? "Аутентификация" : "Authentication"}
     >
       {windowVisible === authWindow.login && (
         <SignIn

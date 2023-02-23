@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "../../Components/common/Button";
 import Modal from "../../Components/common/Modal";
-import languageStore from "../../store/language";
 import CardComponent from "../../Components/MemoryGame/CardComponent";
 import { cardsArr } from "../../Components/MemoryGame/Data";
 import { type ICard } from "../../Components/MemoryGame/Interfaces";
 import { postWinner } from "../../controller/Winners";
+import languageStore from "../../store/language";
 import { pointsData } from "../Games/pointsData";
 
 import styles from "./Memorygame.module.scss";
@@ -27,7 +27,7 @@ const MemoryGame = () => {
   const [level, setLevel] = useState(8);
   const pairs = useRef<ICard[]>([]);
   const openPairs = useRef(0);
-  const {isEn} = languageStore()
+  const { isEn } = languageStore();
 
   const gameName = "Memorygame";
   let misData = 0;
