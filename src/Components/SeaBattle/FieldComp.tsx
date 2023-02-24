@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import type { Board } from "./Board";
 import { CellComponent } from "./CellComponent";
@@ -27,10 +27,10 @@ export const FieldComp = ({
 }: IProps) => {
   const classes = [styles.board];
 
-  const updateBoard = () => {
+  const updateBoard = useCallback(() => {
     const newBoard = board.getCopy();
     setBoard(newBoard);
-  };
+  }, [board]);
 
   const addMark = (x: number, y: number) => {
     if (!shipsReady && !isEnemy) {

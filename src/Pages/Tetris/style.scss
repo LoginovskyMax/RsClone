@@ -3,7 +3,9 @@
   display: flex;
   flex-direction: column;
   position: relative;
-
+  padding-top: 20px;
+  background-image: url("../../assets/tetris-mobile/tetrisBack.jpg");
+  background-size: cover;
   &__reset {
     max-width: 180px;
   }
@@ -16,6 +18,7 @@
     top: calc((100% - 400px) / 2);
     left: calc((100% - 450px) / 2);
     background-color: #f5f3ff;
+    border: 2px solid #764ba2;
   }
 
   &__fake-playzone {
@@ -31,7 +34,7 @@
 
   &__text {
     margin-top: 8px;
-    color: #6e61b6;
+    color: #f5f3ff;
     font-size: 1.8em;
   }
 
@@ -155,7 +158,6 @@
   }
   .tetris__text {
     margin-top: 8px;
-    color: #6e61b6;
     font-size: 1.3em;
   }
 }
@@ -178,7 +180,6 @@
   }
   .tetris__text {
     margin-top: 8px;
-    color: #6e61b6;
     font-size: 1em;
   }
 }

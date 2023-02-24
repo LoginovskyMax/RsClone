@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import fire from "../../assets/seaBattle/fire.png";
 import gun from "../../assets/seaBattle/gun.png";
 import mine from "../../assets/seaBattle/mine.png";
@@ -12,6 +14,7 @@ interface IProps {
 
 export const CellComponent = ({ cell, addMark }: IProps) => {
   const classes = [styles.cell];
+  const randomRotate = useMemo(() => Math.random() > 0.5, []);
   classes.push(styles[cell.mark.color]);
 
   return (
@@ -25,7 +28,7 @@ export const CellComponent = ({ cell, addMark }: IProps) => {
           src={gun}
           width="14"
           alt="fire"
-          className={Math.random() > 0.5 ? styles.gun2 : styles.gun}
+          className={randomRotate ? styles.gun2 : styles.gun}
         />
       )}
     </div>

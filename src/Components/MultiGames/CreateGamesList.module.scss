@@ -1,13 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
 
-@keyframes rotate{
-    from{
-        transform: rotate(0deg);
-    }
-    to{
-        transform: rotate(360deg);
-    }
-}
 .main {
     display: flex;
     flex-direction: column;
@@ -84,6 +76,7 @@
     }
     &_icon{
         cursor: pointer;
+        transition: 0.7s;
     }
     &_rotate{
         animation: rotate 1s ease-in-out;
