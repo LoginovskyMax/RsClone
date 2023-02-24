@@ -28,14 +28,13 @@ const UserPage = () => {
     })
       .then<IUsersList[]>((response) => {
         setStatus({ isLoading: false, message: "" });
-
         return response.json();
       })
       .then((data) => setUserArr(data))
       .catch(({ message }) => setStatus({ isLoading: false, message }));
   };
 
-  const getUser = (name: string) => {
+  const getOneUser = (name: string) => {
     fetch(`https://rsgames.online:8888/auth/user?userName=${name}`, {
       method: "GET",
       headers: {
@@ -54,7 +53,6 @@ const UserPage = () => {
 
   const banUser = (ban: boolean, userName: string) => {
     let path = `/auth/user/ban?userName=${userName}`;
-
     if (!ban) {
       path = `/auth/user/unban?userName=${userName}`;
     }
@@ -67,7 +65,7 @@ const UserPage = () => {
       },
     }).then((response) => {
       if (response.ok) {
-        getUser(userName);
+        getOneUser(userName);
       }
     });
   };
@@ -116,7 +114,7 @@ const UserPage = () => {
 
   return (
     <div className={styles.main}>
-      <h1>{isEn ? "Страинца пользователя" : "User page"}</h1>
+      <h1>{isEn ? "Страница пользователя" : "User page"}</h1>
       <div className={styles.main_gamelist}>
       {winArr.map((item, i) => (
         <div key={i} className={styles.main_gameitem}>

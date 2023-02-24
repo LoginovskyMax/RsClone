@@ -29,7 +29,7 @@ const FinishModal: FC<IFinishModalProps> = ({
           <p className="finish__title">
             {isEn ? "Cчет : " : "Score : "} {points}
           </p>
-          <Button onClick={reset}>Reset</Button>
+          <Button onClick={reset}>{isEn ? "Заново" : "Reset"}</Button>
         </div>
       </Modal>
     );
