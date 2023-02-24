@@ -21,6 +21,7 @@ interface IProps {
 
 export const CreateGamesList = ({ gameName, joinGame }: IProps) => {
   const [gamesArr, setGamesArr] = useState<IGames[]>([]);
+  const [degree, setDegree] = useState(0);
   const { setStatus } = useStatusStore();
   const { isEn } = languageStore();
 
@@ -29,6 +30,7 @@ export const CreateGamesList = ({ gameName, joinGame }: IProps) => {
       .then<IGames[]>((response) => response.json())
       .then((data) => setGamesArr(data))
       .catch(({ message }) => setStatus({ isLoading: false, message }));
+    setDegree((prev) => prev + 360);
   };
 
   useEffect(() => {
@@ -43,6 +45,7 @@ export const CreateGamesList = ({ gameName, joinGame }: IProps) => {
           icon={faRefresh}
           onClick={getGames}
           className={styles.main_icon}
+          style={{ transform: `rotate(${degree}deg)` }}
         />
       </h2>
       <div className={styles.main_gamesWrapper}>
