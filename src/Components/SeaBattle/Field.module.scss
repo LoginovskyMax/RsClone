@@ -4,12 +4,17 @@
     width: 302px;
     flex-wrap: wrap;
     border: 1px solid teal;
-    background-image: url('../../assets/seaBattle/sea.jfif');
-    background-size: cover;
+    // background-image: url('../../assets/seaBattle/sea.jfif');
+    // background-size: cover;
+    background-color: rgba(12, 129, 129, 0.397);
     user-select: none;
 }
 .can_shoot{
     box-shadow: 0 0 16px 4px rgba(12, 155, 17, 0.902);
+}
+.text{
+    color: wheat;
+    font-size: 30px;
 }
 .letters{
     font-family: 'Ceviche One', cursive;

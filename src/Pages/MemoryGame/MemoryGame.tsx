@@ -27,7 +27,6 @@ const MemoryGame = () => {
   const [level, setLevel] = useState(8);
   const pairs = useRef<ICard[]>([]);
   const openPairs = useRef(0);
-
   const { isEn } = languageStore();
 
   const gameName = "Memorygame";
@@ -142,15 +141,18 @@ const MemoryGame = () => {
           <option value="12">{isEn ? "Средний" : "Medium"}</option>
           <option value="18">{isEn ? "Тяжелый" : "Hard"}</option>
         </select>
+        <div className={styles.btns_conteiner}>
+          <Button onClick={startGameFunc} disabled={!!inGame}>
+            {isEn ? "Начать игру" : "Start game"}
+          </Button>
+          <Button onClick={restartGame}>{isEn ? "Рестарт" : "Restart"}</Button>
+        </div>
       </div>
 
-      <div className={styles.btns_conteiner}>
-        <Button onClick={startGameFunc} disabled={!!inGame}>
-          {isEn ? "Начать игру" : "Start game"}
-        </Button>
-        <Button onClick={restartGame}>{isEn ? "Рестарт" : "Restart"}</Button>
-      </div>
-      <p>Количество очков: {points}</p>
+      <p className={styles.points}>
+        {isEn ? "Количество очков:" : "Points:"}
+        {points}
+      </p>
       <div
         className={styles.cards_conteiner}
         style={{ maxWidth: `${width}px` }}

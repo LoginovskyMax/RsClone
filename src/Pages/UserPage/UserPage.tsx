@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../../Components/common/Button";
@@ -8,26 +8,18 @@ import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
 
 import styles from "./UserPage.module.scss";
-
-interface UsersList {
-  _id: string;
-  userName: string;
-  password: string;
-  status: string[];
-  date: string;
-  __v: number;
-  banned: boolean;
-  email: string;
-}
+import type { IUsersList, IWinData } from "./UserPageData";
 
 const UserPage = () => {
   const navigate = useNavigate();
   const { status } = useUserStore();
   const { isEn } = languageStore();
-  const [usersArr, setUserArr] = useState<UsersList[]>([]);
+  const [usersArr, setUserArr] = useState<IUsersList[]>([]);
+  const [winArr, setWinArr] = useState<IWinData[]>([]);
   const { setStatus } = useStatusStore();
 
   const getUsers = () => {
+    setStatus({ isLoading: true, message: "" });
     fetch(`https://rsgames.online:8888/auth/users/`, {
       method: "GET",
       headers: {
@@ -35,12 +27,16 @@ const UserPage = () => {
         Authorization: `Bearer ${getUserToken()}`,
       },
     })
-      .then<UsersList[]>((response) => response.json())
+      .then<IUsersList[]>((response) => {
+        setStatus({ isLoading: false, message: "" });
+
+        return response.json();
+      })
       .then((data) => setUserArr(data))
       .catch(({ message }) => setStatus({ isLoading: false, message }));
   };
 
-  const getUser = (name: string) => {
+  const getOneUser = (name: string) => {
     fetch(`https://rsgames.online:8888/auth/user?userName=${name}`, {
       method: "GET",
       headers: {
@@ -48,7 +44,7 @@ const UserPage = () => {
         Authorization: `Bearer ${getUserToken()}`,
       },
     })
-      .then<UsersList>((response) => response.json())
+      .then<IUsersList>((response) => response.json())
       .then((user) => {
         const index = usersArr.findIndex((item) => item._id === user._id);
         const arr = [...usersArr];
@@ -72,7 +68,7 @@ const UserPage = () => {
       },
     }).then((response) => {
       if (response.ok) {
-        getUser(userName);
+        getOneUser(userName);
       }
     });
   };
@@ -95,16 +91,64 @@ const UserPage = () => {
     });
   };
 
+  const getWinData = () => {
+    setStatus({ isLoading: true, message: "" });
+    fetch(`https://rsgames.online:8888/win/data/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getUserToken()}`,
+      },
+    })
+      .then<IWinData[]>((response) => {
+        setStatus({ isLoading: false, message: "" });
+
+        return response.json();
+      })
+      .then((data) => setWinArr(data))
+      .catch(({ message }) => {
+        setStatus({ isLoading: false, message });
+      });
+  };
+
+  useEffect(() => {
+    getWinData();
+  }, []);
+
   return (
     <div className={styles.main}>
-      <h1>{isEn ? "Страинца пользователя" : "User page"}</h1>
+      <h4 className={styles.main_name}>
+        {isEn ? "Страница пользователя" : "User page"}
+      </h4>
+      <div className={styles.main_gamelist}>
+        {winArr.map((item, i) => (
+          <div
+            key={i}
+            className={styles.main_gameitem}
+            onClick={() => navigate(`/preview/${item.gameName}`)}
+          >
+            <p className={styles.main_name}>{item.gameName}</p>
+            <p>
+              {isEn ? "Максимум очков : " : "Max points : "}
+              {item.points}
+            </p>
+            <p>
+              {isEn ? "Положение в рейтинге : " : "Number in top :"}
+              {item.position}
+            </p>
+          </div>
+        ))}
+      </div>
 
       <Button onClick={() => navigate("/main")}>
         {isEn ? "К списку игр" : "On games page"}
       </Button>
+
       {status[0] === "admin" ? (
         <div className={styles.main__admin}>
-          <h4>{isEn ? "Админ панель" : "Admin desk"}</h4>
+          <h4 className={styles.main_name}>
+            {isEn ? "Админ панель" : "Admin desk"}
+          </h4>
           <Button onClick={getUsers}>
             {isEn ? "Список пользователей" : "Users list"}
           </Button>
@@ -112,29 +156,33 @@ const UserPage = () => {
             {usersArr.map((user) => (
               <div key={user._id} className={styles.main__user}>
                 <p>{user.userName}</p>
-                <p>{user.status[0]}</p>
-                <p>{user.banned.toString()}</p>
-
+                <p>
+                  {isEn ? "Статус " : "Status "} {user.status[0]}
+                </p>
+                <p>
+                  {isEn ? "Забанен: " : "In ban: "}{" "}
+                  {user.banned ? (isEn ? "Да" : "Yes") : isEn ? "Нет" : "No"}
+                </p>
                 {!user.banned ? (
                   <Button
                     onClick={() => banUser(true, user.userName)}
                     disabled={user.status[0] !== "user"}
                   >
-                    Забанить
+                    {isEn ? "Забанить" : "Ban"}
                   </Button>
                 ) : (
                   <Button
                     onClick={() => banUser(false, user.userName)}
                     disabled={user.status[0] !== "user"}
                   >
-                    Снять бан
+                    {isEn ? "Снять бан" : "Unban"}
                   </Button>
                 )}
                 <Button
                   onClick={() => deleteUser(user.userName)}
                   disabled={user.status[0] !== "user"}
                 >
-                  Удалить
+                  {isEn ? "Удалить" : "Delete"}
                 </Button>
               </div>
             ))}

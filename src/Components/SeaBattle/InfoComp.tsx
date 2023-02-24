@@ -3,6 +3,8 @@ import useUserStore from "../../store";
 import languageStore from "../../store/language";
 import Button from "../common/Button";
 
+import styles from "./Field.module.scss";
+
 interface IProps {
   shipsReady: boolean;
   canShoot: boolean;
@@ -33,19 +35,25 @@ export const InfoComp = ({
 
   if (start === "") {
     let message = mainUser ? (
-      <p>{isEn ? "Ожидание 2 игрока" : "Ready for the second player"}</p>
+      <p className={styles.text}>
+        {isEn ? "Ожидание 2 игрока" : "Ready for the second player"}
+      </p>
     ) : (
-      <p>{isEn ? "Ожидание старта игры" : "Ready for the start"}</p>
+      <p className={styles.text}>
+        {isEn ? "Ожидание старта игры" : "Ready for the start"}
+      </p>
     );
 
     if (winner) {
       message =
         winner.player.userName === userName ? (
-          <p>
+          <p className={styles.text}>
             {isEn ? "Вы победили! Ходов:" : "You win! Moves:}"} {winner.moves}
           </p>
         ) : (
-          <p>{isEn ? "Вы проиграли :(" : "You lose("}</p>
+          <p className={styles.text}>
+            {isEn ? "Вы проиграли :(" : "You lose("}
+          </p>
         );
     }
 
@@ -55,9 +63,11 @@ export const InfoComp = ({
   return (
     <div>
       {canShoot ? (
-        <p>{isEn ? "Ваш выстрел" : "Your shoot"}</p>
+        <p className={styles.text}>{isEn ? "Ваш выстрел" : "Your shoot"}</p>
       ) : (
-        <p>{isEn ? "Выстрел соперника" : "Enemy shoot"}</p>
+        <p className={styles.text}>
+          {isEn ? "Выстрел соперника" : "Enemy shoot"}
+        </p>
       )}
     </div>
   );

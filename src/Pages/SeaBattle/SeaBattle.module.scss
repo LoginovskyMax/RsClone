@@ -6,7 +6,6 @@
     gap: 30px;
     &_gameName {
         margin-top: 10px;
-        // font-family: 'Righteous', cursive;
         font-family: "Black Ops One", cursive;
         font-size: 2.3em;
     }
@@ -23,7 +22,7 @@
         align-items: center;
         font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
         text-align: center;
-        padding-top: 30px;
+        padding: 30px;
         margin: 0 auto;
         width: 100%;
     }
@@ -63,10 +62,13 @@
 .global{
     display: flex;
     gap: 12px;
-    margin: 0 auto 20px;
+    width: 100%;
+    margin: 0 auto;
     align-items: center;
     flex-direction: column;
     font-family: 'Ceviche One', cursive;
+    background-image: url('../../assets/seaBattle/seaBattle.jpg');
+    padding-bottom: 20px;
 }
 
 @media screen and (max-width: 730px) {
