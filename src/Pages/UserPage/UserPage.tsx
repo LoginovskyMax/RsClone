@@ -6,8 +6,9 @@ import { getUserToken } from "../../controller/Auth";
 import useUserStore from "../../store";
 import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
-import { IUsersList, IWinData } from "./UserPageData";
+
 import styles from "./UserPage.module.scss";
+import type { IUsersList, IWinData } from "./UserPageData";
 
 const UserPage = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const UserPage = () => {
     })
       .then<IUsersList[]>((response) => {
         setStatus({ isLoading: false, message: "" });
+
         return response.json();
       })
       .then((data) => setUserArr(data))
@@ -53,6 +55,7 @@ const UserPage = () => {
 
   const banUser = (ban: boolean, userName: string) => {
     let path = `/auth/user/ban?userName=${userName}`;
+
     if (!ban) {
       path = `/auth/user/unban?userName=${userName}`;
     }
@@ -114,41 +117,58 @@ const UserPage = () => {
 
   return (
     <div className={styles.main}>
-      <h1>{isEn ? "Страница пользователя" : "User page"}</h1>
+      <h4 className={styles.main_name}>
+        {isEn ? "Страница пользователя" : "User page"}
+      </h4>
       <div className={styles.main_gamelist}>
-      {winArr.map((item, i) => (
-        <div key={i} className={styles.main_gameitem}>
-          <p className={styles.main_name}>{item.gameName}</p>
-          <p>{isEn ? "Максимум очков : " : "Max points : "}{item.points}</p>
-          <p>{isEn ? "Положение в рейтинге : " : "Number in top :"}{item.position}</p>
-        </div>
-      ))}
+        {winArr.map((item, i) => (
+          <div
+            key={i}
+            className={styles.main_gameitem}
+            onClick={() => navigate(`/preview/${item.gameName}`)}
+          >
+            <p className={styles.main_name}>{item.gameName}</p>
+            <p>
+              {isEn ? "Максимум очков : " : "Max points : "}
+              {item.points}
+            </p>
+            <p>
+              {isEn ? "Положение в рейтинге : " : "Number in top :"}
+              {item.position}
+            </p>
+          </div>
+        ))}
       </div>
-    
+
       <Button onClick={() => navigate("/main")}>
         {isEn ? "К списку игр" : "On games page"}
       </Button>
 
       {status[0] === "admin" ? (
         <div className={styles.main__admin}>
-          <h4>{isEn ? "Админ панель" : "Admin desk"}</h4>
+          <h4 className={styles.main_name}>
+            {isEn ? "Админ панель" : "Admin desk"}
+          </h4>
           <Button onClick={getUsers}>
             {isEn ? "Список пользователей" : "Users list"}
           </Button>
           <div className={styles.main__list}>
             {usersArr.map((user) => (
               <div key={user._id} className={styles.main__user}>
-                
                 <p>{user.userName}</p>
-                <p>{user.status[0]}</p>
-                <p>{user.banned.toString()}</p>
-
+                <p>
+                  {isEn ? "Статус " : "Status "} {user.status[0]}
+                </p>
+                <p>
+                  {isEn ? "Забанен: " : "In ban: "}{" "}
+                  {user.banned ? (isEn ? "Да" : "Yes") : isEn ? "Нет" : "No"}
+                </p>
                 {!user.banned ? (
                   <Button
                     onClick={() => banUser(true, user.userName)}
                     disabled={user.status[0] !== "user"}
                   >
-                     {isEn ? "Забанить" : "Ban"}
+                    {isEn ? "Забанить" : "Ban"}
                   </Button>
                 ) : (
                   <Button

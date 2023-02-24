@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { getGameWinsList } from "../../../controller/Winners";
 import type { WinnerRes } from "../../../data/winData";
@@ -25,7 +25,7 @@ export const Winners: FC<WinnersProps> = ({ gameName, isEn }) => {
       <div className={styles.preview_winners}>
         {winners.length > 0 ? (
           winners.slice(0, 10).map((winner, i) => (
-            <>
+            <React.Fragment key={i}>
               {i === 0 && (
                 <>
                   <div className={styles.preview_winnerPositionHead} />
@@ -42,7 +42,7 @@ export const Winners: FC<WinnersProps> = ({ gameName, isEn }) => {
                 {winner.userName}
               </div>
               <div className={styles.preview_winnerPoints}>{winner.points}</div>
-            </>
+            </React.Fragment>
           ))
         ) : (
           <div className={styles.preview_noWinners}>

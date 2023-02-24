@@ -1,3 +1,27 @@
+@keyframes rotate {
+    from{
+         transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotate2 {
+    from{
+         transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(-360deg);
+    }
+}
+@keyframes fire {
+    from{
+         transform: scale(1);
+    }
+    to{
+        transform: scale(1.2);
+    }
+}
 .cell{
     width: 30px;
     height: 30px;
@@ -5,11 +29,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
-   
+    &:hover{
+        border: 1px solid orangered;
+    }
 }
 .blue{
-    background-color: blue;
+    background-color:  #1560BD;
+    
+}
+.fire_animate{
+    animation: fire 1s linear infinite;
 }
 .fire{
-    background-color: red;
+    background-color: rgb(209, 38, 38);
 }
+.gun{
+   animation: rotate 6s linear infinite;
+}
+.gun2{
+    animation: rotate2 6s linear infinite;
+ }
