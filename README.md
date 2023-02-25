@@ -44,3 +44,6 @@ NODE_TLS_REJECT_UNAUTHORIZED=0
 - [Отзывы и реитинг (комментарии)](docs/comments.md)
 - [Морской Бой](docs/seawar.md)
 - [Работа с победителями, Back End](docs/win.md)
+
+### [Файл с фичами](features.md)
+  
