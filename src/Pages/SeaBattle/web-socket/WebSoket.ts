@@ -29,6 +29,7 @@ class WebSocketController {
 
   setGameId(gameId: string) {
     this.gameId = gameId;
+    this.webSocket.on();
   }
 
   async connect() {

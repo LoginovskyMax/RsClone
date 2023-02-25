@@ -30,7 +30,9 @@ export interface Values {
 }
 
 export interface UserData {
+  _id: string;
   userName: string;
+  image?: string;
   email: string;
   status: Array<string>;
   banned: boolean;
