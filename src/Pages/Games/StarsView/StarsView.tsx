@@ -68,6 +68,7 @@ const StarsView: FC<SarsViewProps> = ({
           <div
             className="rating-view__star-wrapper"
             style={{ width: `${starSize}px`, height: `${starSize}px` }}
+            key={i}
             onMouseEnter={() => {
               if (canSet) setStarHovered(i + 1);
             }}
@@ -85,9 +86,10 @@ const StarsView: FC<SarsViewProps> = ({
         ))}
       </div>
       <div className="rating-view__back">
-        {ratingByStars.map(() => (
+        {ratingByStars.map((_, i) => (
           <div
             className="rating-view__star-wrapper"
+            key={i}
             style={{ width: `${starSize}px`, height: `${starSize}px` }}
           >
             <div className="rating-view__star-no" />

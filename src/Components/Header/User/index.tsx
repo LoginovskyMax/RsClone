@@ -1,5 +1,6 @@
 import { type FC } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { logoutUser } from "../../../controller/Auth";
 import type { userSetter } from "../../../store";
 import { nullUser } from "../../../store";

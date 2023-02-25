@@ -3,13 +3,16 @@
     display: flex;
     width: 302px;
     flex-wrap: wrap;
-    border: 1px solid teal;
-    background-image: url('../../assets/seaBattle/sea.jfif');
-    background-size: cover;
+    border: 1px solid rgb(0, 0, 0);
+    background-color: rgba(57, 141, 141, 0.575);
     user-select: none;
 }
 .can_shoot{
     box-shadow: 0 0 16px 4px rgba(12, 155, 17, 0.902);
+}
+.text{
+    color: wheat;
+    font-size: 30px;
 }
 .letters{
     font-family: 'Ceviche One', cursive;
