@@ -1,0 +1,183 @@
+.main{
+    width: 100%;
+    padding: 30px 30px 85px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    background: linear-gradient(
+            180deg, 
+            rgba(255, 255, 255, 0) 0%,
+            rgba(118, 75, 162, 0.565) 83%, 
+            rgba(102, 126, 234, 0.86) 100% 
+        );
+
+    &__game-list{
+        display: flex;
+        gap: 20px;
+    }
+    &__game-item{
+        padding: 20px;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border: 1px solid #764ba2;
+        background: linear-gradient(
+            180deg, 
+            rgba(255, 255, 255, 0) 0%,
+            rgba(118, 75, 162, 0.565) 83%, 
+            rgba(102, 126, 234, 0.86) 100% 
+        );
+        p{
+            font-weight: bold;
+        }
+        &:hover{
+         cursor: pointer;
+        background: linear-gradient(
+                30deg,
+                rgba(213, 65, 11, 0.661) 0%,
+                rgba(218, 118, 12, 0.459) 100%,
+            );
+        }
+    }
+   
+    &__name{
+        text-align: center;
+        font-size: 30px;
+        font-family: 'Ceviche One', cursive;
+    }
+    &__user{
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        p{
+            width: 140px;
+            font-weight: bold;
+        }
+    }
+    &__list{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    &__admin{
+        width: 100%;
+    }
+}
+
+.user {
+    height: 200px;
+    // .user__picture
+    &__picture {
+        width: 200px;
+        height: 200px;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    // .user__wrapper
+    &__wrapper {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        width: calc(100vw - 320px);
+    }
+
+    // .user__status
+    &__status {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 28px;
+        margin-left: auto;
+        div {
+            max-width: fit-content;
+            padding: 2px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            cursor: pointer;
+            color: #ecf2ff;
+        }
+    }
+
+    // .user__status_admin
+    &__status_admin {
+        background: #b33d2e;
+        border: 1px solid #721d11;
+    }
+
+    // .user__status_moderator
+    &__status_moderator {
+        background: #b3842e;
+        border: 1px solid #79530c;
+    }
+
+    // .user__status_user
+    &__status_user {
+        background: #2e6ab3;
+        border: 1px solid #083367;
+    }
+
+    // .user__status_disabled
+    &__status_disabled {
+        background: #939ba4;
+        border: 1px solid #313b45;
+    }
+
+    // .user__name
+    &__name {
+        font-family: "Russo One", sans-serif;
+        font-size: 2.5em;
+        font-weight: 600;
+        color: #4f4c6b;
+    }
+
+    // .user__ban-status
+    &__ban-status {
+        
+    }
+
+    // .user__is-baned
+    &__is-baned {
+        max-width: min-content;
+        margin-bottom: 4px;
+        padding: 2px 4px;
+        border-radius: 20px;
+        font-size: 1.1em;
+        font-weight: 900;
+        color: #e8270e;
+    }
+
+    // .user__is-active
+    &__is-active {
+        max-width: min-content;
+        margin-bottom: 4px;
+        padding: 2px 4px;
+        border-radius: 20px;
+        font-size: 1.1em;
+        font-weight: 900;
+        color: #60cd00;
+    }
+
+    // .user__ban-btn
+    &__ban-btn {
+        padding: 2px 10px;
+        text-transform: uppercase;
+    }
+
+    // .user__unban-btn
+    &__unban-btn {
+        padding: 2px 10px;
+        text-transform: uppercase;
+    }
+
+    // .user__not-found
+    &__not-found {
+
+    }
+
+}

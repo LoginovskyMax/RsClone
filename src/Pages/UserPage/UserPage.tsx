@@ -1,75 +1,62 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Button from "../../Components/common/Button";
+import { getUserToken } from "../../controller/Auth";
 import { getUser } from "../../controller/UserControls";
+import { getGameWinsList, getUserWinsList } from "../../controller/Winners";
 import type { UserData } from "../../data/authData";
+import type { WinnerRes } from "../../data/winData";
 import useUserStore from "../../store";
 import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
 
 import { UserMainComp } from "./Components/UserMainData";
-import styles from "./UserPage.module.scss";
+import "./UserPage.scss";
 
 const UserPage = () => {
   const navigate = useNavigate();
+  const params = useParams();
+  const userNameParam = params.name;
   const { isEn } = languageStore();
   const { userName } = useUserStore();
   const [usersArr, setUserArr] = useState<UserData[]>([]);
-  const [winArr, setWinArr] = useState<IWinData[]>([]);
+  const [winArr, setWinArr] = useState<WinnerRes[]>([]);
   const { setStatus } = useStatusStore();
   // const [usersArr, setUserArr] = useState<UsersList[]>([]);
   const [user, setUser] = useState<UserData | null>(null);
 
-  // useEffect(() => {
-  //   getUsers()
-  //     .then((users) => setUserArr(users))
-  //     .catch(({ message }) => setStatus({ isLoading: false, message }));
-  // }, []);
-
-  useEffect(() => {
-    getUser(userName ?? "")
-      .then((resUser) => setUser(resUser))
-      .catch(({ message }) => setStatus({ isLoading: false, message }));
-  });
-
-  const getWinData = () => {
+  const loadUser = () => {
     setStatus({ isLoading: true, message: "" });
-    fetch(`https://rsgames.online:8888/win/data/`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getUserToken()}`,
-      },
-    })
-      .then<IWinData[]>((response) => {
-        setStatus({ isLoading: false, message: "" });
+    const name = userNameParam === userName ? "" : userNameParam ?? "";
 
-        return response.json();
-      })
-      .then((data) => setWinArr(data))
-      .catch(({ message }) => {
-        setStatus({ isLoading: false, message });
-      });
+    getUser(name)
+      .then((resUser) => setUser(resUser))
+      .then(() => getUserWinsList(userNameParam ?? userName ?? ""))
+      .then((wins) => setWinArr(wins))
+      .then(() => setStatus({ isLoading: false, message: "" }))
+      .then(() => console.log(user))
+      .catch(({ message }) => setStatus({ isLoading: false, message }));
   };
 
   useEffect(() => {
-    getWinData();
-  }, []);
+    loadUser();
+  }, [userNameParam]);
 
   return (
-    <div className={styles.main}>
-      <h4 className={styles.main_name}>
+    <div className="main">
+      <h4 className="main__name">
         {isEn ? "Страница пользователя" : "User page"}
       </h4>
-      <div className={styles.main_gamelist}>
+      <UserMainComp user={user ?? undefined} refresh={loadUser} />
+      <div className="main__game-list">
         {winArr.map((item, i) => (
           <div
             key={i}
-            className={styles.main_gameitem}
+            className="main__game-item"
             onClick={() => navigate(`/preview/${item.gameName}`)}
           >
-            <p className={styles.main_name}>{item.gameName}</p>
+            <p className="main__name">{item.gameName}</p>
             <p>
               {isEn ? "Максимум очков : " : "Max points : "}
               {item.points}
@@ -86,17 +73,17 @@ const UserPage = () => {
         {isEn ? "К списку игр" : "On games page"}
       </Button>
 
-      {status[0] === "admin" ? (
-        <div className={styles.main__admin}>
-          <h4 className={styles.main_name}>
+      {/* {status[0] === "admin" ? (
+        <div className="main__admin">
+          <h4 className="main_name">
             {isEn ? "Админ панель" : "Admin desk"}
           </h4>
-          <Button onClick={getUsers}>
+          <Button onClick={getUsers">
             {isEn ? "Список пользователей" : "Users list"}
           </Button>
-          <div className={styles.main__list}>
+          <div className="main__list">
             {usersArr.map((user) => (
-              <div key={user._id} className={styles.main__user}>
+              <div key={user._id} className="main__user">
                 <p>{user.userName}</p>
                 <p>
                   {isEn ? "Статус " : "Status "} {user.status[0]}
@@ -130,7 +117,7 @@ const UserPage = () => {
             ))}
           </div>
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   );
 };
