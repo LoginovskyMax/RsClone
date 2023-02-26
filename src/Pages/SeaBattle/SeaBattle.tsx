@@ -127,6 +127,16 @@ export const SeaBattle = () => {
 
       switch (type) {
         case "message":
+          if (gameData.message === "User is banned!") {
+            setStatus({
+              isLoading: false,
+              message: isEn ? "Вы забанены!" : "You are banned!",
+            });
+            navigate("/");
+
+            return;
+          }
+
           setServerError(gameData.message as string);
           break;
         case "game-data":
@@ -172,7 +182,7 @@ export const SeaBattle = () => {
     }
 
     setTimeout(() => {
-      setShootNow(!!otherData?.player?.isLead);
+      setShootNow(!!otherData?.player?.isLead || !!otherData?.winner);
     }, SEABATTLE_MOBILE_MOVE_TIMEOUT);
   }, [otherData]);
 
@@ -220,7 +230,7 @@ export const SeaBattle = () => {
         </div>
         <div className={styles.main_conteiner}>
           <p className={styles.main_enemyName}>
-            {enemyName || (isEn ? "Ожидание 2 игрока" : "Ready for 2 player")} 
+            {enemyName || (isEn ? "Ожидание..." : "Waiting...")}
           </p>
           <FieldComp
             board={enemyBoard}

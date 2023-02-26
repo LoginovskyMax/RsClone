@@ -21,6 +21,10 @@ export async function addWinner(req, res) {
 
     data.user = user._id;
 
+    if (user.banned) {
+      return res.status(405).json({ message: "User is banned" });
+    }
+
     const game = await GameData.findOne({ name: data.game });
 
     if (!game) {
@@ -45,9 +49,16 @@ export async function addWinner(req, res) {
 }
 
 const getPositionForGame = async (gameId, user) => {
+  const usersSet = new Set();
   const winners = await Winner.find({ game: gameId });
   const res = winners
     .sort((a, b) => b._doc.points - a._doc.points)
+    .filter((winner) => {
+      if (usersSet.has(winner.user.toString())) return false;
+      usersSet.add(winner.user.toString());
+
+      return true;
+    })
     .map((obj, i) => {
       const newObj = { ...obj._doc };
       newObj.position = i + 1;
@@ -65,6 +76,7 @@ const getPositionForGame = async (gameId, user) => {
 export async function getWinners(req, res) {
   try {
     const { game } = req.query;
+    const { userName: queryUserName } = req.query;
 
     if (!req.userName) {
       return res.status(405).json({ message: "User not authorized" });
@@ -81,15 +93,22 @@ export async function getWinners(req, res) {
 
       const fullList = (
         await Promise.all(
-          winners.map(async (winner) => ({
-            _id: winner._id,
-            userName: (await User.findById(winner.user)).userName,
-            gameName: currentGame.name,
-            points: winner.points,
-            date: winner.date,
-          }))
+          winners.map(async (winner) => {
+            const userName = (await User.findById(winner.user))?.userName;
+            if (!userName) winner.remove();
+
+            return {
+              _id: winner._id,
+              userName,
+              gameName: currentGame.name,
+              points: winner.points,
+              date: winner.date,
+            };
+          })
         )
-      ).sort((a, b) => b.points - a.points);
+      )
+        .filter((winner) => winner.userName)
+        .sort((a, b) => b.points - a.points);
 
       const resList = [];
       const usersSet = new Set();
@@ -102,26 +121,43 @@ export async function getWinners(req, res) {
 
       res.json(resList);
     } else {
-      const user = await User.findOne({ userName: req.userName });
+      let user = await User.findOne({ userName: req.userName });
 
       if (!user) {
         return res.status(405).json({ message: "User not authorized" });
+      }
+
+      if (queryUserName) {
+        user = await User.findOne({ userName: queryUserName });
+      }
+
+      if (!user) {
+        return res.status(405).json({ message: "User not found" });
       }
 
       const wins = await Winner.find({ user: user._id });
 
       const fullList = (
         await Promise.all(
-          wins.map(async (winner) => ({
-            _id: winner._id,
-            userName: user.userName,
-            gameName: (await GameData.findById(winner.game)).name,
-            points: winner.points,
-            date: winner.date,
-            position: (await getPositionForGame(winner.game, user)).position,
-          }))
+          wins.map(async (winner) => {
+            const gameName = (await GameData.findById(winner.game))?.name ?? "";
+            const position =
+              (await getPositionForGame(winner.game, user))?.position ?? -1;
+            if (!gameName || !position) winner.remove();
+
+            return {
+              _id: winner._id,
+              userName: user.userName,
+              gameName,
+              points: winner.points,
+              date: winner.date,
+              position,
+            };
+          })
         )
-      ).sort((a, b) => b.points - a.points);
+      )
+        .filter((winner) => winner.gameName !== "" && winner.position !== -1)
+        .sort((a, b) => b.points - a.points);
 
       const resList = [];
       const gamesSet = new Set();
@@ -136,6 +172,5 @@ export async function getWinners(req, res) {
     }
   } catch (err) {
     res.status(400).json({ message: "Failed to get winner" });
-    showFormattedError(err);
   }
 }

@@ -1,19 +1,13 @@
-export interface IUsersList {
-  _id: string;
-  userName: string;
-  password: string;
-  status: string[];
-  date: string;
-  __v: number;
-  banned: boolean;
-  email: string;
+export const DEFAULT_PICTURE = "https://rsgames.online/images/user.png";
+
+export enum userStatus {
+  user = "user",
+  moderator = "moderator",
+  admin = "admin",
 }
 
-export interface IWinData {
-  date: string;
-  gameName: string;
-  points: number;
-  position: number;
-  userName: string;
-  _id: string;
+export enum userStatusRu {
+  user = "игрок",
+  moderator = "модератор",
+  admin = "админ",
 }

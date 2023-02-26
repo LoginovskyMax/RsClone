@@ -67,7 +67,10 @@ const SignIn: FC<SignInProps> = ({
           .then(() => checkUserToken())
           .then((userData) => {
             setUser(userData);
-            setStatus({ isLoading: false, message: "You are logged in" });
+            setStatus({
+              isLoading: false,
+              message: isEn ? "Вы вошли в систему" : "You are logged in",
+            });
             setModalClosed();
           })
           .catch((error) => {
@@ -111,7 +114,7 @@ const SignIn: FC<SignInProps> = ({
         />
         <HelperText
           text={isEn ? "Нет аккаунта?" : "Don't have an account?"}
-          linkText={isEn ? "Войти" : "Sign In"}
+          linkText={isEn ? "Регистрация" : "Sign Up"}
           onClick={setSignInModalOpened}
         />
         <Button className="authentication__button" type="submit">

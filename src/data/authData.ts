@@ -1,4 +1,5 @@
-export const BACKEND_URL = "https://rsgames.online:8888";
+export const BACKEND_URL =
+  import.meta.env.VITE_BACK_SOURCE || "https://rsgames.online:8888";
 
 export const BACKEND_LOGIN_PATH = "/auth/login/";
 
@@ -16,13 +17,23 @@ export const FETCH_ERROR = "Failed to fetch";
 
 export const FETCH_CORRECT_ERROR = "Too frequent requests";
 
+export const WIN_DATA = "/win/data";
+
+export const USERS_LIST = "/auth/users";
+
+export const USER_PATH = "/auth/user";
+
+export const MY_USER_PATH = "/auth/myuser";
+
 export interface Values {
   userName: string;
   password: string;
 }
 
 export interface UserData {
+  _id: string;
   userName: string;
+  image?: string;
   email: string;
   status: Array<string>;
   banned: boolean;

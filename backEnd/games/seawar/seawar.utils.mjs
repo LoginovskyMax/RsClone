@@ -47,7 +47,7 @@ export function getGameData(gameId, player) {
   );
 }
 
-export function sendDataForPlayers(gameId) {
+export async function sendDataForPlayers(gameId) {
   games[gameId].players.forEach((plr) => {
     const data = getGameData(gameId, plr);
     sendForUser(

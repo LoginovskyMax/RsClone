@@ -25,7 +25,6 @@ export async function authorizedUser(req, res, next) {
 
     req.userName = user ? user.userName : null;
     req.banned = user ? user.banned : false;
-    console.log(req.userName);
     next();
   } catch (err) {
     return res.status(403).json({ message: "User not authorized" });

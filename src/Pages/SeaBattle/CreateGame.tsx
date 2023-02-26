@@ -5,6 +5,7 @@ import Button from "../../Components/common/Button";
 import { CreateGamesList } from "../../Components/MultiGames/CreateGamesList";
 import useUserStore from "../../store";
 import languageStore from "../../store/language";
+import useStatusStore from "../../store/load-status";
 
 import styles from "./SeaBattle.module.scss";
 import { webSocketController } from "./web-socket/WebSoket";
@@ -13,7 +14,8 @@ export const CreateGame = () => {
   const params = reactRouterDom.useParams();
   const { gameName } = params;
   const navigate = reactRouterDom.useNavigate();
-  const user = useUserStore((state) => state.userName);
+  const { userName: user, banned } = useUserStore();
+  const { setStatus } = useStatusStore();
   const location = reactRouterDom.useLocation();
   const { isEn } = languageStore();
 
@@ -25,6 +27,16 @@ export const CreateGame = () => {
   };
 
   const createGame = () => {
+    if (banned) {
+      setStatus({
+        isLoading: false,
+        message: isEn ? "Вы забанены!" : "You are banned!",
+      });
+      navigate("/");
+
+      return;
+    }
+
     const request = {
       type: "create",
       data: null,
@@ -34,6 +46,13 @@ export const CreateGame = () => {
   };
 
   const joinGame = (id: string) => {
+    if (banned) {
+      setStatus({
+        isLoading: false,
+        message: isEn ? "Вы забанены!" : "You are banned!",
+      });
+    }
+
     const request = {
       type: "join",
       data: { gameId: id },

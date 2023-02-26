@@ -6,13 +6,20 @@
   &__image {
     width: 50px;
     height: 50px;
+    border-radius: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   &__text {
-    font-family: 'Ceviche One', cursive;
-    font-size: 36px;
+    font-family: 'Russo One', sans-serif;
+    font-size: 22px;
     font-weight: 600;
     color: #4f4c6b;
+    max-width: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &__click{
     display: flex;
@@ -26,7 +33,7 @@
   }
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 860px) {
   .user {
     &__image {
       width: 38px;
@@ -34,33 +41,37 @@
     }
   
     &__text {
-      font-size: 30px;
+      font-size: 18px;
+      max-width: 140px;
+    }
+    button {
+      padding: 8px 12px;
+    }
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .user {
+    &__text {
+      font-size: 18px;
+      max-width: 140px;
+      display: none;
+    }
+    button {
+      padding: 8px 12px;
     }
   }
 }
 
 @media screen and (max-width: 480px) {
   .user {
-    flex-direction: column;
-    gap: 2px;
-
-    &__image {
-      display: none;
-      width: 18px;
-      height: 18px;
-      margin-bottom: -8px;
-    }
-  
-    &__text {
-      font-size: 26px;
-      margin: 0;
-    }
+    gap: 8px;
 
     button {
-      padding: 2px 12px;
-      font-size: .9em;
-      background: none;
-      color: #4f4496;
+      padding: 10px 9px;
+      font-size: 1em;
+      // background: none;
+      // color: #4f4496;
     }
   }
 }

@@ -12,7 +12,11 @@
 }
 .text{
     color: wheat;
-    font-size: 30px;
+    font-family: "Russo One", sans-serif;
+    font-weight: 100;
+    font-size: 1.6em;
+    max-width: 94vw;
+    text-align: center;
 }
 .letters{
     font-family: 'Ceviche One', cursive;
@@ -41,4 +45,14 @@
         align-items: center;
     }
     user-select: none;
+}
+
+@media screen and (max-width: 450px) {
+    .numbers {
+        display: none;
+    }
+    .letters {
+        display: none;
+        opacity: 0;
+    }
 }

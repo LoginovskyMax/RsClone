@@ -1,10 +1,11 @@
+import { BACKEND_URL, WIN_DATA } from "../data/authData";
 import type { WinnerRes } from "../data/winData";
 
 import { getUserToken } from "./Auth";
 
 export const postWinner = (gameName: string, points: number) =>
   new Promise<WinnerRes>((resolve, reject) => {
-    fetch(`https://rsgames.online:8888/win/data`, {
+    fetch(`${BACKEND_URL}${WIN_DATA}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -25,7 +26,7 @@ export const postWinner = (gameName: string, points: number) =>
 
 export const getGameWinsList = (gameName: string) =>
   new Promise<Array<WinnerRes>>((resolve, reject) => {
-    fetch(`https://rsgames.online:8888/win/data?game=${gameName}`, {
+    fetch(`${BACKEND_URL}${WIN_DATA}?game=${gameName}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
@@ -43,9 +44,10 @@ export const getGameWinsList = (gameName: string) =>
     });
   });
 
-export const getUserWinsList = () =>
+export const getUserWinsList = (userName?: string) =>
   new Promise<Array<WinnerRes>>((resolve, reject) => {
-    fetch(`https://rsgames.online:8888/win/data`, {
+    const userParam = userName ? `?userName=${userName}` : "";
+    fetch(`${BACKEND_URL}${WIN_DATA}${userParam}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json; charset=utf-8",

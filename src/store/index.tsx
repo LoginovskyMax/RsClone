@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 export type userSetter = (user: {
   userName: string | null;
+  image?: string;
   status: Array<string>;
   banned: boolean;
   email: string | null;
@@ -9,6 +10,7 @@ export type userSetter = (user: {
 
 interface UsersState {
   userName: string | null;
+  image?: string;
   status: Array<string>;
   banned: boolean;
   setUser: userSetter;

@@ -1,4 +1,5 @@
 import { checkUser } from "../../controllers/user-controller.mjs";
+import { User } from "../../data/User.mjs";
 import { games } from "../data/games.mjs";
 // eslint-disable-next-line import/no-cycle
 import {
@@ -34,6 +35,10 @@ async function wsConnect(ws, data) {
     return ws.send(makeAnswer(GAME.ERR_WRONG_TOKEN));
   }
 
+  if ((await User.findOne({ userName: player })).banned) {
+    return ws.send(makeAnswer(GAME.ERR_USER_IS_BANNED));
+  }
+
   ws.id = `${player}:`;
 
   return ws.send(makeAnswer(GAME.WS_CONNECTED));
@@ -49,6 +54,10 @@ export async function seaWarSocket(ws) {
       } else if (!messageHandler[type]) {
         await ws.send(makeAnswer("Wrong message type!"));
       } else {
+        if ((await User.findOne({ userName: ws.id.split(":")[0] })).banned) {
+          ws.send(makeAnswer(GAME.ERR_USER_IS_BANNED));
+        }
+
         messageHandler[type](data, ws);
       }
     } catch (err) {

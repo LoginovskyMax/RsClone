@@ -13,8 +13,6 @@ export async function getCommentsForGame(name) {
       const game = await GameData.findById(comment.game);
       const { name: gameName } = game || { name: "" };
 
-      console.log({ userName, gameName, text, raiting, date });
-
       return { userName, gameName, text, raiting, date };
     })
   );

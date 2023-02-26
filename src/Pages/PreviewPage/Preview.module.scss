@@ -34,9 +34,9 @@
         height: 100%;
         background: linear-gradient(
             180deg, 
-            rgba(0, 0, 0, 0.826) 0%, 
-            rgba(0, 0, 0, 0.386) 83%, 
-            rgba(255, 255, 255, 0.318) 100%
+            rgba(0, 0, 0, 0.626) 0%, 
+            rgba(0, 0, 0, 0.326) 73%, 
+            rgba(0, 0, 0, 0) 100%
         );
     }
     &_description {
@@ -194,17 +194,19 @@
     }
     &_winnerPosition {
         font-family: "Ceviche One", cursive;
-        font-size: 2em;
+        font-family: 'Russo One', sans-serif;
+        font-size: 1.7em;
         color: rgb(136 89 203 / 87%);
     }
     &_winnerPlayer {
-        font-family: "Ceviche One", cursive;
-        font-size: 2.1em;
+        font-family: 'Russo One', sans-serif;
+        font-size: 1.4em;
         color: #ffffffcb;
     }
     &_winnerPoints {
         font-family: "Ceviche One", cursive;
-        font-size: 1.9em;
+        font-family: 'Russo One', sans-serif;
+        font-size: 1.6em;
         color: rgba(167, 159, 221, 0.95)
     }
     &_noWinners {

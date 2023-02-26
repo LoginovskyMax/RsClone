@@ -50,5 +50,8 @@
 @media screen and (max-width: 480px) {
   .header {
     padding: 10px 8px;
+    &__content {
+      gap: 14px;
+    }
   }
 }
