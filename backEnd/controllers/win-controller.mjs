@@ -21,6 +21,10 @@ export async function addWinner(req, res) {
 
     data.user = user._id;
 
+    if (user.banned) {
+      return res.status(405).json({ message: "User is banned" });
+    }
+
     const game = await GameData.findOne({ name: data.game });
 
     if (!game) {
@@ -45,9 +49,16 @@ export async function addWinner(req, res) {
 }
 
 const getPositionForGame = async (gameId, user) => {
+  const usersSet = new Set();
   const winners = await Winner.find({ game: gameId });
   const res = winners
     .sort((a, b) => b._doc.points - a._doc.points)
+    .filter((winner) => {
+      if (usersSet.has(winner.user.toString())) return false;
+      usersSet.add(winner.user.toString());
+
+      return true;
+    })
     .map((obj, i) => {
       const newObj = { ...obj._doc };
       newObj.position = i + 1;
@@ -126,6 +137,7 @@ export async function getWinners(req, res) {
 
       const wins = await Winner.find({ user: user._id });
 
+      const usersSet = new Set();
       const fullList = (
         await Promise.all(
           wins.map(async (winner) => {
@@ -146,6 +158,12 @@ export async function getWinners(req, res) {
         )
       )
         .filter((winner) => winner.gameName !== "" && winner.position !== -1)
+        .filter((winner) => {
+          if (usersSet.has(winner.userName)) return false;
+          usersSet.add(winner.userName);
+
+          return true;
+        })
         .sort((a, b) => b.points - a.points);
 
       const resList = [];

@@ -9,8 +9,8 @@ import type { WinnerRes } from "../../data/winData";
 import useUserStore from "../../store";
 import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
-import { ModerComp } from "./Components/context/ModerComp";
 
+import { ModerComp } from "./Components/context/ModerComp";
 import { SearchUserComp } from "./Components/SearchUserComp";
 import { UserMainComp } from "./Components/UserMainData";
 import { WinsListComp } from "./Components/WinsListComp";
@@ -25,7 +25,6 @@ const UserPage = () => {
   const { userName, status } = useUserStore();
   const [winArr, setWinArr] = useState<WinnerRes[]>([]);
   const { setStatus } = useStatusStore();
-  // const [usersArr, setUserArr] = useState<UsersList[]>([]);
   const [user, setUser] = useState<UserData | null>(null);
 
   const loadUser = () => {
