@@ -8,7 +8,7 @@ import {
 
 import { getUserToken } from "./Auth";
 
-export const getUsers = (search?: string) =>
+export const getUsers = async (search?: string) =>
   fetch(`${BACKEND_URL}${USERS_LIST}${search ? `?search=${search}` : ""}`, {
     method: "GET",
     headers: {

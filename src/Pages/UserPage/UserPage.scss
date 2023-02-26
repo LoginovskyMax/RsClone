@@ -282,3 +282,57 @@
         }
     }
 }
+
+.search-user {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    width: 300px;
+    input {
+        width: 300px;
+        padding: 8px 14px;
+        border: 2px solid #083367;
+        border-radius: 12px;
+        font-family: "Russo One", sans-serif;
+        font-size: 1.2em;
+        background-color: #b3cff2e0;
+        color: #083367;
+    }
+    &__list {
+        top: 44px;
+        position: absolute;
+        background-color: #b3cff2e0;
+        border-radius: 12px;
+        border: 2px solid #083367;
+        padding: 0 0;
+        overflow: hidden;
+        z-index: 2;
+        width: 300px;
+    }
+    &__item {
+        margin-bottom: -2px;
+        padding: 4px 10px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        border-bottom: 2px solid #083367;
+        &:hover {
+            background-color: #7531a9b7;
+        }
+    }
+    &__item-picture {
+        width: 35px;
+        height: 35px;
+        background-image: url("https://rsgames.online/images/user.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+    &__item-username {
+        font-family: "Russo One", sans-serif;
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #382f78;
+    }
+}
