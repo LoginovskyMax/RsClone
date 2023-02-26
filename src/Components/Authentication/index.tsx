@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 
@@ -6,7 +7,6 @@ import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
 import Modal from "../common/Modal";
 
-import ChangePass from "./ChangePass";
 import ForgotPass from "./Forgot";
 import ResetPass from "./Reset";
 import SignIn from "./SignIn";
@@ -105,7 +105,6 @@ const AuthenticationModal: FC<AuthenticationModalProps> = ({
       {windowVisible === authWindow.reset && (
         <ResetPass resetToken={resetToken ?? ""} />
       )}
-      {windowVisible === authWindow.setPass && <ChangePass />}
     </Modal>
   );
 };
