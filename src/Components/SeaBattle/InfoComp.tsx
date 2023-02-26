@@ -36,11 +36,11 @@ export const InfoComp = ({
   if (start === "") {
     let message = mainUser ? (
       <p className={styles.text}>
-        {isEn ? "Ожидание 2 игрока" : "Ready for the second player"}
+        {isEn ? "Ожидание 2 игрока" : "Waiting for the 2-nd player"}
       </p>
     ) : (
       <p className={styles.text}>
-        {isEn ? "Ожидание старта игры" : "Ready for the start"}
+        {isEn ? "Ожидание старта игры" : "Waiting for the start"}
       </p>
     );
 
@@ -48,11 +48,11 @@ export const InfoComp = ({
       message =
         winner.player.userName === userName ? (
           <p className={styles.text}>
-            {isEn ? "Вы победили! Ходов:" : "You win! Moves:}"} {winner.moves}
+            {isEn ? "Вы победили! Ходов:" : "You win! Moves:"} {winner.moves}
           </p>
         ) : (
           <p className={styles.text}>
-            {isEn ? "Вы проиграли :(" : "You lose("}
+            {isEn ? "Вы проиграли :(" : "You lose :("}
           </p>
         );
     }

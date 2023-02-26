@@ -9,6 +9,7 @@
 
   &__main-text {
     margin-top: 20px;
+    max-width: 96vw;
     font-size: 58px;
     text-align: center;
     line-height: 1;
@@ -45,11 +46,12 @@
 @media screen and (max-width: 480px) {
   .main-page {
     &__main-text {
-      font-size: 3em;
+      font-size: 2.5em;
+      max-width: 96vw;
     }
 
     &__secondary-text {
-      max-width: 90%;
+      max-width: 90vw;
     }
   }
 }

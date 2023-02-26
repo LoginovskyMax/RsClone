@@ -5,3 +5,9 @@ export enum userStatus {
   moderator = "moderator",
   admin = "admin",
 }
+
+export enum userStatusRu {
+  user = "игрок",
+  moderator = "модератор",
+  admin = "админ",
+}

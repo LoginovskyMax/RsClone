@@ -46,7 +46,7 @@ export const getGameWinsList = (gameName: string) =>
 
 export const getUserWinsList = (userName?: string) =>
   new Promise<Array<WinnerRes>>((resolve, reject) => {
-    const userParam = userName ? `?username=${userName}` : "";
+    const userParam = userName ? `?userName=${userName}` : "";
     fetch(`${BACKEND_URL}${WIN_DATA}${userParam}`, {
       method: "GET",
       headers: {

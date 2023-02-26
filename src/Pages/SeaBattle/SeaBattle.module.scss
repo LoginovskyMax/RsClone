@@ -34,6 +34,7 @@
     }
     &_text{
         padding: 10px;
+        max-width: 94vw;
     }
     &_radio{
         display: flex;
@@ -51,9 +52,11 @@
     }
     &_myName {
         font-size: 1.5em;
+        font-family: "Russo One", sans-serif;
     }
     &_enemyName {
         font-size: 1.5em;
+        font-family: "Russo One", sans-serif;
     }
     button {
         margin: 8px 0;
@@ -61,14 +64,28 @@
 }
 .global{
     display: flex;
+    position: relative;
     gap: 12px;
     width: 100%;
+    min-height: calc(100vh - 160px);
     margin: 0 auto;
     align-items: center;
     flex-direction: column;
     font-family: 'Ceviche One', cursive;
-    background-image: url('../../assets/seaBattle/seaBattle.jpg');
     padding-bottom: 20px;
+    z-index: 1;
+    &::before {    
+        content: "";
+        background: url('../../assets/seaBattle/seaBattle.jpg') center no-repeat;
+        background-size: cover;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        opacity: 0.65;
+        z-index: -1;
+    }
 }
 
 @media screen and (max-width: 730px) {
@@ -79,7 +96,7 @@
         transition: all .5s;
         justify-content: center;
         &_enemyName {
-            font-size: 1.1em;
+            font-size: 1em;
         }
         p {
             position: absolute;
@@ -93,7 +110,10 @@
         padding: 0 0 0 375px;
         .main_enemyName {
             right: 0px;
-            font-size: 1.1em;
+            font-size: 0.8em;
+            max-width: 100px;
+            max-height: 18px;
+            overflow: hidden;
             &::before {
                 margin-right: 4px;
                 content: '<<';
@@ -101,7 +121,7 @@
         }
         .main_myName {
             left: auto;
-            font-size: 1.5em;
+            font-size: 1.2em;
             &::after {
                 margin-right: 0;
                 content: '';
@@ -113,7 +133,10 @@
         padding: 0 375px 0 0;
         .main_myName {
             left: 30px;
-            font-size: 1.1em;
+            font-size: 0.8em;
+            max-width: 100px;
+            max-height: 18px;
+            overflow: hidden;
             &::after {
                 margin-left: 4px;
                 content: '>>';
@@ -121,11 +144,26 @@
         }
         .main_enemyName {
             right: auto;
-            font-size: 1.5em;
+            font-size: 1.2em;
             &::before {
                 margin-right: 0;
                 content: '';
             }
+        }
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .main_forView {
+        padding: 0 0 0 335px;
+        .main_enemyName {
+            right: 16px;
+        }
+    }
+    .main_forShoot {
+        padding: 0 330px 0 0;
+        .main_myName {
+            left: 20px;
         }
     }
 }

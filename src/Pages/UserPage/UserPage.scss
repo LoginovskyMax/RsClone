@@ -1,5 +1,6 @@
 .main{
     width: 100%;
+    min-height: calc(100vh - 160px);
     padding: 30px 30px 85px;
     display: flex;
     flex-direction: column;
@@ -14,20 +15,22 @@
 
     &__game-list{
         display: flex;
-        gap: 20px;
+        flex-direction: column;
+        gap: 4px;
+        width: calc(100% - 20px);
     }
     &__game-item{
-        padding: 20px;
-        border-radius: 20px;
+        padding: 8px 20px;
+        border-radius: 12px;
         display: flex;
-        flex-direction: column;
-        gap: 10px;
+        justify-content: space-between;
+        gap: 4px;
         border: 1px solid #764ba2;
         background: linear-gradient(
-            180deg, 
+            180.2deg, 
             rgba(255, 255, 255, 0) 0%,
-            rgba(118, 75, 162, 0.565) 83%, 
-            rgba(102, 126, 234, 0.86) 100% 
+            rgba(167, 124, 209, 0.201) 90%, 
+            rgba(22, 35, 93, 0.86) 100% 
         );
         p{
             font-weight: bold;
@@ -35,19 +38,37 @@
         &:hover{
          cursor: pointer;
         background: linear-gradient(
-                30deg,
-                rgba(213, 65, 11, 0.661) 0%,
-                rgba(218, 118, 12, 0.459) 100%,
+                180.2deg, 
+                rgba(216, 74, 22, 0.359) 0%,
+                rgba(238, 70, 9, 0.149) 90%,
+                rgba(207, 78, 9, 0.6) 100%,
             );
         }
     }
-   
-    &__name{
-        text-align: center;
-        font-size: 30px;
-        font-family: 'Ceviche One', cursive;
+    &__points {
+        text-align: left;
+        width: 100%;
     }
-    &__user{
+    &__position {
+        text-align: right;
+        min-width: 200px;
+    }
+    &__title {
+        font-family: "Russo One", sans-serif;
+        font-size: 2em;
+        font-weight: 900;
+        color: #7e6dd1;
+        margin-bottom: 10px;
+        display: none;
+    }
+   
+    &__name {
+        text-align: left;
+        font-family: Black Ops One,cursive;
+        font-size: 1.3em;
+        min-width: 200px;
+    }
+    &__user {
         display: flex;
         gap: 10px;
         align-items: center;
@@ -57,20 +78,21 @@
             font-weight: bold;
         }
     }
-    &__list{
+    &__list {
         width: 100%;
         display: flex;
         flex-direction: column;
         gap: 5px;
     }
-    &__admin{
+    &__admin {
         width: 100%;
     }
 }
 
-.user {
+.user-profile {
+    display: flex;
     height: 200px;
-    // .user__picture
+    // .user-profile__picture
     &__picture {
         width: 200px;
         height: 200px;
@@ -79,15 +101,16 @@
         background-repeat: no-repeat;
     }
 
-    // .user__wrapper
+    // .user-profile__wrapper
     &__wrapper {
         height: 100%;
+        margin-left: 10px;
         display: flex;
         flex-direction: column;
-        width: calc(100vw - 320px);
+        width: calc(100vw - 280px);
     }
 
-    // .user__status
+    // .user-profile__status
     &__status {
         display: flex;
         gap: 2px;
@@ -104,31 +127,31 @@
         }
     }
 
-    // .user__status_admin
+    // .user-profile__status_admin
     &__status_admin {
         background: #b33d2e;
         border: 1px solid #721d11;
     }
 
-    // .user__status_moderator
+    // .user-profile__status_moderator
     &__status_moderator {
         background: #b3842e;
         border: 1px solid #79530c;
     }
 
-    // .user__status_user
+    // .user-profile__status_user
     &__status_user {
         background: #2e6ab3;
         border: 1px solid #083367;
     }
 
-    // .user__status_disabled
+    // .user-profile__status_disabled
     &__status_disabled {
         background: #939ba4;
         border: 1px solid #313b45;
     }
 
-    // .user__name
+    // .user-profile__name
     &__name {
         font-family: "Russo One", sans-serif;
         font-size: 2.5em;
@@ -136,12 +159,13 @@
         color: #4f4c6b;
     }
 
-    // .user__ban-status
+    // .user-profile__ban-status
     &__ban-status {
-        
+        display: flex;
+        flex-direction: column;
     }
 
-    // .user__is-baned
+    // .user-profile__is-baned
     &__is-baned {
         max-width: min-content;
         margin-bottom: 4px;
@@ -152,7 +176,7 @@
         color: #e8270e;
     }
 
-    // .user__is-active
+    // .user-profile__is-active
     &__is-active {
         max-width: min-content;
         margin-bottom: 4px;
@@ -163,21 +187,98 @@
         color: #60cd00;
     }
 
-    // .user__ban-btn
+    // .user-profile__ban-btn
     &__ban-btn {
         padding: 2px 10px;
         text-transform: uppercase;
+        max-width: max-content;
     }
 
-    // .user__unban-btn
+    // .user-profile__unban-btn
     &__unban-btn {
         padding: 2px 10px;
         text-transform: uppercase;
+        max-width: max-content;
     }
 
-    // .user__not-found
+    // .user-profile__not-found
     &__not-found {
 
     }
 
+}
+
+@media screen and (max-width: 680px) {
+    .user-profile{
+        &__picture {
+            width: 100px;
+            height: 200px;
+        }
+        &__wrapper {
+            width: calc(100vw - 220px);
+        }
+    }
+    .main{
+        &__name {
+            min-width: 180px;
+        }
+        &__position {
+            min-width: 135px;
+        }
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .user-profile{
+        height: auto;
+        flex-direction: column;
+        align-items: center;
+
+        &__picture {
+            min-width: 160px;
+            min-height: 160px;
+        }
+        &__wrapper {
+            width: calc(100vw - 10px);
+            align-items: center;
+        }
+        &__status {
+            margin: 10px auto 18px;
+            div {
+                font-size: 1em;
+            }
+        }
+        &__ban-btn {
+            padding: 4px 12px;
+            text-transform: uppercase;
+            background-image: linear-gradient(to right, #667eea, #764ba2) !important;
+            color: #fff !important;
+            font-size: 1.4em !important;
+        }
+        &__unban-btn {
+            padding: 4px 12px;
+            text-transform: uppercase;
+            background-image: linear-gradient(to right, #667eea, #764ba2) !important;
+            color: #fff !important;
+            font-size: 1.4em !important;
+        }
+        &__ban-status {
+            align-items: center;
+        }
+    }
+    .main{
+        &__game-list {
+            gap: 8px;
+            align-items: center;
+        }
+        &__game-item {
+            flex-direction: column;
+            gap: 12px;
+            padding: 16px 20px;
+            width: 100%;
+        }
+        &__position {
+            text-align: left;
+        }
+    }
 }

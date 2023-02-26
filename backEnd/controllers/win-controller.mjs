@@ -65,6 +65,7 @@ const getPositionForGame = async (gameId, user) => {
 export async function getWinners(req, res) {
   try {
     const { game } = req.query;
+    const { userName: queryUserName } = req.query;
 
     if (!req.userName) {
       return res.status(405).json({ message: "User not authorized" });
@@ -109,10 +110,18 @@ export async function getWinners(req, res) {
 
       res.json(resList);
     } else {
-      const user = await User.findOne({ userName: req.userName });
+      let user = await User.findOne({ userName: req.userName });
 
       if (!user) {
         return res.status(405).json({ message: "User not authorized" });
+      }
+
+      if (queryUserName) {
+        user = await User.findOne({ userName: queryUserName });
+      }
+
+      if (!user) {
+        return res.status(405).json({ message: "User not found" });
       }
 
       const wins = await Winner.find({ user: user._id });

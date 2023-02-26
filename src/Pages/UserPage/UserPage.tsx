@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Button from "../../Components/common/Button";
-import { getUserToken } from "../../controller/Auth";
 import { getUser } from "../../controller/UserControls";
-import { getGameWinsList, getUserWinsList } from "../../controller/Winners";
+import { getUserWinsList } from "../../controller/Winners";
 import type { UserData } from "../../data/authData";
 import type { WinnerRes } from "../../data/winData";
 import useUserStore from "../../store";
@@ -12,6 +11,7 @@ import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
 
 import { UserMainComp } from "./Components/UserMainData";
+import { WinsListComp } from "./Components/WinsListComp";
 import "./UserPage.scss";
 
 const UserPage = () => {
@@ -35,7 +35,6 @@ const UserPage = () => {
       .then(() => getUserWinsList(userNameParam ?? userName ?? ""))
       .then((wins) => setWinArr(wins))
       .then(() => setStatus({ isLoading: false, message: "" }))
-      .then(() => console.log(user))
       .catch(({ message }) => setStatus({ isLoading: false, message }));
   };
 
@@ -45,79 +44,15 @@ const UserPage = () => {
 
   return (
     <div className="main">
-      <h4 className="main__name">
+      <h4 className="main__title">
         {isEn ? "Страница пользователя" : "User page"}
       </h4>
       <UserMainComp user={user ?? undefined} refresh={loadUser} />
-      <div className="main__game-list">
-        {winArr.map((item, i) => (
-          <div
-            key={i}
-            className="main__game-item"
-            onClick={() => navigate(`/preview/${item.gameName}`)}
-          >
-            <p className="main__name">{item.gameName}</p>
-            <p>
-              {isEn ? "Максимум очков : " : "Max points : "}
-              {item.points}
-            </p>
-            <p>
-              {isEn ? "Положение в рейтинге : " : "Number in top :"}
-              {item.position}
-            </p>
-          </div>
-        ))}
-      </div>
+      <WinsListComp winArr={winArr} />
 
       <Button onClick={() => navigate("/main")}>
         {isEn ? "К списку игр" : "On games page"}
       </Button>
-
-      {/* {status[0] === "admin" ? (
-        <div className="main__admin">
-          <h4 className="main_name">
-            {isEn ? "Админ панель" : "Admin desk"}
-          </h4>
-          <Button onClick={getUsers">
-            {isEn ? "Список пользователей" : "Users list"}
-          </Button>
-          <div className="main__list">
-            {usersArr.map((user) => (
-              <div key={user._id} className="main__user">
-                <p>{user.userName}</p>
-                <p>
-                  {isEn ? "Статус " : "Status "} {user.status[0]}
-                </p>
-                <p>
-                  {isEn ? "Забанен: " : "In ban: "}{" "}
-                  {user.banned ? (isEn ? "Да" : "Yes") : isEn ? "Нет" : "No"}
-                </p>
-                {!user.banned ? (
-                  <Button
-                    onClick={() => banUser(true, user.userName)}
-                    disabled={user.status[0] !== "user"}
-                  >
-                    {isEn ? "Забанить" : "Ban"}
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => banUser(false, user.userName)}
-                    disabled={user.status[0] !== "user"}
-                  >
-                    {isEn ? "Снять бан" : "Unban"}
-                  </Button>
-                )}
-                <Button
-                  onClick={() => deleteUser(user.userName)}
-                  disabled={user.status[0] !== "user"}
-                >
-                  {isEn ? "Удалить" : "Delete"}
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : null} */}
     </div>
   );
 };
