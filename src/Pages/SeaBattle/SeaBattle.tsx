@@ -220,7 +220,7 @@ export const SeaBattle = () => {
         </div>
         <div className={styles.main_conteiner}>
           <p className={styles.main_enemyName}>
-            {enemyName || isEn ? "Ожидание 2 игрока" : "Ready for 2 player"}
+            {enemyName || (isEn ? "Ожидание 2 игрока" : "Ready for 2 player")} 
           </p>
           <FieldComp
             board={enemyBoard}
