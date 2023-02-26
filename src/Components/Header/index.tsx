@@ -18,8 +18,7 @@ import "./style.scss";
 const Header: FC = () => {
   const [isModalClosed, setModalClosed] = useState(true);
   const [rotate, setRotate] = useState(false);
-  const userName = useUserStore((state) => state.userName);
-  const setUser = useUserStore((state) => state.setUser);
+  const { userName, image, setUser } = useUserStore();
   const { isEn } = languageStore();
   const theme = themeStore((state) => state.isDark);
   const changeTheme = themeStore((state) => state.setTheme);
@@ -46,14 +45,14 @@ const Header: FC = () => {
       .then((userData) => {
         setUser({
           userName: userData.userName,
+          image: userData.image,
           status: userData.status,
           banned: userData.banned,
           email: userData.email,
         });
       })
-      .catch((error) => {
+      .catch(() => {
         setUser(nullUser);
-        console.log(error);
       });
   }, []);
 
@@ -69,7 +68,7 @@ const Header: FC = () => {
           onClick={handler}
         />
         {userName ? (
-          <User username={userName} setUser={setUser} />
+          <User username={userName} setUser={setUser} image={image} />
         ) : (
           <Button onClick={() => setModalClosed(false)}>
             {isEn ? "Войти" : "Sign in"}

@@ -137,7 +137,6 @@ export async function getWinners(req, res) {
 
       const wins = await Winner.find({ user: user._id });
 
-      const usersSet = new Set();
       const fullList = (
         await Promise.all(
           wins.map(async (winner) => {
@@ -158,12 +157,6 @@ export async function getWinners(req, res) {
         )
       )
         .filter((winner) => winner.gameName !== "" && winner.position !== -1)
-        .filter((winner) => {
-          if (usersSet.has(winner.userName)) return false;
-          usersSet.add(winner.userName);
-
-          return true;
-        })
         .sort((a, b) => b.points - a.points);
 
       const resList = [];

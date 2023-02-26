@@ -11,7 +11,7 @@ import { AdminComp } from "./context/AdminComp";
 import { ModerComp } from "./context/ModerComp";
 import { StatusLableComponent } from "./StatusLableComponent";
 
-import "./style.scss";
+import "../UserPage.scss";
 
 interface UserMainCompProps {
   user?: UserData;

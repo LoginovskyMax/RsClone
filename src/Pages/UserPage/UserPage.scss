@@ -96,6 +96,7 @@
     &__picture {
         width: 200px;
         height: 200px;
+        border-radius: 50%;
         background-position: center;
         background-size: contain;
         background-repeat: no-repeat;
@@ -324,6 +325,7 @@
     &__item-picture {
         width: 35px;
         height: 35px;
+        border-radius: 50%;
         background-image: url("https://rsgames.online/images/user.png");
         background-position: center;
         background-repeat: no-repeat;

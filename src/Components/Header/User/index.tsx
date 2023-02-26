@@ -9,10 +9,11 @@ import "./style.scss";
 
 interface UserProps {
   username: string;
+  image?: string;
   setUser: userSetter;
 }
 
-const User: FC<UserProps> = ({ username, setUser }) => {
+const User: FC<UserProps> = ({ username, setUser, image }) => {
   const { isEn } = languageStore();
   const navigate = useNavigate();
 
@@ -22,7 +23,12 @@ const User: FC<UserProps> = ({ username, setUser }) => {
         onClick={() => navigate(`/user/${username}`)}
         className="user__click"
       >
-        <img className="user__image" alt="user" src="images/user.png" />
+        <div
+          className="user__image"
+          style={{
+            backgroundImage: `url(${image || "images/user.png"})`,
+          }}
+        />
         <p className="user__text">{username}</p>
       </div>
 

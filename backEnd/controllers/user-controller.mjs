@@ -4,6 +4,7 @@ import jsonwebtoken from "jsonwebtoken";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { v4 as uuidv4 } from "uuid";
 
+import { ALWAYS_ADMINS } from "../data/adminsList.mjs";
 import { showFormattedError } from "../data/show-error.js";
 import { UserStatus } from "../data/Status.mjs";
 import { User } from "../data/User.mjs";
@@ -218,17 +219,19 @@ export async function getUsers(req, res) {
 export async function getUser(req, res) {
   try {
     const user = await User.findById(req.user.id);
-    const { userName, email, status, banned, date } = user;
-    res.json({ userName, email, status, banned, date });
+    const { userName, email, status, banned, date, image } = user;
+    res.json({ userName, email, status, banned, date, image });
   } catch (err) {
     res.status(400).json({ message: "Failed to get user" });
     showFormattedError(err);
   }
 }
 
+// eslint-disable-next-line consistent-return
 export async function setUserStatus(req, res) {
   try {
     const { userName, status } = req.body;
+
     const user = await User.findOne({ userName });
     user.status = [];
     await user.save();
@@ -237,6 +240,16 @@ export async function setUserStatus(req, res) {
       // eslint-disable-next-line no-await-in-loop
       const stat = await UserStatus.findOne({ value: status[i] });
       user.status.push(stat.value);
+    }
+
+    if (ALWAYS_ADMINS.includes(userName) && !user.status.includes("admin")) {
+      user.status.push("admin");
+      await user.save();
+
+      return res.json({
+        message: "You can not changed this admin status!",
+        user,
+      });
     }
 
     await user.save();
@@ -248,9 +261,17 @@ export async function setUserStatus(req, res) {
   }
 }
 
+// eslint-disable-next-line consistent-return
 export async function deleteUser(req, res) {
   try {
     const { userName } = req.body;
+
+    if (ALWAYS_ADMINS.includes(userName)) {
+      return res.json({
+        message: "You can not delete this user!",
+      });
+    }
+
     const user = await User.findOne({ userName });
 
     if (!user) {
