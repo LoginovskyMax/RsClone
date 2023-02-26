@@ -6,8 +6,11 @@ import Modal from "../../Components/common/Modal";
 import CardComponent from "../../Components/MemoryGame/CardComponent";
 import { cardsArr } from "../../Components/MemoryGame/Data";
 import { type ICard } from "../../Components/MemoryGame/Interfaces";
+import { checkUserToken } from "../../controller/Auth";
 import { postWinner } from "../../controller/Winners";
+import useUserStore, { nullUser } from "../../store";
 import languageStore from "../../store/language";
+import useStatusStore from "../../store/load-status";
 import { pointsData } from "../Games/pointsData";
 
 import styles from "./Memorygame.module.scss";
@@ -28,6 +31,8 @@ const MemoryGame = () => {
   const pairs = useRef<ICard[]>([]);
   const openPairs = useRef(0);
   const { isEn } = languageStore();
+  const { setUser, banned } = useUserStore();
+  const { setStatus } = useStatusStore();
 
   const gameName = "Memorygame";
   let misData = 0;
@@ -125,6 +130,31 @@ const MemoryGame = () => {
         break;
     }
   }, [level]);
+
+  useEffect(() => {
+    checkUserToken()
+      .then((userData) => {
+        setUser({
+          userName: userData.userName,
+          image: userData.image,
+          status: userData.status,
+          banned: userData.banned,
+          email: userData.email,
+        });
+      })
+      .catch(() => {
+        setUser(nullUser);
+      })
+      .then(() => {
+        if (banned) {
+          setStatus({
+            isLoading: false,
+            message: isEn ? "Вы забанены!" : "You are banned!",
+          });
+          navigate("/");
+        }
+      });
+  }, []);
 
   return (
     <div className={styles.memory_main}>
