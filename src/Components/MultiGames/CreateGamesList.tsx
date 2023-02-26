@@ -2,6 +2,7 @@ import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 
+import { BACKEND_URL } from "../../data/authData";
 import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
 
@@ -26,7 +27,7 @@ export const CreateGamesList = ({ gameName, joinGame }: IProps) => {
   const { isEn } = languageStore();
 
   const getGames = () => {
-    fetch(`https://rsgames.online:8888/games/list?name=${gameName}`)
+    fetch(`${BACKEND_URL}/games/list?name=${gameName}`)
       .then<IGames[]>((response) => response.json())
       .then((data) => setGamesArr(data))
       .catch(({ message }) => setStatus({ isLoading: false, message }));

@@ -179,6 +179,5 @@ export async function getWinners(req, res) {
     }
   } catch (err) {
     res.status(400).json({ message: "Failed to get winner" });
-    console.log(err);
   }
 }

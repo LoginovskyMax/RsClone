@@ -80,7 +80,6 @@ export async function changePass(req, res) {
   try {
     const { password, newPassword } = req.body;
     const { userName } = req;
-    console.log(userName);
     const user = await User.findOne({ userName });
 
     if (!user) {

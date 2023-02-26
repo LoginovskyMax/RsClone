@@ -5,6 +5,7 @@ export const GAME = {
   ERR_NOT_ALL_READY: "Not all players are ready to start the game",
   ERR_WRONG_GAME_ID: "Game not found!",
   ERR_WRONG_TOKEN: "Wrong or expired token",
+  ERR_USER_IS_BANNED: "User is banned!",
   ERR_GAME_IS_FULL: "Maximum number of players in the game",
   ERR_GAME_IS_STARTED:
     "The game is already started, you can not change the position of the ships",

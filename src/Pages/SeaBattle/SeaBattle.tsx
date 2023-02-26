@@ -127,6 +127,16 @@ export const SeaBattle = () => {
 
       switch (type) {
         case "message":
+          if (gameData.message === "User is banned!") {
+            setStatus({
+              isLoading: false,
+              message: isEn ? "Вы забанены!" : "You are banned!",
+            });
+            navigate("/");
+
+            return;
+          }
+
           setServerError(gameData.message as string);
           break;
         case "game-data":
