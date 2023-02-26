@@ -19,6 +19,9 @@
         gap: 4px;
         width: calc(100% - 20px);
     }
+    &__to-games-btn {
+        margin-top: auto;
+    }
     &__game-item{
         padding: 8px 20px;
         border-radius: 12px;
@@ -204,9 +207,33 @@
 
     // .user-profile__not-found
     &__not-found {
-
+        top: 0;
+        position: absolute;
+        margin: auto;
+        margin-top: 45vh;
+        display: flex;
+        font-size: 1.4em;
+        font-weight: 900;
     }
-
+    &__change-password {
+        margin-top: 20px;
+        max-width: max-content;
+    }
+    // .user-profile__delete
+    &__delete {
+        padding: 0;
+        margin-left: 10px;
+        width: 44px;
+        height: 24px;
+        background: url(../../assets/svg/delete.svg) center no-repeat;
+        background-size: cover;
+        transition: all 0.3s;
+        cursor: pointer;
+        transform: scale(1.3);
+        &:hover {
+            transform: scale(1.5);
+        }
+    }
 }
 
 @media screen and (max-width: 680px) {
@@ -236,8 +263,8 @@
         align-items: center;
 
         &__picture {
-            min-width: 160px;
-            min-height: 160px;
+            width: 160px;
+            height: 160px;
         }
         &__wrapper {
             width: calc(100vw - 10px);
@@ -336,5 +363,22 @@
         font-size: 1.2em;
         font-weight: 600;
         color: #382f78;
+    }
+}
+
+.popup-dialog {
+    &__text {
+        font-size: 1.3em;
+        margin-bottom: 34px;
+        text-align: center;
+    }
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+
+        button {
+            min-width: 120px;
+        }
     }
 }

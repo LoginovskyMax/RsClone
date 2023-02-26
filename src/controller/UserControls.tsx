@@ -57,7 +57,7 @@ export const unbanUser = async (userName: string) =>
     },
   });
 
-export const deleteUser = (name: string) =>
+export const deleteUser = async (name: string) =>
   fetch(`${BACKEND_URL}${USER_PATH}`, {
     method: "DELETE",
     headers: {

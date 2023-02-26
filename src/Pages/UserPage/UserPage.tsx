@@ -50,8 +50,8 @@ const UserPage = () => {
       </h4>
       <ModerComp
         isModer={
-          status.includes(userStatus.moderator) ||
-          status.includes(userStatus.admin)
+          (status && status.includes(userStatus.moderator)) ||
+          (status && status.includes(userStatus.admin))
         }
       >
         <SearchUserComp />
@@ -59,7 +59,7 @@ const UserPage = () => {
       <UserMainComp user={user ?? undefined} refresh={loadUser} />
       <WinsListComp winArr={winArr} />
 
-      <Button onClick={() => navigate("/main")}>
+      <Button onClick={() => navigate("/main")} className="main__to-games-btn">
         {isEn ? "К списку игр" : "On games page"}
       </Button>
     </div>

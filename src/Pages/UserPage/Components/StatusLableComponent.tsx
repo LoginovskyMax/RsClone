@@ -24,7 +24,7 @@ export const StatusLableComponent: FC<StatusLableComponentProps> = ({
   return (
     <div
       className={`user-profile__status_${
-        user.status.includes(uStatus) ? uStatus : "disabled"
+        user.status && user.status.includes(uStatus) ? uStatus : "disabled"
       }`}
       onClick={() => changeUserStatus(user, uStatus).then(refresh)}
     >

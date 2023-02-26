@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import type { FC } from "react";
 import { useState } from "react";
 import * as yup from "yup";
 
@@ -39,7 +40,11 @@ const inputsProps = [
   },
 ] as const;
 
-const ChangePass = () => {
+interface ChangePassProps {
+  setModalClosed: () => void;
+}
+
+const ChangePass: FC<ChangePassProps> = ({ setModalClosed }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const { userName } = useUserStore();
 
@@ -57,6 +62,7 @@ const ChangePass = () => {
         setStatus({ isLoading: true, message: "" });
         changePassword(data)
           .then(({ message }) => setStatus({ isLoading: false, message }))
+          .then(setModalClosed)
           .catch(({ message }) => {
             setStatus({ isLoading: false, message: "" });
             setErrorMsg(message);
