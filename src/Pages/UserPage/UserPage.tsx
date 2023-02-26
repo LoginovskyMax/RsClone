@@ -9,18 +9,20 @@ import type { WinnerRes } from "../../data/winData";
 import useUserStore from "../../store";
 import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
+import { ModerComp } from "./Components/context/ModerComp";
 
 import { SearchUserComp } from "./Components/SearchUserComp";
 import { UserMainComp } from "./Components/UserMainData";
 import { WinsListComp } from "./Components/WinsListComp";
 import "./UserPage.scss";
+import { userStatus } from "./UserPageData";
 
 const UserPage = () => {
   const navigate = useNavigate();
   const params = useParams();
   const userNameParam = params.name;
   const { isEn } = languageStore();
-  const { userName } = useUserStore();
+  const { userName, status } = useUserStore();
   const [winArr, setWinArr] = useState<WinnerRes[]>([]);
   const { setStatus } = useStatusStore();
   // const [usersArr, setUserArr] = useState<UsersList[]>([]);
@@ -47,7 +49,14 @@ const UserPage = () => {
       <h4 className="main__title">
         {isEn ? "Страница пользователя" : "User page"}
       </h4>
-      <SearchUserComp />
+      <ModerComp
+        isModer={
+          status.includes(userStatus.moderator) ||
+          status.includes(userStatus.admin)
+        }
+      >
+        <SearchUserComp />
+      </ModerComp>
       <UserMainComp user={user ?? undefined} refresh={loadUser} />
       <WinsListComp winArr={winArr} />
 

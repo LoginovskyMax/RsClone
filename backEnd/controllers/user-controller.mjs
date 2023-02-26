@@ -204,9 +204,11 @@ export async function login(req, res) {
   }
 }
 
-export async function getUsers(_req, res) {
+export async function getUsers(req, res) {
   try {
-    const users = await User.find();
+    const users = req.query.search
+      ? await User.find({ userName: { $regex: req.query.search } })
+      : await User.find();
     res.json(users);
   } catch (err) {
     res.status(400).json({ message: "Failed to get users" });
