@@ -17,6 +17,7 @@ import {
   banUser,
   changePass,
 } from "./controllers/user-controller.mjs";
+import { logger } from "./logger.mjs";
 import { adminMiddleware } from "./middleware/admin-middleware.mjs";
 import { authorizedUser } from "./middleware/authorized-user.mjs";
 
@@ -25,6 +26,7 @@ const jsonParser = bodyParser.json();
 export const router = new Router();
 
 router.use(cors());
+router.use(logger);
 router.post("/forgotpass", jsonParser, resetpass); // {userName, email}
 router.put("/setpass", jsonParser, asyncMiddleware(authorizedUser), changePass); // {password, newPassword}
 router.post("/setpass", jsonParser, setNewPass); // {password, resetToken}

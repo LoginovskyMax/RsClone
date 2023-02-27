@@ -10,7 +10,6 @@ import dotenv from "dotenv";
 import express from "express";
 import expressWs from "express-ws";
 import mongoose from "mongoose";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { WebSocketServer } from "ws";
 
 import { getGameData } from "./controllers/game-data-controller.mjs";
@@ -19,6 +18,7 @@ import { SEAWAR } from "./games/variables.mjs";
 // eslint-disable-next-line import/no-cycle
 import { seaWarSocket } from "./games/ws/ws-main.mjs";
 import { gameHttpRouter } from "./games.mjs";
+import { logger } from "./logger.mjs";
 import { router } from "./router.mjs";
 import { winRouter } from "./winners.mjs";
 
@@ -38,6 +38,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
+
+app.use(logger);
 
 const options = {
   key: fs.readFileSync(sslKey, "utf8"),
