@@ -24,7 +24,10 @@ const FinishModal: FC<IFinishModalProps> = ({
 
   if (!isModalClosed) {
     return (
-      <Modal setModalClosed={setModalClosed} title="Finished">
+      <Modal
+        setModalClosed={setModalClosed}
+        title={isEn ? "Finished" : "Конец"}
+      >
         <div className="finish">
           <p className="finish__title">
             {isEn ? "Cчет : " : "Score : "} {points}

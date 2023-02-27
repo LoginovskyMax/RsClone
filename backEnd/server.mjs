@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import * as fs from "fs";
 import http from "http";
 import https from "https";
@@ -39,8 +38,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors());
 
-app.use(logger);
-
 const options = {
   key: fs.readFileSync(sslKey, "utf8"),
   cert: fs.readFileSync(sslSrt, "utf8"),
@@ -50,15 +47,15 @@ await mongoose.connect(
   `mongodb+srv://rsgames:${pass}@cluster0.d9hevcc.mongodb.net/?retryWrites=true&w=majority`
 );
 https.createServer(options, app).listen(port, () => {
-  console.log(`https server is runing at port ${port}`);
+  logger.info(`https server is runing at port ${port}`);
 });
 
 http.createServer(app).listen(ports, () => {
-  console.log(`http server is runing at port ${ports}`);
+  logger.info(`http server is runing at port ${ports}`);
 });
 
 app.get("/", (_req, res) => {
-  console.log("Server is online");
+  logger.info("Server is online");
   res.send({ resp: "Server is online" });
 });
 
@@ -86,5 +83,5 @@ const server = https.createServer(options);
 export const aWssSeaWar = new WebSocketServer({ server });
 aWssSeaWar.on("connection", seaWarSocket);
 server.listen(WS_SEAWAR_PORT, () => {
-  console.log(`${SEAWAR.NAME} web socket is runing at port ${WS_SEAWAR_PORT}`);
+  logger.info(`${SEAWAR.NAME} web socket is runing at port ${WS_SEAWAR_PORT}`);
 });

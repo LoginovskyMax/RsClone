@@ -4,41 +4,14 @@ import { useState } from "react";
 import * as yup from "yup";
 
 import { changePassword } from "../../../controller/Auth";
+import { MESSAGES_EN, MESSAGES_RU } from "../../../data/restMsgs";
 import useUserStore from "../../../store";
+import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
 
 import "../style.scss";
-
-const schema = yup.object().shape({
-  password: yup.string().required(),
-  newPassword: yup.string().required(),
-  confirmPassword: yup
-    .string()
-    .equals([yup.ref("newPassword")], "Should be equal to New password"),
-});
-
-const inputsProps = [
-  {
-    key: "password",
-    label: "Password",
-    type: "password",
-    placeholder: "Password",
-  },
-  {
-    key: "newPassword",
-    label: "New password",
-    type: "password",
-    placeholder: "New password",
-  },
-  {
-    key: "confirmPassword",
-    label: "Confirm password",
-    type: "password",
-    placeholder: "Confirm password",
-  },
-] as const;
 
 interface ChangePassProps {
   setModalClosed: () => void;
@@ -49,6 +22,41 @@ const ChangePass: FC<ChangePassProps> = ({ setModalClosed }) => {
   const { userName } = useUserStore();
 
   const { setStatus } = useStatusStore();
+  const { isEn } = languageStore();
+
+  const schema = yup.object().shape({
+    password: yup.string().required(),
+    newPassword: yup.string().required(),
+    confirmPassword: yup
+      .string()
+      .equals(
+        [yup.ref("newPassword")],
+        isEn
+          ? "Должен совподать с полем Новый пароль"
+          : "Should be equal to New password"
+      ),
+  });
+
+  const inputsProps = [
+    {
+      key: "password",
+      label: isEn ? "Пароль" : "Password",
+      type: "password",
+      placeholder: isEn ? "Пароль" : "Password",
+    },
+    {
+      key: "newPassword",
+      label: isEn ? "Новый пароль" : "New password",
+      type: "password",
+      placeholder: isEn ? "Новый пароль" : "New password",
+    },
+    {
+      key: "confirmPassword",
+      label: "Confirm password",
+      type: "password",
+      placeholder: "Confirm password",
+    },
+  ] as const;
 
   const { values, handleChange, handleBlur, handleSubmit, errors, touched } =
     useFormik({
@@ -65,7 +73,8 @@ const ChangePass: FC<ChangePassProps> = ({ setModalClosed }) => {
           .then(setModalClosed)
           .catch(({ message }) => {
             setStatus({ isLoading: false, message: "" });
-            setErrorMsg(message);
+            const msg = isEn ? MESSAGES_RU[message] : MESSAGES_EN[message];
+            setErrorMsg(msg);
           });
       },
     });

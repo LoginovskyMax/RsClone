@@ -5,6 +5,7 @@ import * as yup from "yup";
 
 import { authLogin, checkUserToken } from "../../../controller/Auth";
 import type { Values } from "../../../data/authData";
+import { MESSAGES_EN, MESSAGES_RU } from "../../../data/restMsgs";
 import useUserStore from "../../../store";
 import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
@@ -69,7 +70,7 @@ const SignIn: FC<SignInProps> = ({
             setUser(userData);
             setStatus({
               isLoading: false,
-              message: isEn ? "Вы вошли в систему" : "You are logged in",
+              message: "You are logged in",
             });
             setModalClosed();
           })
@@ -77,9 +78,13 @@ const SignIn: FC<SignInProps> = ({
             setStatus({ isLoading: false, message: "" });
 
             if (error.message) {
-              setErrorMsg(error.message);
+              const msg = isEn
+                ? MESSAGES_RU[error.message]
+                : MESSAGES_EN[error.message];
+              setErrorMsg(msg);
             } else {
-              setErrorMsg(error);
+              const msg = isEn ? MESSAGES_RU[error] : MESSAGES_EN[error];
+              setErrorMsg(msg);
             }
           });
       },

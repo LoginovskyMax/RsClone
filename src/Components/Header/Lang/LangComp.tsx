@@ -4,10 +4,13 @@ import languageStore from "../../../store/language";
 
 import styles from "./LangComp.module.scss";
 
+export const LS_LANG = "rs-games-online__lang";
+
 export const LangComp = () => {
   const { isEn, setLang } = languageStore();
 
   const changeLang = () => {
+    localStorage.setItem(LS_LANG, (!isEn).toString());
     setLang(!isEn);
   };
 

@@ -7,6 +7,7 @@ import {
   getUserNameByResetToken,
   setNewPassword,
 } from "../../../controller/Auth";
+import { MESSAGES_EN, MESSAGES_RU } from "../../../data/restMsgs";
 import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
@@ -81,7 +82,10 @@ const ResetPass: FC<ResetPassProps> = ({ resetToken }) => {
         const { password } = data;
         setNewPassword({ resetToken, password })
           .then(({ message }) => setStatus({ isLoading: false, message }))
-          .catch(({ message }) => setErrorMsg(message));
+          .catch(({ message }) => {
+            const msg = isEn ? MESSAGES_RU[message] : MESSAGES_EN[message];
+            setErrorMsg(msg);
+          });
       },
     });
 

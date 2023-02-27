@@ -6,6 +6,7 @@ import { Board } from "../../Components/SeaBattle/Board";
 import { FieldComp } from "../../Components/SeaBattle/FieldComp";
 import { InfoComp } from "../../Components/SeaBattle/InfoComp";
 import { checkUserToken } from "../../controller/Auth";
+import { MESSAGES_EN, MESSAGES_RU } from "../../data/restMsgs";
 import useUserStore from "../../store";
 import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
@@ -130,7 +131,7 @@ export const SeaBattle = () => {
           if (gameData.message === "User is banned!") {
             setStatus({
               isLoading: false,
-              message: isEn ? "Вы забанены!" : "You are banned!",
+              message: "You are banned!",
             });
             navigate("/");
 
@@ -171,13 +172,7 @@ export const SeaBattle = () => {
       setStatus({
         isLoading: false,
         message:
-          otherData?.winner.player.userName === user
-            ? isEn
-              ? "Вы победили!"
-              : "You won!"
-            : isEn
-            ? "Вы проиграли"
-            : "You lose",
+          otherData?.winner.player.userName === user ? "You win!" : "You lose",
       });
     }
 
@@ -250,7 +245,9 @@ export const SeaBattle = () => {
         winner={otherData?.winner}
         mainUser={otherData?.isMainUser}
       />
-      {serverError !== "" && <p>{serverError}</p>}
+      {serverError !== "" && (
+        <p>{isEn ? MESSAGES_RU[serverError] : MESSAGES_EN[serverError]}</p>
+      )}
       {otherData && otherData.isMainUser && !otherData.winner && !start && (
         <Button
           onClick={() => {

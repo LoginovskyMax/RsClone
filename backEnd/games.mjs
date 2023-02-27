@@ -13,7 +13,6 @@ import {
   removeComment,
   setComment,
 } from "./controllers/game-data-controller.mjs";
-import { logger } from "./logger.mjs";
 import { adminMiddleware } from "./middleware/admin-middleware.mjs";
 import { authorizedUser } from "./middleware/authorized-user.mjs";
 import { banedUser } from "./middleware/baned-midleware.mjs";
@@ -23,7 +22,7 @@ const jsonParser = bodyParser.json();
 export const gameHttpRouter = new Router();
 
 gameHttpRouter.use(cors());
-gameHttpRouter.use(logger);
+// gameHttpRouter.use(logger);
 gameHttpRouter.get("/all", getGamesList);
 gameHttpRouter.get("/data", getGameData);
 gameHttpRouter.post(

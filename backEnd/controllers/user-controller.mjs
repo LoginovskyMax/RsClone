@@ -5,9 +5,9 @@ import jsonwebtoken from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 
 import { ALWAYS_ADMINS } from "../data/adminsList.mjs";
-import { showFormattedError } from "../data/show-error.js";
 import { UserStatus } from "../data/Status.mjs";
 import { User } from "../data/User.mjs";
+import { logger } from "../logger.mjs";
 import { mailService } from "../mail/mail-service.js";
 
 const generateToken = (id, statuses) =>
@@ -45,7 +45,7 @@ export async function resetpass(req, res) {
     });
   } catch (e) {
     res.status(400).json({ message: "Reset Error" });
-    showFormattedError(e);
+    logger.error(e);
   }
 }
 
@@ -72,7 +72,7 @@ export async function setNewPass(req, res) {
     res.json({ message: "Password has been changed!" });
   } catch (err) {
     res.status(400).json({ message: "Password Reset Error" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -84,15 +84,13 @@ export async function changePass(req, res) {
     const user = await User.findOne({ userName });
 
     if (!user) {
-      return res.status(404).json({ message: `User ${userName} not found` });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const validPass = bcrypt.compareSync(password, user.password);
 
     if (!validPass) {
-      return res
-        .status(405)
-        .json({ message: `Incorrect password for ${userName}` });
+      return res.status(405).json({ message: "Incorrect password" });
     }
 
     const hashPass = bcrypt.hashSync(newPassword, 7);
@@ -105,7 +103,7 @@ export async function changePass(req, res) {
     res.json({ message: "Password has been changed!" });
   } catch (err) {
     res.status(400).json({ message: "Password Changing Error" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -122,7 +120,7 @@ export async function getNameForNewPass(req, res) {
     res.json({ userName: searchUser.userName });
   } catch (err) {
     res.status(400).json({ message: "Error: Cannot get userName" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -135,7 +133,8 @@ export async function register(req, res) {
       return res.status(401).json({ message: "Validation error", errors });
     }
 
-    const { userName, email, password } = req.body;
+    const { userName: preUserName, email, password } = req.body;
+    const userName = preUserName.trim();
     const searchUser = await User.findOne({ userName });
 
     if (searchUser) {
@@ -167,7 +166,7 @@ export async function register(req, res) {
     res.json({ message: "New User has been successfully created!" });
   } catch (err) {
     res.status(400).json({ message: "Registration Error" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -178,15 +177,13 @@ export async function login(req, res) {
     const searchUser = await User.findOne({ userName });
 
     if (!searchUser) {
-      return res.status(404).json({ message: `User ${userName} not found` });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const validPass = bcrypt.compareSync(password, searchUser.password);
 
     if (!validPass) {
-      return res
-        .status(405)
-        .json({ message: `Incorrect password for ${userName}` });
+      return res.status(405).json({ message: "Incorrect password" });
     }
 
     // eslint-disable-next-line no-underscore-dangle
@@ -200,7 +197,7 @@ export async function login(req, res) {
     res.json({ token });
   } catch (err) {
     res.status(400).json({ message: "Login Error" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -212,7 +209,7 @@ export async function getUsers(req, res) {
     res.json(users);
   } catch (err) {
     res.status(400).json({ message: "Failed to get users" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -223,7 +220,7 @@ export async function getUser(req, res) {
     res.json({ userName, email, status, banned, date, image });
   } catch (err) {
     res.status(400).json({ message: "Failed to get user" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -257,7 +254,7 @@ export async function setUserStatus(req, res) {
     res.json({ message: "Status changed", user });
   } catch (err) {
     res.status(400).json({ message: "Failed to set new status" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -278,11 +275,11 @@ export async function deleteUser(req, res) {
       res.status(404).json({ message: "User not found" });
     } else {
       await user.remove();
-      res.status(204).json({ message: `User ${userName} has been deleted` });
+      res.status(204).json({ message: "User has been deleted" });
     }
   } catch (err) {
     res.status(400).json({ message: "Failed to delete user" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -298,14 +295,12 @@ export function banUser(banned) {
         user.banned = banned;
         await user.save();
         res.json({
-          message: `User ${userName} has been ${
-            banned ? "banned" : "unbanned"
-          }`,
+          message: `User has been ${banned ? "banned" : "unbanned"}`,
         });
       }
     } catch (err) {
       res.status(400).json({ message: "Failed to ban user" });
-      showFormattedError(err);
+      logger.error(err);
     }
   };
 }
@@ -322,7 +317,7 @@ export async function getUserByName(req, res) {
     }
   } catch (err) {
     res.status(400).json({ message: "Failed to get user" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
