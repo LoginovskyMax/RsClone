@@ -99,7 +99,7 @@ export async function changePass(req, res) {
     user.password = hashPass;
     user.resetToken = uuidv4();
 
-    mailService.sendPassChangedEmail(user.email, userName, password);
+    mailService.sendPassChangedEmail(user.email, userName, newPassword);
     user.save();
 
     res.json({ message: "Password has been changed!" });
