@@ -1,8 +1,8 @@
 import { Comment } from "../data/comment.mjs";
 import { GameData } from "../data/game.mjs";
-import { showFormattedError } from "../data/show-error.js";
 import { User } from "../data/User.mjs";
 import { games } from "../games/data/games.mjs";
+import { logger } from "../logger.mjs";
 import {
   getCommentsForGame,
   getGameRaiting,
@@ -51,7 +51,7 @@ export async function getGamesList(_req, res) {
     res.json(fullGamesList);
   } catch (err) {
     res.status(400).json({ message: "Failed to get games list" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -95,7 +95,7 @@ export async function addNewGame(req, res) {
     res.json(gameData);
   } catch (err) {
     res.status(400).json({ message: "Failed to add game" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -124,7 +124,7 @@ export async function editGameData(req, res) {
     res.json(gameData);
   } catch (err) {
     res.status(400).json({ message: "Failed to edit game" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -150,10 +150,8 @@ export async function getGameList(req, res) {
     });
     res.json(gamesList);
   } catch (err) {
-    res
-      .status(400)
-      .json({ message: `Failed to get list of games for ${req.query.name}` });
-    showFormattedError(err);
+    res.status(400).json({ message: "Failed to get games list" });
+    logger.error(err);
   }
 }
 
@@ -215,7 +213,7 @@ export async function setComment(req, res) {
     }
   } catch (err) {
     res.status(400).json({ message: "Faild to save commet" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -245,6 +243,6 @@ export async function removeComment(req, res) {
     res.status(204).json({ message: "" });
   } catch (err) {
     res.status(400).json({ message: "Faild to delete commet" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }

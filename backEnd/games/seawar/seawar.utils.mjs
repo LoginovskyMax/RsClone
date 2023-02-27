@@ -28,7 +28,7 @@ export function getGameData(gameId, player) {
     : false;
   const isMainUser = index === 0;
 
-  if (winner) {
+  if (winner && players[enemyIndex]) {
     enemyField = players[enemyIndex].gameMatrix;
   }
 

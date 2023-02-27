@@ -4,6 +4,7 @@ import { useState } from "react";
 import * as yup from "yup";
 
 import { forgotPassword } from "../../../controller/Auth";
+import { MESSAGES_EN, MESSAGES_RU } from "../../../data/restMsgs";
 import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
 import Button from "../../common/Button";
@@ -56,7 +57,10 @@ const ForgotPass: FC<ForgotPassProps> = ({ setSignInModalOpened }) => {
           })
           .catch((err) => {
             setStatus({ isLoading: false, message: "" });
-            setErrorMsg(err.message);
+            const msg = isEn
+              ? MESSAGES_RU[err.message]
+              : MESSAGES_EN[err.message];
+            setErrorMsg(msg);
           });
       },
     });

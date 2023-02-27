@@ -8,6 +8,7 @@ import {
   checkUserToken,
   createUser,
 } from "../../../controller/Auth";
+import { MESSAGES_EN, MESSAGES_RU } from "../../../data/restMsgs";
 import useUserStore from "../../../store";
 import languageStore from "../../../store/language";
 import useStatusStore from "../../../store/load-status";
@@ -96,9 +97,7 @@ const SignUp: FC<SignUpProps> = ({
           .then((userDetails) => {
             setStatus({
               isLoading: false,
-              message: isEn
-                ? "Вы успешно зарегистрированны!"
-                : "You have successfully registered!",
+              message: "You have successfully registered!",
             });
             setUser(userDetails);
             setModalClosed();
@@ -107,9 +106,13 @@ const SignUp: FC<SignUpProps> = ({
             try {
               setStatus({ isLoading: false, message: "" });
               const { message } = JSON.parse(error);
-              setErrorMsg(message);
+              const msg = isEn ? MESSAGES_RU[message] : MESSAGES_EN[message];
+              setErrorMsg(msg);
             } catch {
-              setErrorMsg(error.message);
+              const msg = isEn
+                ? MESSAGES_RU[error.message]
+                : MESSAGES_EN[error.message];
+              setErrorMsg(msg);
             }
           });
       },
@@ -148,7 +151,7 @@ const SignUp: FC<SignUpProps> = ({
           onClick={setSignInModalOpened}
         />
         <Button className="authentication__button" type="submit">
-          {isEn ? "Войти" : "Sign Up"}
+          {isEn ? "Регистрация" : "Sign Up"}
         </Button>
       </form>
     </div>

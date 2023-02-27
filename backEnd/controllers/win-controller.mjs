@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import { GameData } from "../data/game.mjs";
-import { showFormattedError } from "../data/show-error.js";
 import { User } from "../data/User.mjs";
 import { Winner } from "../data/winner.mjs";
+import { logger } from "../logger.mjs";
 
 // eslint-disable-next-line consistent-return
 export async function addWinner(req, res) {
@@ -10,13 +10,13 @@ export async function addWinner(req, res) {
     const data = req.body;
 
     if (!req.userName) {
-      return res.status(405).json({ message: "User not authorized" });
+      return res.status(405).json({ message: "User is not authorized" });
     }
 
     const user = await User.findOne({ userName: req.userName });
 
     if (!user) {
-      return res.status(405).json({ message: "User not authorized" });
+      return res.status(405).json({ message: "User is not authorized" });
     }
 
     data.user = user._id;
@@ -44,7 +44,7 @@ export async function addWinner(req, res) {
     });
   } catch (err) {
     res.status(400).json({ message: "Failed to add winner" });
-    showFormattedError(err);
+    logger.error(err);
   }
 }
 
@@ -79,7 +79,7 @@ export async function getWinners(req, res) {
     const { userName: queryUserName } = req.query;
 
     if (!req.userName) {
-      return res.status(405).json({ message: "User not authorized" });
+      return res.status(405).json({ message: "User is not authorized" });
     }
 
     if (game) {
@@ -124,7 +124,7 @@ export async function getWinners(req, res) {
       let user = await User.findOne({ userName: req.userName });
 
       if (!user) {
-        return res.status(405).json({ message: "User not authorized" });
+        return res.status(405).json({ message: "User is not authorized" });
       }
 
       if (queryUserName) {

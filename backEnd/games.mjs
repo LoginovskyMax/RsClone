@@ -22,6 +22,7 @@ const jsonParser = bodyParser.json();
 export const gameHttpRouter = new Router();
 
 gameHttpRouter.use(cors());
+// gameHttpRouter.use(logger);
 gameHttpRouter.get("/all", getGamesList);
 gameHttpRouter.get("/data", getGameData);
 gameHttpRouter.post(

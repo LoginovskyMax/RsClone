@@ -1,5 +1,6 @@
 import { checkUser } from "../../controllers/user-controller.mjs";
 import { User } from "../../data/User.mjs";
+import { logger } from "../../logger.mjs";
 import { games } from "../data/games.mjs";
 // eslint-disable-next-line import/no-cycle
 import {
@@ -62,8 +63,7 @@ export async function seaWarSocket(ws) {
       }
     } catch (err) {
       ws.send(makeAnswer(`${GAME.ERR_SERVER} ${err.message}`));
-      // eslint-disable-next-line no-console
-      console.error(err.message);
+      logger.error(err.message);
     }
   });
   ws.on("close", () => {
