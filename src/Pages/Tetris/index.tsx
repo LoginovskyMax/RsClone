@@ -7,12 +7,12 @@ import "./style.scss";
 import Button from "../../Components/common/Button";
 import FinishModal from "../../Components/Tetris/FinishModal";
 import Item from "../../Components/Tetris/Item";
-import { checkUserToken } from "../../controller/Auth";
+import { checkForBan } from "../../controller/banchecker";
 import { postWinner } from "../../controller/Winners";
 import { useControls } from "../../helpers/tetris/hooks/useControls";
 import type { Movements } from "../../helpers/tetris/movement";
 import { rotations, Keys } from "../../helpers/tetris/movement";
-import useUserStore, { nullUser } from "../../store";
+import useUserStore from "../../store";
 import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
 
@@ -34,7 +34,7 @@ const Tetris: FC = () => {
 
   const [isModalClosed, setModalClosed] = react.useState(true);
   const { setStatus } = useStatusStore();
-  const { setUser, banned } = useUserStore();
+  const { setUser } = useUserStore();
   const { isEn } = languageStore();
   const navigate = useNavigate();
 
@@ -68,28 +68,7 @@ const Tetris: FC = () => {
   );
 
   react.useEffect(() => {
-    checkUserToken()
-      .then((userData) => {
-        setUser({
-          userName: userData.userName,
-          image: userData.image,
-          status: userData.status,
-          banned: userData.banned,
-          email: userData.email,
-        });
-      })
-      .catch(() => {
-        setUser(nullUser);
-      })
-      .then(() => {
-        if (banned) {
-          setStatus({
-            isLoading: false,
-            message: isEn ? "Вы забанены!" : "You are banned!",
-          });
-          navigate("/");
-        }
-      });
+    checkForBan(isEn, setUser, setStatus, navigate);
   }, []);
 
   react.useEffect(() => {

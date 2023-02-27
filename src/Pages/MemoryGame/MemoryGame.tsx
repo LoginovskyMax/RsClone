@@ -6,9 +6,9 @@ import Modal from "../../Components/common/Modal";
 import CardComponent from "../../Components/MemoryGame/CardComponent";
 import { cardsArr } from "../../Components/MemoryGame/Data";
 import { type ICard } from "../../Components/MemoryGame/Interfaces";
-import { checkUserToken } from "../../controller/Auth";
+import { checkForBan } from "../../controller/banchecker";
 import { postWinner } from "../../controller/Winners";
-import useUserStore, { nullUser } from "../../store";
+import useUserStore from "../../store";
 import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
 import { pointsData } from "../Games/pointsData";
@@ -31,7 +31,7 @@ const MemoryGame = () => {
   const pairs = useRef<ICard[]>([]);
   const openPairs = useRef(0);
   const { isEn } = languageStore();
-  const { setUser, banned } = useUserStore();
+  const { setUser } = useUserStore();
   const { setStatus } = useStatusStore();
 
   const gameName = "Memorygame";
@@ -132,28 +132,7 @@ const MemoryGame = () => {
   }, [level]);
 
   useEffect(() => {
-    checkUserToken()
-      .then((userData) => {
-        setUser({
-          userName: userData.userName,
-          image: userData.image,
-          status: userData.status,
-          banned: userData.banned,
-          email: userData.email,
-        });
-      })
-      .catch(() => {
-        setUser(nullUser);
-      })
-      .then(() => {
-        if (banned) {
-          setStatus({
-            isLoading: false,
-            message: isEn ? "Вы забанены!" : "You are banned!",
-          });
-          navigate("/");
-        }
-      });
+    checkForBan(isEn, setUser, setStatus, navigate);
   }, []);
 
   return (

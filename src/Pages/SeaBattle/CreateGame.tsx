@@ -3,6 +3,7 @@ import * as reactRouterDom from "react-router-dom";
 
 import Button from "../../Components/common/Button";
 import { CreateGamesList } from "../../Components/MultiGames/CreateGamesList";
+import { checkForBan } from "../../controller/banchecker";
 import useUserStore from "../../store";
 import languageStore from "../../store/language";
 import useStatusStore from "../../store/load-status";
@@ -14,7 +15,7 @@ export const CreateGame = () => {
   const params = reactRouterDom.useParams();
   const { gameName } = params;
   const navigate = reactRouterDom.useNavigate();
-  const { userName: user, banned } = useUserStore();
+  const { userName: user, setUser } = useUserStore();
   const { setStatus } = useStatusStore();
   const location = reactRouterDom.useLocation();
   const { isEn } = languageStore();
@@ -26,14 +27,8 @@ export const CreateGame = () => {
     }
   };
 
-  const createGame = () => {
-    if (banned) {
-      setStatus({
-        isLoading: false,
-        message: isEn ? "Вы забанены!" : "You are banned!",
-      });
-      navigate("/");
-
+  const createGame = async () => {
+    if (await checkForBan(isEn, setUser, setStatus, navigate)) {
       return;
     }
 
@@ -45,12 +40,9 @@ export const CreateGame = () => {
     setTimeout(startGame, 500);
   };
 
-  const joinGame = (id: string) => {
-    if (banned) {
-      setStatus({
-        isLoading: false,
-        message: isEn ? "Вы забанены!" : "You are banned!",
-      });
+  const joinGame = async (id: string) => {
+    if (await checkForBan(isEn, setUser, setStatus, navigate)) {
+      return;
     }
 
     const request = {
