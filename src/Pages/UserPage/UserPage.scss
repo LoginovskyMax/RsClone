@@ -135,24 +135,44 @@
     &__status_admin {
         background: #b33d2e;
         border: 1px solid #721d11;
+        transition: all 0.2s;
+        &:hover {
+            background: #e54732;
+            border: 1px solid #b0210e;
+        }
     }
 
     // .user-profile__status_moderator
     &__status_moderator {
         background: #b3842e;
         border: 1px solid #79530c;
+        transition: all 0.2s;
+        &:hover {
+            background: #e6b04d;
+            border: 1px solid #ba7b05;
+        }
     }
 
     // .user-profile__status_user
     &__status_user {
         background: #2e6ab3;
         border: 1px solid #083367;
+        transition: all 0.2s;
+        &:hover {
+            background: #1974e2;
+            border: 1px solid #2c82ec;
+        }
     }
 
     // .user-profile__status_disabled
     &__status_disabled {
         background: #939ba4;
         border: 1px solid #313b45;
+        transition: all 0.2s;
+        &:hover {
+            background: #525861;
+            border: 1px solid #595959;
+        }
     }
 
     // .user-profile__name

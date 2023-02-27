@@ -1,9 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import useUserStore from "../../store";
-import languageStore from "../../store/language";
-import useStatusStore from "../../store/load-status";
 
 import styles from "./CardComponent.module.scss";
 import { type IProps } from "./Interfaces";
@@ -19,10 +14,6 @@ const CardComponent = ({
 }: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const canClick = useRef(false);
-  const { banned } = useUserStore();
-  const { setStatus } = useStatusStore();
-  const { isEn } = languageStore();
-  const navigate = useNavigate();
 
   const handler = () => {
     if (inGame) {
@@ -45,16 +36,6 @@ const CardComponent = ({
   }, [countTry]);
 
   useEffect(() => {
-    if (banned) {
-      setStatus({
-        isLoading: false,
-        message: isEn ? "Вы забанены!" : "You are banned!",
-      });
-      navigate("/");
-
-      return;
-    }
-
     if (startGame) {
       setIsOpen(true);
       canClick.current = false;

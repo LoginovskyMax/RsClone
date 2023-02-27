@@ -10,7 +10,6 @@ const PopupMessage = () => {
   const status = useStatusStore();
 
   useEffect(() => {
-    console.log(`message: ${status.message}`);
     setTimeout(() => {
       if (!status.message) return;
       status.setStatus({ isLoading: false, message: "" });
