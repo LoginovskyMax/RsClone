@@ -1,8 +1,12 @@
 import type { FC } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../../../Components/common/Button";
+import { checkForBan } from "../../../controller/banchecker";
 import type { GameComment, GameData } from "../../../data/gamesData";
+import useUserStore from "../../../store";
 import languageStore from "../../../store/language";
+import useStatusStore from "../../../store/load-status";
 import StarsView from "../../Games/StarsView/StarsView";
 import styles from "../Preview.module.scss";
 
@@ -18,6 +22,9 @@ export const CommentsList: FC<CommentsListProps> = ({
   setShowModal,
 }) => {
   const { isEn } = languageStore();
+  const { setUser } = useUserStore();
+  const { setStatus } = useStatusStore();
+  const navigate = useNavigate();
 
   return (
     <section className={styles.preview_commentsWrapper}>
@@ -49,7 +56,11 @@ export const CommentsList: FC<CommentsListProps> = ({
       </div>
       <Button
         className={styles.preview__reviewBtn}
-        onClick={() => !gameData?.isComingSoon && setShowModal(true)}
+        onClick={async () =>
+          !gameData?.isComingSoon &&
+          !(await checkForBan(isEn, setUser, setStatus, navigate)) &&
+          setShowModal(true)
+        }
         disabled={gameData?.isComingSoon}
       >
         {isEn ? " Оставить отзыв" : "Leave feedback"}
