@@ -7,6 +7,7 @@
     "dev": "vite --host",
     "server": "node backEnd/server.mjs",
     "dev-server": "nodemon backEnd/server.mjs",
+    "dev-all": "nodemon backEnd/server.mjs | vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "npx eslint .",
