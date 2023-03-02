@@ -3,6 +3,36 @@
 
 Clone of steam for final task
 
+## Stack
+### Frontend
+- React
+- Vite
+- Type Script
+- SASS
+- clsx - работа с CSS классами
+- Zustand - state-менеджер
+- Formik - работа с формами
+- Yup - валидация форм
+- ml-matrix - работа с матрицамии вычисляениями
+
+
+### Backend
+- Express
+- mongoose - MongoDB OMT
+- winston - логгирование.
+- bcryptjs - хэширование паролей
+- jsonwebtoken - создание JWT токенов
+- ws - работ с WebSoket'ами
+- uuid - генерация ключей для уникальных ссылок
+- nodemailer - почтовый клиент
+- node-captcha-generator - создание капчи
+- middleware-async - для асинхронных middleware функций в запросах
+- dotenv
+- cors
+- body-parser
+- cookie-parser
+- nodemon
+
 ## Back-End
 
 - Адрес **back-end** сервера с ssl (**в преоритете**):
