@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+
+#root {
+  font-family: 'Roboto', sans-serif;
+  padding: 0;
+  width: 100%;
+  margin: 0 auto;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+.App {
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.darkApp{
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #141227;
+  color: #fffef0;;
+}
+
+@media screen and (max-width: 640px) {
+  .App {
+    min-height: calc(100vh - 150px);
+  }
+  .darkApp {
+    min-height: calc(100vh - 150px);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .App {
+    min-height: calc(100vh - 316px);
+  }
+  .darkApp {
+    min-height: calc(100vh - 316px);
+  }
+}

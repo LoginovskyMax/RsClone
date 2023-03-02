@@ -1,0 +1,39 @@
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  
+  &__image {
+    width: 60px;
+    height: 60px;
+  }
+
+  &__text {
+    font-family: 'Ceviche One', cursive;
+    font-size: 36px;
+    font-weight: 600;
+    color: #7e6dd1;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .logo {
+    img {
+      width: 40px;
+      height: 40px;
+    }
+    &__text {
+      font-family: 'Ceviche One', cursive;
+      font-size: 30px;
+      font-weight: 600;
+      color: #7e6dd1;
+    }
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .logo__text {
+    display: none;
+  }
+}

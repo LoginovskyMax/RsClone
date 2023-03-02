@@ -1,0 +1,73 @@
+.memory_main{
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Russo One", sans-serif;
+  font-size: 25px;
+  background: linear-gradient(
+            180deg, 
+            rgba(255, 255, 255, 0) 0%,
+            rgba(118, 75, 162, 0.565) 83%, 
+            rgba(102, 126, 234, 0.86) 100% 
+        );
+  padding: 10px 0 40px;
+  &__level{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 20px 0 0;
+  }
+  &__input{
+    padding: 5px 20px;
+    border-radius: 5px;
+    color: #fff;
+    background-image: linear-gradient(to right, #667eea, #764ba2);
+    option{
+      color: black;
+    }
+  }
+}
+.points{
+  margin-bottom: 10px;
+}
+.cards_conteiner{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+.modal_window{
+  &__main{
+    padding: 20px;
+    width: 100%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  &__text{
+    font-weight: bold;
+  }
+}
+.btns_conteiner{
+  padding: 20px 0;
+  display: flex;
+  gap: 20px;
+}
+
+@media screen and (max-width: 485px) {
+  .btns_conteiner{
+    padding: 10px 0;
+    gap: 10px;
+    flex-direction: column;
+    button {
+      padding: 8px 20px !important;
+    }
+  }
+  .memory_main__level{
+    flex-direction: column;
+  }
+}

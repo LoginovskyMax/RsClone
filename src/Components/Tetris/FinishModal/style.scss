@@ -1,0 +1,12 @@
+.finish {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__title {
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+}

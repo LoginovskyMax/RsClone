@@ -1,0 +1,57 @@
+.main-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__photo {
+    width: 40%;
+  }
+
+  &__main-text {
+    margin-top: 20px;
+    max-width: 96vw;
+    font-size: 58px;
+    text-align: center;
+    line-height: 1;
+    font-family: 'Russo One', sans-serif;
+    font-weight: 600;
+    color: #4f4c6b;
+  }
+
+  &__secondary-text {
+    text-align: center;
+    margin-top: 60px;
+    max-width: 50%;
+    font-size: 20px;
+    font-weight: 400;
+    color: #4f4c6b;
+    opacity: 0.7;
+  }
+
+  &__button {
+    margin: 40px 0;
+    min-width: 200px;
+  }
+}
+
+.dark-theme{
+  .main-page__main-text{
+    color: #fffef0;
+  }
+  .main-page__secondary-text{
+    color: #fffef0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .main-page {
+    &__main-text {
+      font-size: 2.5em;
+      max-width: 96vw;
+    }
+
+    &__secondary-text {
+      max-width: 90vw;
+    }
+  }
+}

@@ -1,0 +1,77 @@
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  &__text {
+    font-family: 'Russo One', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #4f4c6b;
+    max-width: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__click{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    border-radius: 20px;
+    &:hover{
+      box-shadow: 0 0 5px 0 #764ba2 inset, 0 0 5px 2px #667eea;
+    }
+  }
+}
+
+@media screen and (max-width: 860px) {
+  .user {
+    &__image {
+      width: 38px;
+      height: 38px;
+    }
+  
+    &__text {
+      font-size: 18px;
+      max-width: 140px;
+    }
+    button {
+      padding: 8px 12px;
+    }
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .user {
+    &__text {
+      font-size: 18px;
+      max-width: 140px;
+      display: none;
+    }
+    button {
+      padding: 8px 12px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .user {
+    gap: 8px;
+
+    button {
+      padding: 10px 9px;
+      font-size: 1em;
+      // background: none;
+      // color: #4f4496;
+    }
+  }
+}

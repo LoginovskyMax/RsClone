@@ -1,0 +1,58 @@
+@keyframes rotate{
+  from{
+      transform: rotate(0deg);
+  }
+  to{
+      transform: rotate(-360deg);
+  }
+}
+
+.header {
+  width: 100%;
+  max-height: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  box-shadow: 0 5px 5px -5px #f6e7ea;
+  color: white;
+  background: #f3f3f3;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__theme {
+    width: 40px;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  &__rotate{
+    width: 40px;
+    cursor: pointer;
+    animation: rotate 0.7s ease-in-out;
+  }
+}
+
+.dark{
+  background-color: #0d0c10;
+  color: #bdd1f4;
+  .user__text {
+    color: #bdd1f4;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .header {
+    padding: 10px 8px;
+    &__content {
+      gap: 14px;
+    }
+  }
+}

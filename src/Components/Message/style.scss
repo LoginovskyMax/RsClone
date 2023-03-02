@@ -1,0 +1,36 @@
+
+.pop-message {
+  position: fixed;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: #8f96b447;
+  z-index: 5;
+
+  &_hide {
+    display: none;
+  }
+  
+  // .pop-message__background
+  &__background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    max-width: 90vw;
+    width: 320px;
+    height: 10vh;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    background: linear-gradient(to right,#667eea,#764ba2);
+  }
+
+  // .pop-message__wrapper
+  &__wrapper {
+    display: flex;
+    text-align: center;
+  }
+}
