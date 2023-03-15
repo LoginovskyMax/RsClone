@@ -1,0 +1,141 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "airbnb",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime"
+  ],
+  "plugins": ["react-hooks"],
+  "rules": {
+    "@typescript-eslint/triple-slash-reference": 0,
+    "no-return-assign": "off",
+    "no-param-reassign":"off",
+    "@typescript-eslint/no-floating-promises": 0,
+    "no-console": 1,
+    "no-shadow": 0,
+    "no-nested-ternary":"off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react/button-has-type": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "react/prop-types": "off",
+    "react/display-name": "off",
+    "react/no-array-index-key": "off",
+    "react/require-default-props": "off",
+    "react/jsx-props-no-spreading": "off",
+    "no-new":"off",
+    "max-classes-per-file":"off",
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [".ts", ".tsx"]
+      }
+    ],
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": ["arrow-function","function-declaration"],
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/no-use-before-define": "error",
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "args": "all",
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "import/extensions": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "import/prefer-default-export": "off",
+    "import/no-anonymous-default-export": [2, {
+      "allowObject": true
+    }],
+    "import/no-extraneous-dependencies": "error",
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "return"
+      },
+      {
+        "blankLine": "always",
+        "prev": "block-like",
+        "next": "*"
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "block-like"
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "default"
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "export"
+      }
+    ],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": ["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"]
+      }
+    ],
+    "spaced-comment": [
+      "error",
+      "always",
+      {
+        "markers": ["/"]
+      }
+    ],
+    "arrow-body-style": ["error", "as-needed"],
+    "no-unused-vars": "off",
+    "no-use-before-define": "off"
+  },
+  "ignorePatterns": ["tsconfig.json", "vite.config.ts", "build"],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".js", ".jsx", ".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
+  },
+  "parserOptions": {
+    "ecmaVersion": 2019,
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true
+  }
+}

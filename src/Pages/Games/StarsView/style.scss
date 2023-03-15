@@ -1,0 +1,44 @@
+.rating-view {
+  position: relative;
+  user-select: none;
+
+  // .rating-view__back
+  &__back {
+    display: flex;
+    gap: 6px;
+    z-index: 0;
+  }
+
+  // .rating-view__fill
+  &__fill {
+    position: absolute;
+    display: flex;
+    gap: 6px;
+    z-index: 1;
+  }
+  
+  // .rating-view__star-wrapper
+  &__star-wrapper {
+    width: 30px;
+    height: 30px;
+    &input:focus {
+      background-color: transparent;
+    }
+  }
+  
+  // .rating-view__star-no
+  &__star-no {
+    width: 100%;
+    height: 100%;
+    background: url(../../../assets/svg/star-empty.svg) no-repeat center;
+    background-size: cover;
+  }
+  
+  // .rating-view__star-yes
+  &__star-yes {
+    width: 100%;
+    height: 100%;
+    background: url(../../../assets/svg/star-full.svg) no-repeat left;
+    background-size: cover;
+  }
+}

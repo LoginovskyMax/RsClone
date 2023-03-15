@@ -1,0 +1,404 @@
+.main{
+    width: 100%;
+    min-height: calc(100vh - 160px);
+    padding: 30px 30px 85px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    background: linear-gradient(
+            180deg, 
+            rgba(255, 255, 255, 0) 0%,
+            rgba(118, 75, 162, 0.565) 83%, 
+            rgba(102, 126, 234, 0.86) 100% 
+        );
+
+    &__game-list{
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: calc(100% - 20px);
+    }
+    &__to-games-btn {
+        margin-top: auto;
+    }
+    &__game-item{
+        padding: 8px 20px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 4px;
+        border: 1px solid #764ba2;
+        background: linear-gradient(
+            180.2deg, 
+            rgba(255, 255, 255, 0) 0%,
+            rgba(167, 124, 209, 0.201) 90%, 
+            rgba(22, 35, 93, 0.86) 100% 
+        );
+        p{
+            font-weight: bold;
+        }
+        &:hover{
+         cursor: pointer;
+        background: linear-gradient(
+                180.2deg, 
+                rgba(216, 74, 22, 0.359) 0%,
+                rgba(238, 70, 9, 0.149) 90%,
+                rgba(207, 78, 9, 0.6) 100%,
+            );
+        }
+    }
+    &__points {
+        text-align: left;
+        width: 100%;
+    }
+    &__position {
+        text-align: right;
+        min-width: 200px;
+    }
+    &__title {
+        font-family: "Russo One", sans-serif;
+        font-size: 2em;
+        font-weight: 900;
+        color: #7e6dd1;
+        margin-bottom: 10px;
+        display: none;
+    }
+   
+    &__name {
+        text-align: left;
+        font-family: Black Ops One,cursive;
+        font-size: 1.3em;
+        min-width: 200px;
+    }
+    &__user {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        p{
+            width: 140px;
+            font-weight: bold;
+        }
+    }
+    &__list {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    &__admin {
+        width: 100%;
+    }
+}
+
+.user-profile {
+    display: flex;
+    height: 200px;
+    // .user-profile__picture
+    &__picture {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    // .user-profile__wrapper
+    &__wrapper {
+        height: 100%;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        width: calc(100vw - 280px);
+    }
+
+    // .user-profile__status
+    &__status {
+        display: flex;
+        gap: 2px;
+        margin-bottom: 28px;
+        margin-left: auto;
+        div {
+            max-width: fit-content;
+            padding: 2px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            cursor: pointer;
+            color: #ecf2ff;
+        }
+    }
+
+    // .user-profile__status_admin
+    &__status_admin {
+        background: #b33d2e;
+        border: 1px solid #721d11;
+        transition: all 0.2s;
+        &:hover {
+            background: #e54732;
+            border: 1px solid #b0210e;
+        }
+    }
+
+    // .user-profile__status_moderator
+    &__status_moderator {
+        background: #b3842e;
+        border: 1px solid #79530c;
+        transition: all 0.2s;
+        &:hover {
+            background: #e6b04d;
+            border: 1px solid #ba7b05;
+        }
+    }
+
+    // .user-profile__status_user
+    &__status_user {
+        background: #2e6ab3;
+        border: 1px solid #083367;
+        transition: all 0.2s;
+        &:hover {
+            background: #1974e2;
+            border: 1px solid #2c82ec;
+        }
+    }
+
+    // .user-profile__status_disabled
+    &__status_disabled {
+        background: #939ba4;
+        border: 1px solid #313b45;
+        transition: all 0.2s;
+        &:hover {
+            background: #525861;
+            border: 1px solid #595959;
+        }
+    }
+
+    // .user-profile__name
+    &__name {
+        font-family: "Russo One", sans-serif;
+        font-size: 2.5em;
+        font-weight: 600;
+        color: #4f4c6b;
+    }
+
+    // .user-profile__ban-status
+    &__ban-status {
+        display: flex;
+        flex-direction: column;
+    }
+
+    // .user-profile__is-baned
+    &__is-baned {
+        max-width: min-content;
+        margin-bottom: 4px;
+        padding: 2px 4px;
+        border-radius: 20px;
+        font-size: 1.1em;
+        font-weight: 900;
+        color: #e8270e;
+    }
+
+    // .user-profile__is-active
+    &__is-active {
+        max-width: min-content;
+        margin-bottom: 4px;
+        padding: 2px 4px;
+        border-radius: 20px;
+        font-size: 1.1em;
+        font-weight: 900;
+        color: #60cd00;
+    }
+
+    // .user-profile__ban-btn
+    &__ban-btn {
+        padding: 2px 10px;
+        text-transform: uppercase;
+        max-width: max-content;
+    }
+
+    // .user-profile__unban-btn
+    &__unban-btn {
+        padding: 2px 10px;
+        text-transform: uppercase;
+        max-width: max-content;
+    }
+
+    // .user-profile__not-found
+    &__not-found {
+        top: 0;
+        position: absolute;
+        margin: auto;
+        margin-top: 45vh;
+        display: flex;
+        font-size: 1.4em;
+        font-weight: 900;
+    }
+    &__change-password {
+        margin-top: 20px;
+        max-width: max-content;
+    }
+    // .user-profile__delete
+    &__delete {
+        padding: 0;
+        margin-left: 10px;
+        width: 44px;
+        height: 24px;
+        background: url(../../assets/svg/delete.svg) center no-repeat;
+        background-size: cover;
+        transition: all 0.3s;
+        cursor: pointer;
+        transform: scale(1.3);
+        &:hover {
+            transform: scale(1.5);
+        }
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .user-profile{
+        &__picture {
+            width: 100px;
+            height: 200px;
+        }
+        &__wrapper {
+            width: calc(100vw - 220px);
+        }
+    }
+    .main{
+        &__name {
+            min-width: 180px;
+        }
+        &__position {
+            min-width: 135px;
+        }
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .user-profile{
+        height: auto;
+        flex-direction: column;
+        align-items: center;
+
+        &__picture {
+            width: 160px;
+            height: 160px;
+        }
+        &__wrapper {
+            width: calc(100vw - 10px);
+            align-items: center;
+        }
+        &__status {
+            margin: 10px auto 18px;
+            div {
+                font-size: 1em;
+            }
+        }
+        &__ban-btn {
+            padding: 4px 12px;
+            text-transform: uppercase;
+            background-image: linear-gradient(to right, #667eea, #764ba2) !important;
+            color: #fff !important;
+            font-size: 1.4em !important;
+        }
+        &__unban-btn {
+            padding: 4px 12px;
+            text-transform: uppercase;
+            background-image: linear-gradient(to right, #667eea, #764ba2) !important;
+            color: #fff !important;
+            font-size: 1.4em !important;
+        }
+        &__ban-status {
+            align-items: center;
+        }
+    }
+    .main{
+        &__game-list {
+            gap: 8px;
+            align-items: center;
+        }
+        &__game-item {
+            flex-direction: column;
+            gap: 12px;
+            padding: 16px 20px;
+            width: 100%;
+        }
+        &__position {
+            text-align: left;
+        }
+    }
+}
+
+.search-user {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    width: 300px;
+    input {
+        width: 300px;
+        padding: 8px 14px;
+        border: 2px solid #083367;
+        border-radius: 12px;
+        font-family: "Russo One", sans-serif;
+        font-size: 1.2em;
+        background-color: #b3cff2e0;
+        color: #083367;
+    }
+    &__list {
+        top: 44px;
+        position: absolute;
+        background-color: #b3cff2e0;
+        border-radius: 12px;
+        border: 2px solid #083367;
+        padding: 0 0;
+        overflow: hidden;
+        z-index: 2;
+        width: 300px;
+    }
+    &__item {
+        margin-bottom: -2px;
+        padding: 4px 10px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        border-bottom: 2px solid #083367;
+        &:hover {
+            background-color: #7531a9b7;
+        }
+    }
+    &__item-picture {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-image: url("https://rsgames.online/images/user.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+    &__item-username {
+        font-family: "Russo One", sans-serif;
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #382f78;
+    }
+}
+
+.popup-dialog {
+    &__text {
+        font-size: 1.3em;
+        margin-bottom: 34px;
+        text-align: center;
+    }
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+
+        button {
+            min-width: 120px;
+        }
+    }
+}

@@ -1,0 +1,33 @@
+.authentication {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__title {
+    color: #4f4c6b;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  &__content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__button {
+    max-width: 300px;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+
+  &__error{
+    color: #ba4d4d;
+    padding-bottom: 8px;
+    text-align: center;
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,238 @@
+.preview{
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    &_header {
+        color: #ffffffe3;
+        font-family: 'Black Ops One', cursive;
+        font-size: 3.8em;
+        line-height: 90%;
+        text-align: center;
+        text-shadow: 20px 0 20px #00000039, 
+            0 20px 20px #00000039,
+            -20px 0 20px #00000039,
+            0 -20px 20px #00000039;
+    }
+    &__section {
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 80px);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    &__wrapper {
+        padding: 50px 0 20px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+        background: linear-gradient(
+            180deg, 
+            rgba(0, 0, 0, 0.626) 0%, 
+            rgba(0, 0, 0, 0.326) 73%, 
+            rgba(0, 0, 0, 0) 100%
+        );
+    }
+    &_description {
+        max-width: 80%;
+        font-size: 1.4em;
+        text-align: center;
+        color: #e1e1e1c6;
+    }
+
+    &_rules{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 80px 20px 60px;
+    }
+    &_rulesTitle {
+        margin-bottom: 70px;
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        text-align: center;
+        font-size: 1.8em;
+        opacity: .9;
+    }
+    &_rulesText {
+        max-width: 1024px;
+        text-align: left;
+        opacity: .9;
+        white-space: pre-wrap;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        line-height: 1.3;
+        margin-bottom: 20px;
+    }
+    &_commentsWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 20px 20px 40px;
+        background: linear-gradient(
+            180deg, 
+            rgba(255, 255, 255, 0) 0%,
+            rgba(118, 75, 162, 0.565) 83%, 
+            rgba(102, 126, 234, 0.86) 100% 
+        );
+    }
+    &_info {
+        padding: 4px 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    &_comments {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin: 20px 0 60px;
+        gap: 10px;
+    }
+    
+    &_image {
+        width: 40px;
+        height: 40px;
+    }
+    
+    &_item {
+        width: 480px;
+        max-width: 92vw;
+        border: 1px solid rgb(173, 182, 189);
+        padding: 5px 20px;
+        border-radius: 16px;
+        background-color: rgb(240, 248, 255);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+        p {
+            color: #1c1c1c;
+            margin-bottom: 12px;
+        }
+    }
+    
+    &_title {
+        font-weight: 600;
+        font-family: "Ceviche One", cursive;
+    }
+    
+    &_username {
+        margin-right: auto;
+        color: #733892;
+    }
+    
+    &_date {
+        margin-top: 4px;
+        text-align: right;
+        font-size: 12px;
+        color: #a39898;
+    }
+    &__reviewBtn {
+        border: solid #572886 2px;
+        background: linear-gradient(
+            to right, #7d85a82d, #8b73a422
+        );
+        &:hover {
+            box-shadow: 
+                0 0 5px 0 
+                #764ba253 inset, 
+                0 0 5px 2px 
+                #667eea41;
+        }
+    }
+
+    &_winnersWrapper {
+        width: 100vw;
+        background: linear-gradient(
+            rgb(154, 92, 220) 0%,
+            rgb(89, 24, 159) 50%,
+            rgb(47, 45, 150) 100%);
+        padding: 30px 20px 50px;
+        margin-bottom: 30px;
+    }
+    &_winners {
+        margin: 20px 0;
+        width: 96vw;
+        margin: 0 auto;
+        max-width: 480px;
+        display: grid;
+        grid-template-columns: 1fr 6fr 2fr;
+        gap: 12px;
+        align-items: baseline;
+    }
+    &_winnersTittle {
+        margin-bottom: 40px;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        text-align: center;
+        font-size: 1.8em;
+        opacity: 0.9;
+        color: #fffffff2;
+    }
+    &_winnerPositionHead {
+        color: #fffffff2;
+    }
+    &_winnerPlayerHead {
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        font-size: 1.2em;
+        opacity: 0.9;
+        color: #130f5bc1;
+    }
+    &_winnerPointsHead {
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        font-size: 1.2em;
+        opacity: 0.9;
+        color: #130f5bc1;
+    }
+    &_winnerPosition {
+        font-family: "Ceviche One", cursive;
+        font-family: 'Russo One', sans-serif;
+        font-size: 1.7em;
+        color: rgb(136 89 203 / 87%);
+    }
+    &_winnerPlayer {
+        font-family: 'Russo One', sans-serif;
+        font-size: 1.4em;
+        color: #ffffffcb;
+    }
+    &_winnerPoints {
+        font-family: "Ceviche One", cursive;
+        font-family: 'Russo One', sans-serif;
+        font-size: 1.6em;
+        color: rgba(167, 159, 221, 0.95)
+    }
+    &_noWinners {
+        width: 100%;
+        margin: 50px auto 70px;
+        grid-column: 1 / 4;
+        text-align: center;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+        font-size: 1.2em;
+        opacity: 0.9;
+        color: #130f5b4a;
+    }
+}
+.modal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    &_area{
+        width: 100%;
+        height: 200px;
+        padding: 10px;
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: 700;
+        font-size: 1.2em;
+        resize: none;
+    }
+}
