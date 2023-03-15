@@ -56,7 +56,7 @@ const checkBorder = (matrix: Matrix, moveTo: Moves, isWeak?: boolean) => {
         : matrix.maxColumn(0) + ITEM_SIZE >= PLAY_ZONE_HEIGHT;
 
     default:
-      return false;
+      return isWeak;
   }
 };
 
@@ -73,16 +73,6 @@ export const rotate = (
 
   const newCoords = new Matrix(oldOffset).mmul(rotation).add(diff);
 
-  const isCollided =
-    checkBorder(newCoords.clone(), Moves.bottom, true) ||
-    checkBorder(newCoords.clone(), Moves.left, true) ||
-    checkBorder(newCoords.clone(), Moves.right, true) ||
-    isFiguresCollided(staticFigures, figure);
-
-  if (isCollided) {
-    return figure;
-  }
-
   const newCoordinatesInNullishPoint = new Matrix(
     figure.coordinatesInNullishPoint
   )
@@ -92,10 +82,22 @@ export const rotate = (
   const figureWithNewCoordinatesInNullishPoint =
     updateCoordinatesInNullishPoint(newCoordinatesInNullishPoint, figure);
 
-  return {
+  const newFigure = {
     ...figureWithNewCoordinatesInNullishPoint,
     coordinates: newCoords.to2DArray(),
   };
+
+  const isCollided =
+    checkBorder(newCoords.clone(), Moves.bottom, true) ||
+    checkBorder(newCoords.clone(), Moves.left, true) ||
+    checkBorder(newCoords.clone(), Moves.right, true) ||
+    isFiguresCollided(staticFigures, newFigure);
+
+  if (isCollided) {
+    return figure;
+  }
+
+  return newFigure;
 };
 
 const coordinatesMapperByMoveType: Record<
